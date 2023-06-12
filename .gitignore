@@ -1,4 +1,4 @@
-/.DS_Store
-/.vscode
-/writeup.synctex.gz
-/writeup.tex
+.DS_Store
+.vscode
+*.synctex.gz
+*.pdf
