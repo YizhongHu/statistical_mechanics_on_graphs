@@ -232,7 +232,7 @@ This points towards a representation of $\mu^*$ similar to the form
 
 \subsection{Finding maximum}
 
-\subsection{Multiple Maxima}
+\subsubsection{Multiple Maxima}
 
 A proximal point method was used, but it may not be as reliable as some SciPy implementations. We will hence try out trust-region constraint
 method in SciPy. 
@@ -258,5 +258,44 @@ space where the optima lie is not planar. This makes sense as our objective is n
 
 If we assume that the optima space is smooth, we can take a small neighborhood of the space and measure the dimension of that instead. 
 This can be done by sampling from a small neighborhood of initial conditions.
+
+\subsubsection{Analytical solution}
+
+The corresponding Lagrange multiplier is
+\begin{multline*}
+    \mathcal{L} = \sum_{x_0\in\mathcal{X}}\sum_{k=0}^\kappa \mu_{x_0k}\mathcal{H}(x_0, k) 
+        - \sum_{x_0\in\mathcal{X}}\sum_{k=0}^\kappa \mu_{x_0k}\log\frac{\mu_{x_0k}}{\eta_{x_0k}} 
+        + \frac{\kappa}{2} \sum_{x_0\in\mathcal{X}}\sum_{x_v\in\mathcal{X}} \pi_\mu(x_0, x_v)\log\frac{\pi_\mu(x_0, x_v)}{\pi_\eta(x_0, x_v)} \\
+    + \lambda_1 \left(\sum_{x_0\in\mathcal{X}}\sum_{k=0}^\kappa \mu_{x_0k} - 1\right)
+    + \lambda_2 \left[\pi_\mu(-1, 1) - \pi_\mu(1, -1)\right].
+\end{multline*}
+To take partial derivatives, first note that
+\begin{align*}
+    \frac{\partial \pi_\mu(x_0, 1)}{\partial \mu_{x_0k}} &= \frac{k}{\kappa} \\
+    \frac{\partial \pi_\mu(x_0, -1)}{\partial \mu_{x_0k}} &= \frac{\kappa - k}{\kappa}.
+\end{align*}
+Then, we have
+\begin{multline*}
+    \frac{\partial \mathcal{L}}{\partial \mu_{x_0k}} = \mathcal{H}(x_0, k) 
+        - \log\frac{\mu_{x_0k}}{\eta_{x_0k}} - 1
+        + \frac{\kappa}{2}\left\{
+            \left[\log\frac{\pi_\mu(x_0, 1)}{\pi_\eta(x_0, 1)}+1\right]\frac{k}{\kappa} +
+            \left[\log\frac{\pi_\mu(x_0, -1)}{\pi_\eta(x_0, 1)}+1\right]\frac{\kappa - k}{\kappa}
+        \right\} \\
+    + \lambda_1
+    + \lambda_2 \left(\mathbf{1}_{\{x_0=1\}}\frac{\kappa - k}{\kappa} - 
+                      \mathbf{1}_{\{x_0=-1\}}\frac{k}{\kappa}\right) = 0,
+\end{multline*}
+which can be simplified to
+\begin{multline*}
+    \log\frac{\mu_{x_0k}}{\eta_{x_0k}} = \mathcal{H}(x_0, k) 
+        + \frac{1}{2}\left[
+            k\log\frac{\pi_\mu(x_0, 1)}{\pi_\eta(x_0, 1)} +
+            (\kappa - k)\log\frac{\pi_\mu(x_0, -1)}{\pi_\eta(x_0, 1)}
+        \right] + \frac{\kappa}{2} - 1\\
+    + \lambda_1
+    + \lambda_2 \left(\mathbf{1}_{\{x_0=1\}}\frac{\kappa - k}{\kappa} - 
+                      \mathbf{1}_{\{x_0=-1\}}\frac{k}{\kappa}\right)
+\end{multline*}
 
 \end{document}
