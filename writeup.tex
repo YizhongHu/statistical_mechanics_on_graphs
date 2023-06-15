@@ -299,15 +299,154 @@ For independence, we need to show that
     \mathbb{P}_{\mu^*}(X_0=x_0, X_v=x_v) =  \mathbb{P}_{\mu^*}(X_0=x_0) \mathbb{P}_{\mu^*}(X_v=x_v)
 \end{equation*}
 
-When $\beta=0$, $X_0$ and $X_v$ are independent:
-
+When $\beta=0$, $X_0$ and $X_v$ are independent (Tab.\ref{Tab. beta0B0}):
 \begin{table}[h]
     \centering
-    \begin{tabular}{l|ll}
-        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & $X_v=-1$ & $X_v=1$ \\ \hline
-        $X_0=-1$                       & 0.25000  & 0.25000 \\
-        $X_0=1$                        & 0.25000  & 0.25000
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.25                         & 0.25                        \\
+        $X_0=1$                        & 0.25                         & 0.25
     \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.25                         & 0.25                        \\
+        $X_0=1$                                          & 0.25                         & 0.25
+    \end{tabular}
+    \caption{When $\beta=0$ and $B=0$, up to $10^{-5}$ accuracy, the product of the marginals is equal to the join distribution}
+    \label{Tab. beta0B0}
 \end{table}
+
+\noindent The higher the value for $\beta$, the more correlated $X_0$ and $X_v$ are. As $\beta\rightarrow\infty$, the correlation becomes stronger,
+approaching $X_0=X_v$ (Tab.\ref{Tab. beta-higher-B0}).
+
+\begin{table}[h]
+    \raggedright
+    $\beta=1$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.44                         & 0.06                        \\
+        $X_0=1$                        & 0.06                         & 0.44
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.25                         & 0.25                        \\
+        $X_0=1$                                          & 0.25                         & 0.25
+    \end{tabular} \\
+    \raggedright
+    $\beta=3$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.499                        & 0.001                       \\
+        $X_0=1$                        & 0.001                        & 0.499
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.25                         & 0.25                        \\
+        $X_0=1$                                          & 0.25                         & 0.25
+    \end{tabular} \\
+    \raggedright
+    $\beta=10$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.50                         & 0.00                        \\
+        $X_0=1$                        & 0.00                         & 0.50
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.25                         & 0.25                        \\
+        $X_0=1$                                          & 0.25                         & 0.25
+    \end{tabular}
+    \caption{$\beta$ takes values 1, 3, and 10 and $B=0$. Notice that
+        as $\beta$ increases, the correlation between $X_0$ and $X_v$ becomes stronger. They are no longer independent. They are positively correlated, i.e. $0$ and $v$ prefer being in the same
+        state. It is hence reasonable to postulate that as $\beta\rightarrow\infty$, we will have $X_0=X_v$}
+    \label{Tab. beta-higher-B0}
+\end{table}
+
+\noindent If $\beta < 0$, $X_0$ and $X_v$ are negatively correlated, and again, as $|\beta|\rightarrow \infty$, the correlation becomes stronger,
+approaching $X_0=-X_v$ (Tab.\ref{Tab. beta-neg-B0}).
+
+\begin{table}[h]
+    \raggedright
+    $\beta=-1$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.060                        & 0.440                       \\
+        $X_0=1$                        & 0.440                        & 0.0596
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.250                        & 0.250                       \\
+        $X_0=1$                                          & 0.250                        & 0.250
+    \end{tabular} \\
+    \raggedright
+    $\beta=-3$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.001                        & 0.499                       \\
+        $X_0=1$                        & 0.499                        & 0.001
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.250                        & 0.250                       \\
+        $X_0=1$                                          & 0.250                        & 0.250
+    \end{tabular} \\
+    \raggedright
+    $\beta=-10$\\
+    \centering
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0, X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                       & 0.000                        & 0.500                       \\
+        $X_0=1$                        & 0.500                        & 0.000
+    \end{tabular}
+    \quad\quad
+    \begin{tabular}{c|rr}
+        $\mathbb{P}_{\mu^*}(X_0)\mathbb{P}_{\mu^*}(X_v)$ & \multicolumn{1}{c}{$X_v=-1$} & \multicolumn{1}{c}{$X_v=1$} \\ \hline
+        $X_0=-1$                                         & 0.250                        & 0.250                       \\
+        $X_0=1$                                          & 0.250                        & 0.250
+    \end{tabular}
+    \caption{$\beta$ takes values -1, -3, and -10 and $B=0$. As $\beta$ increases, the correlation between $X_0$ and $X_v$ becomes stronger.  They are negatively correlated, i.e. $0$ and $v$ prefer being in the different states. It is hence reasonable to postulate that as $\beta\rightarrow-\infty$, we will have $X_0=-X_v$}
+    \label{Tab. beta-neg-B0}
+\end{table}
+
+\newpage
+
+We can take more samples of $\beta$ to see a clearer trend.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=9cm]{img/ising_x0_xv.png}
+    \caption{
+        We see the correlations for different $\beta$ values and $B=0$.
+        If and only if $\frac{\pi_{\mu}(x_0, x_v)}{P(x_0)P(x_v)}=1$,
+        i.e. $\pi_{\mu}(x_0, x_v) = P(x_0)P(x_v)$ for all $x_0$ and all $x_v$,
+        does it mean that $X_0$ and $X_v$ are independent. This only happens at $\beta=0$. The further the values deviate from $1$,
+        the more dependence there is. Additionally, We see that as $\beta$ gets
+        larger, the $(+, +)$ and $(-, -)$ states are more preferred, and the opposite is true when $\beta$ gets more negative.}
+    \label{Fig. x0-xv-correlation}
+\end{figure}
+
+$X_0$ and $X_v$ are identically distributed by admissibility. For $B=0$, both $X_0$ and $X_v$ are Bernoulli(1/2). It changes when $B\neq 0$. More
+specifically, when $B\rightarrow\infty$, $X_0$ approaches deterministically spin-up. When $B\rightarrow\infty$, $X_0$ approaches deterministically spin-down.
+
+\newpage
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=9cm]{img/ising_x0_B.png}
+    \caption{$X_0$ prefers $1$ when $B > 0$ and prefers $-1$ when $B < 0$. It is Bernoulli(1/2) when $B=0$}
+    \label{Fig.ising-x0-B}
+\end{figure}
+
+\subsubsection{Investigating $\mathbb{P}_{\mu^*}(X_1, X_2)$}
 
 \end{document}
