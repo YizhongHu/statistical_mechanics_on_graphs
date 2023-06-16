@@ -426,7 +426,7 @@ We can take more samples of $\beta$ to see a clearer trend.
     \centering
     \includegraphics[width=9cm]{img/ising_x0_xv.png}
     \caption{
-        We see the correlations for different $\beta$ values and $B=0$.
+        We see the correlations for different $\beta$ and $B$ values and $B=0$.
         If and only if $\frac{\pi_{\mu}(x_0, x_v)}{P(x_0)P(x_v)}=1$,
         i.e. $\pi_{\mu}(x_0, x_v) = P(x_0)P(x_v)$ for all $x_0$ and all $x_v$,
         does it mean that $X_0$ and $X_v$ are independent. This only happens at $\beta=0$. The further the values deviate from $1$,
@@ -437,16 +437,83 @@ We can take more samples of $\beta$ to see a clearer trend.
 
 $X_0$ and $X_v$ are identically distributed by admissibility. For $B=0$, both $X_0$ and $X_v$ are Bernoulli(1/2). It changes when $B\neq 0$. More
 specifically, when $B\rightarrow\infty$, $X_0$ approaches deterministically spin-up. When $B\rightarrow\infty$, $X_0$ approaches deterministically spin-down.
+Additionally, the larger $\beta$ is, the faster the switch from spin-down to spin-up is.
 
 \newpage
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=9cm]{img/ising_x0_B.png}
-    \caption{$X_0$ prefers $1$ when $B > 0$ and prefers $-1$ when $B < 0$. It is Bernoulli(1/2) when $B=0$}
+    \caption{$X_0$ prefers $1$ when $B > 0$ and prefers $-1$ when $B < 0$. It is Bernoulli(1/2) when $B=0$. The rate at which $\mathbb{P}(X_0=1)$ increases with $B$ is dependent on $\beta$. The higher the value of $\beta$, the faster it increases.}
     \label{Fig.ising-x0-B}
 \end{figure}
 
+For correlation between $X_0$ and $X_v$ when $B\neq 0$. We see that as $|B|$
+increases, the negative correlation for $\beta<0$ still goes to $X_0=-X_v$.
+However, as $\beta\rightarrow\infty$, we no longer approach $X_0=X_v$. The larger
+$|B|$ is, the weaker the correlation between $X_0$ and $X_v$ are at
+$\beta\rightarrow\infty$.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=9cm]{img/ising_x0_xv_pearson.png}
+    \caption{Correlation strength at $\beta\rightarrow\infty$ for $B\neq 0$ reduces
+        as $|B|$ increases. The Pearson coefficient $R=\text{Cov}(X_0, X_v)/\sqrt{\text{Var}(X_0)\text{Var}(X_v)}$ is used to capture the strength of the correlation. Since $X_0$ and $X_v$ are Bernoulli, $R=0$ iff. $X_0, X_v$ independent. We see that $X_0, X_v$ independent iff. $\beta=0$.}
+    \label{Fig. ising_x0_xv_B}
+\end{figure}
+
+We think that this is due to $B$ strongly biasing to one of the spin-up or spin-down
+states, especially at high $\beta$ values. Since $X_0$ and $X_v$ are identically distributed, this results in the highest probability concentrated in one of the states. Pearson coefficient measures the strength of linear correlation, which, when
+there is only one state, becomes less accurate.
+
+Since our results are numerical,
+and Pearson coefficient depends on the accuracy of small probability, we think that
+the trend need to be investigated more to get more conclusive results. The above theory
+also does not explain the asymmetry between $\beta\rightarrow\infty$ and $\beta\rightarrow-\infty$.
+
 \subsubsection{Investigating $\mathbb{P}_{\mu^*}(X_1, X_2)$}
+
+For $B=0$, a similar pattern can be observed with $X_1$ and $X_2$. However, this time, as
+$|\beta|\rightarrow\infty$, it approaches $X_1=X_2$ no matter if $\beta$ is positive or
+negative.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=9cm]{./img/ising_x1_x2.png}
+    \caption{
+        When $B=0$, Similar to $X_0$ and $X_v$, when $\beta=0$, $X_1$ and $X_2$ are independent.
+        When $\beta\neq 0$, they become correlated. Their correlation becomes stronger
+        as $|\beta|\rightarrow\infty$, and it approaches $X_1=X_2$. Notice that $X_1$ and $X_2$
+        are positively correlated in both $\beta > 0$ and $\beta < 0$.}
+    \label{Fig.ising-x1-x2}
+\end{figure}
+
+For $B\neq 0$, $X_1$ and $X_2$ are still positively-correlated. When $\beta\rightarrow-\infty$, they still approach $X_1=X_2$. However, when
+$|B|$ increases, the correlation of $X_1$ and $X_2$ at $\beta\rightarrow\infty$
+becomes weaker, similar to the case between $X_0$ and $X_v$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{img/ising_x1_x2_pearson.png}
+    \caption{We see that for $B\neq 0$, the correlation is always a positive correlation, with independence happening iff $\beta=0$.}
+    \label{Fig.ising-x1-x2-B}
+\end{figure}
+
+\subsubsection{Investigating $\mathbb{P}_{\mu^*}(X_1, X_2|X_0)$}
+
+Given $X_0$, $X_1$ and $X_2$ are always conditionally independent
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7cm]{img/ising_x1_x2_pearson_x0=-1.png}
+    \quad
+    \includegraphics[width=7cm]{img/ising_x1_x2_pearson_x0=1.png}
+    \caption{The conditional distributions $X_1|X_0$ and $X_2|X_0$ are always independent}
+    \label{Fig.ising-x1-x2-given-x0-B}
+\end{figure}
+
+This suggests a numerical solution in the form
+\begin{equation*}
+    \mu(x_0,x_1,x_2) = \mu_v(x_1|x_0)\mu_v(x_2|x_0)\mu_0(x_0)
+\end{equation*}
 
 \end{document}
