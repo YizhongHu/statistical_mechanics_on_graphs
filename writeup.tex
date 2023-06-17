@@ -511,9 +511,47 @@ Given $X_0$, $X_1$ and $X_2$ are always conditionally independent
     \label{Fig.ising-x1-x2-given-x0-B}
 \end{figure}
 
-This suggests a numerical solution in the form
+given  suggests a numerical solution in the form
 \begin{equation*}
     \mu(x_0,x_1,x_2) = \mu_v(x_1|x_0)\mu_v(x_2|x_0)\mu_0(x_0)
 \end{equation*}
+
+\subsection{Partial Analytical solution}
+
+If we assume that $X_0$ and all $X_v$ are identically distributed (given by the admissibility constraint), and that $X_v$ are mutually conditionally independent from each other given $X_0$, we can see that
+a distribution can be completely described by two parameters. (This is not
+really what the question is asking, but the best I can come up
+with.)
+
+First, the probability distribution for $X_0$:
+\begin{equation*}
+    \mu_0(x):=\mathbb{P}_\mu(X_0=x)
+\end{equation*}
+This only needs one parameter, as $\mu_0(-)=1-\mu_0(+)$.
+
+econdly, we need the conditional distribution $X_v|X_0$:
+\begin{equation*}
+    \nu_\mu(x_0, x) := \mathbb{P}_\mu(X_v=x | X_0=x_0) = \frac{\pi_\mu(x_0, x_v)}{\mu_0(x_0)}
+\end{equation*}
+This describes $\pi_\mu$. Say $\nu_\mu^- := \nu_\mu(+, -)$, by admissibility,
+\begin{align*}
+    \pi_\mu(+, +) & = (1-\nu_\mu^-)\mu_0(+)   \\
+    \pi_\mu(+, -) & = \nu_\mu^-\mu_0(+)       \\
+    \pi_\mu(-, +) & = \nu_\mu^-\mu_0(+)       \\
+    \pi_\mu(-, -) & = 1-(1+\nu_\mu^-)\mu_0(+)
+\end{align*}
+We can then write $\mu$ as a conditional binomial distribution:
+\begin{align*}
+    \mu(x_0, k) & := \mathbb{P}_\mu\left(X_0=x_0, \sum_{v=1}^\kappa X_v = k\right).                                              \\
+    \intertext{Writing as conditional and letting $K:=\sum_{v=1}^\kappa X_v$,}
+                & = \mathbb{P}_\mu(X_0=x_0)\mathbb{P}_\mu\left(K=k | X_0=x_0\right)                                              \\
+                & = \mu_0(x_0) {\kappa\choose k}\mathbb{P}_\mu(X_v=+ | X_0=x_0)^k(1-\mathbb{P}_\mu(X_v=+ | X_0=x_0))^{\kappa-k}.
+\end{align*}
+Hence,
+\begin{align*}
+    \mu(+, k) & = \mu_0(+){\kappa\choose k}\left(1-\nu_\mu^-\right)^k\left(\nu_\mu^-\right)^{\kappa-k}                                                                \\
+    \mu(-, k) & = [1-\mu_0(+)]{\kappa\choose k}\left[\frac{\nu_\mu^-\mu_0(+)}{1-\mu_0(+)}\right]^k\left[\frac{1-(1+\nu_\mu^-)\mu_0(+)}{1-\mu_0(+)}\right]^{\kappa-k}.
+\end{align*}
+Optimizing with respect to $\mu_0(+)$ and $\nu_\mu^-$ should give the desired results.
 
 \end{document}
