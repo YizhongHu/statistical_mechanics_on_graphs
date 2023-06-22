@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
+\usepackage{parskip}
 \usepackage{amsmath,amssymb}
 \usepackage{hyperref}
 \usepackage{fontspec}
@@ -13,6 +14,7 @@
 \usepackage{multicol}
 \usepackage[american]{babel}
 \usepackage{csquotes}
+\allowdisplaybreaks
 
 \begin{document}
 \title{Yizhong Hu Summer 2023 Results Report}
@@ -190,8 +192,6 @@ Hence, the optimization problem becomes
 Like last time, to guarantee positivity, we instead optimize for some $\xi$ such that $\mu_{x_0k} = \exp(\xi_{x_0k})$. And again,
 we optimize with a proximal point method. Proximal points are calculated with L-BFGS-B from SciPy. The tolerances of the optimization target, $\mu^*$, and constraints are $10^{-6}$.
 
-\pagebreak
-
 \subsubsection{Objects of interest}
 
 \begin{itemize}
@@ -230,6 +230,7 @@ This points towards a representation of $\mu^*$ similar to the form
     \mu^*(x_0, x_1, x_2) = \frac1Z\exp(\mathcal{H}(x_0, x_1, x_2)).
 \end{equation*}
 
+\newpage
 
 \subsection{Analytical solution}
 
@@ -621,5 +622,149 @@ reduces to two equalities:
         \pi_\mu(+, 2) & = \pi_\mu(-, 3)
     \end{cases}
 \end{equation*}
+
+\newpage
+\subsection{Analytical solution to Ising}
+
+For $\mu$, we switch to a different convention, where $\mu(x_0, k)$ represents the probability that root vertex is in $x_0$ and there are
+$k$ leaf nodes in the same spin as the root vertex.
+We can rewrite the Hamiltonian:
+\begin{equation*}
+    \mathcal{H}(x_0, k) = \frac\beta2(2k-\kappa) + Bx_0
+\end{equation*}
+Assuming that the distribution $\mu$ has leaf vertex that are conditionally independent on the root vertex, we can write the distribution as
+\begin{equation*}
+    \mu(x_0, k) = \mu_0(x_0){\kappa \choose k}\left[\pi_\mu^{v|0}(x_0|x_0)\right]^k\left[\pi_\mu^{v|0}(-x_0|x_0)\right]^{\kappa - k}
+\end{equation*}
+where $\mu_0(x_0)=\sum_{k=0}^\kappa \mu(x_0, k)$ is the marginal distribution on the root vertex, and
+$\pi_\mu^{v|0}(x_v|x_0) = \pi_\mu(x_0, x_v) / \mu_0(x_0)$ is the conditional distribution on one of the leaf vertices.
+
+Define $\mu_0^+ = \mu_0(+)$, $\mu_0^- = \mu_0(+)$, $\gamma_\mu^+=\pi_\mu^{v|0}(+|+)$, $\gamma_\mu^-=\pi_\mu^{v|0}(-|-)$. We have
+\begin{equation*}
+    \begin{aligned}
+        \mu_0^+ & = \sum_{k=0}^\kappa \mu(+, k) \\
+        \mu_0^- & = \sum_{k=0}^\kappa \mu(-, k)
+    \end{aligned}
+    \quad\quad\quad
+    \begin{aligned}
+        \gamma_\mu^+ & = \frac{1}{\kappa\mu_0^+} \sum_{k=0}^\kappa k \mu(+, k) \\
+        \gamma_\mu^- & = \frac{1}{\kappa\mu_0^-} \sum_{k=0}^\kappa k \mu(-, k)
+    \end{aligned}
+\end{equation*}
+and
+\begin{align*}
+    \mu(+, k) = \mu_0^+{\kappa \choose k}\left(\gamma_\mu^+\right)^k\left(1 - \gamma_\mu^+\right)^{\kappa - k} \\
+    \mu(-, k) = \mu_0^-{\kappa \choose k}\left(\gamma_\mu^-\right)^k\left(1 - \gamma_\mu^-\right)^{\kappa - k}
+\end{align*}
+For the distribution to be normalized, $\mu_0^++\mu_0^-=1$, and the symmetry constraint is
+\begin{equation*}
+    \mu_0^+(1-\gamma_\mu^+) = \mu_0^-(1-\gamma_\mu^-)
+\end{equation*}
+
+The objective function (using I-Hsun's convention) is
+\begin{equation*}
+    V = \mathbb{E}_\mu \mathcal{H}(X_0, \tau) - \left\{H(\mu_0\|\eta_0) + \frac12\left[H(\mu\|\check{\mu}) + H(\mu\|\hat{\mu})\right]\right\}
+\end{equation*}
+Simplifying each term:
+\begin{align*}
+      & \mathbb{E}_\mu \mathcal{H}(X_0, \tau)                                                       \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\mathcal{H}(+, k) + \sum_{k=0}^\kappa \mu(-, k)\mathcal{H}(-, k) \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\left[\frac\beta2 (2k-\kappa) + B\right] +
+    \sum_{k=0}^\kappa \mu(-, k)\left[\frac\beta2 (2k-\kappa) - B\right]                             \\
+    = & \beta \left[\sum_{k=0}^\kappa k\mu(+, k) + \sum_{k=0}^\kappa k\mu(-, k) \right] -
+    \frac\beta2 \kappa\left[\sum_{k=0}^\kappa \mu(+, k) + \sum_{k=0}^\kappa \mu(-, k)\right] +
+    B\left[\sum_{k=0}^\kappa \mu(+, k) - \sum_{k=0}^\kappa \mu(-, k)\right]                         \\
+    = & \beta \kappa\left(\mu_0^+\gamma_\pi^+ + \mu_0^-\gamma_\pi^-\right)
+    + B\left(\mu_0^+ - \mu_0^-\right) - \frac{\beta\kappa}{2}
+\end{align*}
+Continuing,
+\begin{align*}
+    H(\mu_0\|\eta_0) = \mu_0^+\log\frac{\mu_0^+}{\eta_0^+} + \mu_0^-\log\frac{\mu_0^-}{\eta_0^-}
+\end{align*}
+And since $\mu$ is assumed to be conditionally independent on $X_0$, we know that $H(\mu\|\hat{\mu}) = 0$.
+
+On the other hand,
+\begin{align*}
+      & H(\mu \| \check{\mu})                                                                                   \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\log\frac{\mu(+, k)}{\check{\mu}(+, k)}
+    + \sum_{k=0}^\kappa \mu(-, k)\log\frac{\mu(-, k)}{\check{\mu}(-, k)}                                        \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\log\frac{
+    \mu_0^+{\kappa \choose k}\left(\gamma_\mu^+\right)^k\left(1 - \gamma_\mu^+\right)^{\kappa - k}
+    }{
+    \mu_0^+{\kappa \choose k}\left(\mu_0^+\right)^k\left(\mu_0^-\right)^{\kappa - k}}
+    + \sum_{k=0}^\kappa \mu(-, k)\log\frac{
+    \mu_0^-{\kappa \choose k}\left(\gamma_\mu^-\right)^k\left(1 - \gamma_\mu^-\right)^{\kappa - k}
+    }{
+    \mu_0^-{\kappa \choose k}\left(\mu_0^-\right)^k\left(\mu_0^+\right)^{\kappa - k}}                           \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\log\frac{
+        \left(\gamma_\mu^+\right)^k\left(1 - \gamma_\mu^+\right)^{\kappa - k}
+    }{
+        \left(\mu_0^+\right)^k\left(\mu_0^-\right)^{\kappa - k}}
+    + \sum_{k=0}^\kappa \mu(-, k)\log\frac{
+        \left(\gamma_\mu^-\right)^k\left(1 - \gamma_\mu^-\right)^{\kappa - k}
+    }{
+    \left(\mu_0^-\right)^k\left(\mu_0^+\right)^{\kappa - k}}                                                    \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\left[\log\frac{
+            \left(\gamma_\mu^+\right)^k\left(1 - \gamma_\mu^+\right)^{-k}
+        }{
+            \left(\mu_0^+\right)^k\left(\mu_0^-\right)^{-k}}
+    + \log \frac{\left(1 - \gamma_\mu^+\right)^\kappa}{\left(\mu_0^-\right)^\kappa}\right]                      \\
+      & + \sum_{k=0}^\kappa \mu(-, k)\left[\log\frac{
+            \left(\gamma_\mu^-\right)^k\left(1 - \gamma_\mu^-\right)^{-k}
+        }{
+            \left(\mu_0^-\right)^k\left(\mu_0^+\right)^{-k}}
+    + \log\frac{\left(1 - \gamma_\mu^-\right)^\kappa}{\left(\mu_0^+\right)^\kappa}\right]                       \\
+    = & \sum_{k=0}^\kappa \mu(+, k)\left[k\log\frac{\gamma_\mu^+ \mu_0^-}{\mu_0^+\left(1 - \gamma_\mu^+\right)}
+        + \kappa\log\frac{1 - \gamma_\mu^+}{\mu_0^-}\right]
+    + \sum_{k=0}^\kappa \mu(-, k)\left[k\log\frac{\gamma_\mu^- \mu_0^+}{\mu_0^-\left(1 - \gamma_\mu^-\right)}
+    + \kappa\log\frac{1 - \gamma_\mu^-}{\mu_0^+}\right]                                                         \\
+    = & \kappa\mu_0^+\gamma_\mu^+\log\frac{\gamma_\mu^+ \mu_0^-}{\mu_0^+\left(1 - \gamma_\mu^+\right)}
+    + \kappa\mu_0^+\log\frac{1 - \gamma_\mu^+}{\mu_0^-}
+    + \kappa\mu_0^-\gamma_\mu^-\log\frac{\gamma_\mu^- \mu_0^+}{\mu_0^-\left(1 - \gamma_\mu^-\right)}
+    + \kappa\mu_0^-\log\frac{1 - \gamma_\mu^-}{\mu_0^+}
+    \intertext{According to the symmetry constraint, $\mu_0^+(1-\gamma_\mu^+) = \mu_0^-(1-\gamma_\mu^-)$, so}
+    = & \kappa\mu_0^+\gamma_\mu^+\log\frac{\gamma_\mu^+ \mu_0^-}{\mu_0^-\left(1 - \gamma_\mu^-\right)}
+    + \kappa\mu_0^+\log\frac{1 - \gamma_\mu^+}{\mu_0^-}
+    + \kappa\mu_0^-\gamma_\mu^-\log\frac{\gamma_\mu^- \mu_0^+}{\mu_0^+\left(1 - \gamma_\mu^+\right)}
+    + \kappa\mu_0^-\log\frac{1 - \gamma_\mu^-}{\mu_0^+}                                                         \\
+    = & \kappa\mu_0^+\gamma_\mu^+\log\frac{\gamma_\mu^+}{1 - \gamma_\mu^-}
+    + \kappa\mu_0^+\log\frac{1 - \gamma_\mu^+}{\mu_0^-}
+    + \kappa\mu_0^-\gamma_\mu^-\log\frac{\gamma_\mu^-}{1 - \gamma_\mu^+}
+    + \kappa\mu_0^-\log\frac{1 - \gamma_\mu^-}{\mu_0^+}                                                         \\
+\end{align*}
+
+\newpage
+We can rewrite the objective function:
+\begin{align*}
+    V = & \beta \kappa\left(\mu_0^+\gamma_\pi^+ + \mu_0^-\gamma_\pi^-\right)
+    + B\left(\mu_0^+ - \mu_0^-\right)
+    - \mu_0^+\log\frac{\mu_0^+}{\eta_0^+} - \mu_0^-\log\frac{\mu_0^-}{\eta_0^-}      \\
+        & - \frac\kappa2\mu_0^+\gamma_\mu^+\log\frac{\gamma_\mu^+}{1 - \gamma_\mu^-}
+    - \frac\kappa2\mu_0^+\log\frac{1 - \gamma_\mu^+}{\mu_0^-}
+    - \frac\kappa2\mu_0^-\gamma_\mu^-\log\frac{\gamma_\mu^-}{1 - \gamma_\mu^+}
+    - \frac\kappa2\mu_0^-\log\frac{1 - \gamma_\mu^-}{\mu_0^+}
+\end{align*}
+and the corresponding Lagrangian is
+\begin{equation*}
+    \tilde{V} = V + \lambda(\mu_0^+(1-\gamma_\mu^+) - \mu_0^-(1-\gamma_\mu^-)) + \gamma (\mu_0^+ + \mu_0^- - 1)
+\end{equation*}
+Solving for $\gamma_\mu^+$:
+\begin{align*}
+    \partial_{\gamma_\mu^+} \tilde{V} = \beta\kappa\mu_0^+ -\frac\kappa2\mu_0^+\left(\log\frac{\gamma_\mu^+}{1-\gamma_\mu^-} + 1\right)
+    + \frac\kappa2\frac{\mu_0^+}{1-\gamma_\mu^+} - \frac\kappa2\mu_0^-\gamma_\mu^-\frac{1}{1-\gamma_\mu^+}-\lambda\mu_0^+ & = 0 \\
+    2\beta - \left(\log\frac{\gamma_\mu^+}{1-\gamma_\mu^-} + 1\right)
+    + \frac{1}{1-\gamma_\mu^+} - \frac{\mu_0^-}{\mu_0^+}\frac{\gamma_\mu^-}{1-\gamma_\mu^+}-\frac{2\lambda}{\kappa}       & = 0 \\
+    \intertext{by the symmetry constraint, }
+    2\beta - \left(\log\frac{\gamma_\mu^+}{1-\gamma_\mu^-} + 1\right)
+    + \frac{1}{1-\gamma_\mu^+} - \frac{\mu_0^-}{\mu_0^-}\frac{\gamma_\mu^-}{1-\gamma_\mu^-}-\frac{2\lambda}{\kappa}       & = 0 \\
+    2\beta - \left(\log\frac{\gamma_\mu^+}{1-\gamma_\mu^-} + 1\right)
+    + \frac{1}{1-\gamma_\mu^+} - \frac{\gamma_\mu^-}{1-\gamma_\mu^-}-\frac{2\lambda}{\kappa}                              & = 0
+\end{align*}
+Similarly,
+\begin{equation*}
+    2\beta - \left(\log\frac{\gamma_\mu^-}{1-\gamma_\mu^+} + 1\right)
+    + \frac{1}{1-\gamma_\mu^-} - \frac{\gamma_\mu^+}{1-\gamma_\mu^+}+\frac{2\lambda}{\kappa}= 0
+\end{equation*}
+We should be able to solve for $\gamma_\mu^+$ and $\gamma_\mu^-$ with these two equations.
 
 \end{document}
