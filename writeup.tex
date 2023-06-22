@@ -529,7 +529,7 @@ First, the probability distribution for $X_0$:
 \end{equation*}
 This only needs one parameter, as $\mu_0(-)=1-\mu_0(+)$.
 
-econdly, we need the conditional distribution $X_v|X_0$:
+Secondly, we need the conditional distribution $X_v|X_0$:
 \begin{equation*}
     \nu_\mu(x_0, x) := \mathbb{P}_\mu(X_v=x | X_0=x_0) = \frac{\pi_\mu(x_0, x_v)}{\mu_0(x_0)}
 \end{equation*}
@@ -553,5 +553,73 @@ Hence,
     \mu(-, k) & = [1-\mu_0(+)]{\kappa\choose k}\left[\frac{\nu_\mu^-\mu_0(+)}{1-\mu_0(+)}\right]^k\left[\frac{1-(1+\nu_\mu^-)\mu_0(+)}{1-\mu_0(+)}\right]^{\kappa-k}.
 \end{align*}
 Optimizing with respect to $\mu_0(+)$ and $\nu_\mu^-$ should give the desired results.
+
+\newpage
+
+\section{Jun 19 - Jun 24}
+
+\subsection{Numerical Solution to Edward-Anderson}
+
+\subsubsection{Formulation}
+
+For each of the $\kappa$ vertices, there are 4 possible states for $(y_{0v}, x_v)$: $(-, -), (-, +), (+, -), (+, +)$.
+They are labelled by an index in ascending order (0 through 3).
+
+To label each state that the tree can take, we describe it as $(x_0, k_0, k_1, k_2, k_3)$, where $x_0$ is the spin-state of the root vertex,
+and $k_\ell$ is the number of vertices in the edge-vertex state of $\ell$ ($\ell=0:3$). Since we have $\kappa$ vertices in total, $\kappa=k_0+k_1+k_2+k_3$.
+More compactly, we can enumerate each distinct choice of $(k_0, k_1, k_2, k_3)$ that sums to $\kappa$ with an index $i$. This will be recorded in
+a matrix $C$, where $C_{i\ell}$ is the number of vertices in state $\ell$ for the $i$-th edge-vertex configuration.
+
+The following is an example for $\kappa=2$:
+
+\begin{equation*}
+    \begin{bmatrix}
+        0 & 0 & 0 & 2 \\
+        0 & 0 & 1 & 1 \\
+        0 & 0 & 2 & 0 \\
+        0 & 1 & 0 & 1 \\
+        0 & 1 & 1 & 0 \\
+        1 & 0 & 0 & 1 \\
+        1 & 0 & 1 & 0 \\
+        0 & 2 & 0 & 0 \\
+        1 & 1 & 0 & 0 \\
+        2 & 0 & 0 & 0
+    \end{bmatrix}
+\end{equation*}
+Note that $i$ can take ${\kappa+3 \choose 3}$ values. This is equivalent to arranging $\kappa$ symbols and $4-1$ separators:
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=5cm]{img/SCR-20230619-ujrs.png}
+%     % \caption{https://tjyusun.com/mat202/sec-balls-in-bins.html#:~:text=of\%20size\%20is-,.,distribute\%20indistinguishable\%20balls\%20into\%20bins.}
+% \end{figure}
+
+Hence, for the Hamiltonian,
+\begin{align*}
+    \mathcal{H}(x_0, i) = \frac\beta2x_0(C_{i0} - C_{i1} - C_{i2} + C_{i3}) + Bx_0
+\end{align*}
+We represent the distribution as $\mu_{x_0, i}$, where $\sum_{x_0\in \mathcal{X}}\sum_{i=1}^{\kappa+3 \choose 3} \mu_{x_0, i} = 1$.
+The distribution on the edge becomes
+\begin{align*}
+    \pi_\mu(x_0, y_{0v}, x_v) & = \frac1\kappa\mathbb{E}_\mu\left[\sum_{v\in\mathcal{N_0(\tau)}}\mathbf{1}_{\{X_0=x_0, Y_{0v}=y_{0v}, X_v=x_v\}}\right] \\
+    \pi_\mu(x_0, \ell)        & = \frac1\kappa\sum_{i=1}^{\kappa+3 \choose 3} C_{i\ell}\mu_{x_0, i}
+\end{align*}
+where $\ell$ corresponds to $(y_{0v}, x_v)$.
+
+This means that the admissibility constraint
+\begin{equation*}
+    \pi_\mu(x_0, y_{0v}, x_v) = \pi_\mu(x_v, y_{0v}, x_0) \quad \forall x_0, y_{0v}, x_v
+\end{equation*}
+reduces to two equalities:
+\begin{equation*}
+    \begin{cases}
+        \pi_\mu(+, -, -) & = \pi_\mu(-, -, +) \\
+        \pi_\mu(+, +, -) & = \pi_\mu(-, +, +)
+    \end{cases}
+    \Rightarrow
+    \begin{cases}
+        \pi_\mu(+, 0) & = \pi_\mu(-, 1) \\
+        \pi_\mu(+, 2) & = \pi_\mu(-, 3)
+    \end{cases}
+\end{equation*}
 
 \end{document}
