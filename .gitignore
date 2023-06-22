@@ -2,3 +2,4 @@
 .vscode
 *.synctex.gz
 *.pdf
+src/__pycache__
