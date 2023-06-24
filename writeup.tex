@@ -623,6 +623,46 @@ reduces to two equalities:
     \end{cases}
 \end{equation*}
 
+\subsubsection{Conditional independence}
+
+One of the objects of interest is the joint conditional distribution of two distinct edge-vertex pairs given the root:
+\begin{equation*}
+    \mathbb{P}_\mu\left[(X_v, Y_{0v}) = (x_v, y_{0v}), (X_{v'}, Y_{0v'}) = (x_{v'}, y_{0v'}) | X_0 = x_0\right]
+\end{equation*}
+Due to the permutation symmetry on the leaf nodes, it is simpler to calculate the joint distribution on all edge-vertex
+pairs and take the marginal (This is not necessary for $\kappa=2$). Say
+\begin{equation*}
+    \nu_\mu[(x_1, y_{01}), \ldots, (x_\kappa, y_{0\kappa})| x_0] = \mathbb{P}_\mu\left[(X_1, Y_{01}) = (x_1, y_{01}), \ldots,  (X_{\kappa}, Y_{0\kappa}) = (x_{\kappa}, y_{0\kappa}) | X_0 = x_0\right]
+\end{equation*}
+Similar to Ising, to get $\nu_\mu$, we only need to remove multiplicity, this time given by a multinomial coefficient:
+\begin{equation*}
+    \nu_\mu[(x_1, y_{01}), \ldots, (x_\kappa, y_{0\kappa})| x_0] = \frac{1}{{\kappa \choose {k_0\ k_1\ k_2\ k_3}}\mu_0(x_0)}\mu_{x_0, k_0, k_1, k_2, k_3}
+\end{equation*}
+where $k_l$ is the number of leaves with edge-vertex $(x_v, y_{0v})$ in state $l$, $\mu_0$ is the marginal distribution on the root with $\mu_0(x_0) = \sum_{i=1}^{{\kappa+3\choose 3}} \mu_{x_0, i}$, and the multinomial coefficient
+\begin{equation*}
+    {\kappa \choose {k_0\ k_1\ k_2\ k_3}} = \frac{\kappa!}{k_0!k_1!k_2!k_3!}.
+\end{equation*}
+
+We hypothesize that vertex-edge marks are conditionally independent given the root mark, i.e.
+\begin{equation*}
+    \nu_\mu[(x_1, y_{01}), \ldots, (x_\kappa, y_{0\kappa})| x_0] = \prod_{v=1}^\kappa \nu_\mu^{v|0} [(x_v, y_{0v}) | x_0]
+\end{equation*}
+where $\nu_\mu^{v|0} [(x_v, y_{0v}) | x_0]$ is the marginal conditional distribution.
+
+To compare these two, we name the conditional dependent form $\check{\nu}_\mu = \prod_{v=1}^\kappa \nu_\mu^{v|0}$. We want to prove that $\nu_\mu = \check{\nu}_\mu$. We will compare them with relative entropy $H(\nu_\mu \| \check{\nu}_\mu)$. $\nu_\mu = \check{\nu}_\mu$ if and only if $H(\nu_\mu \| \check{\nu}_\mu) = 0$.
+
+\newpage
+
+Indeed, numerically, $H(\nu_\mu \| \check{\nu}_\mu)$ is close to $0$ for all $\beta$ and $B$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_RelEntr_x0=-1.png}
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_RelEntr_x0=1.png}
+    \caption{For Edward-Anderson model $\kappa=2$, the conditional joint distribution of edge-vertex marks given the root marks $\nu_\mu$
+        has a zero distance w.r.t. the conditional independent form $\check{\nu}_\mu$. This is confirmed with different values of $\beta$ and $B$.}
+    \label{Fig.EA-x1-x2-given-x0-rel-entr}
+\end{figure}
+
 \newpage
 \subsection{Analytical solution to Ising}
 
