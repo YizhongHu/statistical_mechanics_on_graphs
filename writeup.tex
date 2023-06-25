@@ -623,6 +623,8 @@ reduces to two equalities:
     \end{cases}
 \end{equation*}
 
+Optimizations are performed with initial condition $\eta$ and objective function tolerance $10^{-10}$ with SLSQP in SciPy.
+
 \subsubsection{Conditional independence}
 
 One of the objects of interest is the joint conditional distribution of two distinct edge-vertex pairs given the root:
@@ -667,18 +669,44 @@ Indeed, numerically, $H(\nu_\mu \| \check{\nu}_\mu)$ is close to $0$ for all $\b
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=10cm]{img/EA_x0_B.png}
-    \caption{For Edward-Anderson model $\kappa=2$, the distribution of the root mark is only dependent on $B$, and not dependent on $\beta$ (hmmm is it right?). }
+    \includegraphics[width=12cm]{img/EA_x0_B.png}
+    \caption{For Edward-Anderson model $\kappa=2$, the distribution of the root mark is only dependent on $B$, and not dependent on $\beta$. }
     \label{Fig.EA-x0-B}
 \end{figure}
 
+Getting the marginal distribution on the root, write the distribution in the form
+\begin{equation*}
+    \mu_0(x_0) = \frac1Z\exp[f(\beta, B)x_0]
+\end{equation*}
+where $f(\beta, B)$ is some function of the parameters.
+
+Therefore, to extract the information, we have that
+\begin{equation*}
+    \log \frac{\mu_0(+)}{1 - \mu_0(+)} = 2f(\beta, B).
+\end{equation*}
+In fact, assuming that the distribution is not dependent on $\beta$, $f$ should not be dependent of $\beta$.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=10cm]{img/EA_x0_B_logisitic.png}
-    \caption{For Edward-Anderson model $\kappa=2$, the distribution seems to be $\mu_0(x_0) = \frac{e^{Bx_0}}{e^{B} + e^{-B}}$. This is the only
-        distribution that explains the linear correlation with slope $2$. }
+    \includegraphics[width=12cm]{img/EA_x0_B_logisitic.png}
+    \caption{For Edward-Anderson model $\kappa=2$, we see that $2f(\beta, B) = 2B$, thus giving a distribution in the form $\mu_0(x_0) = \frac{e^{Bx_0}}{e^B + e^{-B}}$. }
     \label{Fig.EA-x0-B-logisitic}
 \end{figure}
+
+If we increase $\kappa$, we see similar results, but with slightly higher uncertainty (Fig.\ref{Fig.EA-x0-B-logisitic-change-kappa}).
+
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=12cm]{img/EA_x0_B_logisitic_change_kappa.png}
+    \caption{For Edward-Anderson model with $\kappa=2, 3, 4, 5, 6$, we see that the root mark distribution is roughly the same. }
+    \label{Fig.EA-x0-B-logisitic-change-kappa}
+\end{figure}
+
+Since we cannot impose tolerance on the optimized vector, we see that the optimization algorithm struggles to get the ones with
+higher $\kappa$ values and higher $|B|$ values. Higher $B$ values tend to cause multiscale values in the distribution $\mu$, i.e.
+some values in $\mu$ are orders of magnitude larger than others. For example, for $\kappa=6$, $B=2$, we have values as large as $0.396$
+and as small as $2.43e-12$. This, combined with the much higher dimensionality of $\mu$ ($\mathbb{R}^{168}$ for
+$\kappa=2$) may have contributed to the higher uncertainties. However, the prediction is likely still consistent with $f(\beta, B) = B$.
 
 \newpage
 \subsection{Analytical solution to Ising}
