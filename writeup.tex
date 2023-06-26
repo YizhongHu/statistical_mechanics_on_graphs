@@ -669,7 +669,7 @@ Indeed, numerically, $H(\nu_\mu \| \check{\nu}_\mu)$ is close to $0$ for all $\b
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=12cm]{img/EA_x0_B.png}
+    \includegraphics[width=10cm]{img/EA_x0_B.png}
     \caption{For Edward-Anderson model $\kappa=2$, the distribution of the root mark is only dependent on $B$, and not dependent on $\beta$. }
     \label{Fig.EA-x0-B}
 \end{figure}
@@ -684,24 +684,26 @@ Therefore, to extract the information, we have that
 \begin{equation*}
     \log \frac{\mu_0(+)}{1 - \mu_0(+)} = 2f(\beta, B).
 \end{equation*}
-In fact, assuming that the distribution is not dependent on $\beta$, $f$ should not be dependent of $\beta$.
+In fact, assuming that the distribution is not dependent on $\beta$, $f$ should not be dependent on $\beta$.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=12cm]{img/EA_x0_B_logisitic.png}
+    \includegraphics[width=10cm]{img/EA_x0_B_logisitic_kappa_2.png}
     \caption{For Edward-Anderson model $\kappa=2$, we see that $2f(\beta, B) = 2B$, thus giving a distribution in the form $\mu_0(x_0) = \frac{e^{Bx_0}}{e^B + e^{-B}}$. }
     \label{Fig.EA-x0-B-logisitic}
 \end{figure}
 
 If we increase $\kappa$, we see similar results, but with slightly higher uncertainty (Fig.\ref{Fig.EA-x0-B-logisitic-change-kappa}).
-
-\newpage
+zero
 \begin{figure}[h]
     \centering
-    \includegraphics[width=12cm]{img/EA_x0_B_logisitic_change_kappa.png}
-    \caption{For Edward-Anderson model with $\kappa=2, 3, 4, 5, 6$, we see that the root mark distribution is roughly the same. }
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logisitic_kappa_3.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logisitic_kappa_4.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logisitic_kappa_5.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logisitic_kappa_6.png}
+    \caption{For Edward-Anderson model with $\kappa=3, 4, 5, 6$, we see that the root mark distribution is roughly the same. }
     \label{Fig.EA-x0-B-logisitic-change-kappa}
 \end{figure}
-
+\newpage
 Since we cannot impose tolerance on the optimized vector, we see that the optimization algorithm struggles to get the ones with
 higher $\kappa$ values and higher $|B|$ values. Higher $B$ values tend to cause multiscale values in the distribution $\mu$, i.e.
 some values in $\mu$ are orders of magnitude larger than others. For example, for $\kappa=6$, $B=2$, we have values as large as $0.396$
