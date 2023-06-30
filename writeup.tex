@@ -983,8 +983,8 @@ and write $\tilde{q}^{-,y,x}=rq^{-,y,x}$, it gets simplified into
 And if you write $q^{++-} = \tilde{q}^{-++}$ and $q^{+--} = \tilde{q}^{--+}$, the number of independent variables can be reduced to $5$ (which brings it closer to the form we see with Ising model):
 \begin{equation}
     \begin{cases}
-        \mu(+, \mathbf{k}) = \displaystyle{\frac{\nu^+}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{v^{++}}{v^+}\right)^{k_{++}}\left(\frac{v^{+-}}{v^+}\right)^{k_{-+}}\left(\frac{v^{\times}}{v^+}\right)^{k_{+-}}\left(\frac{1}{v^+}\right)^{k_{--}}} \\
-        \mu(-, \mathbf{k}) = \displaystyle{\frac{\nu^-}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{v^{-+}}{v^-}\right)^{k_{+-}}\left(\frac{v^{--}}{v^-}\right)^{k_{--}}\left(\frac{v^{\times}}{v^-}\right)^{k_{++}}\left(\frac{1}{v^-}\right)^{k_{-+}}}
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{\nu^+}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{\nu^{++}}{\nu^+}\right)^{k_{++}}\left(\frac{\nu^{+-}}{\nu^+}\right)^{k_{-+}}\left(\frac{\nu^{\times}}{\nu^+}\right)^{k_{+-}}\left(\frac{1}{\nu^+}\right)^{k_{--}}} \\
+        \mu(-, \mathbf{k}) = \displaystyle{\frac{\nu^-}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{\nu^{-+}}{\nu^-}\right)^{k_{+-}}\left(\frac{\nu^{--}}{\nu^-}\right)^{k_{--}}\left(\frac{\nu^{\times}}{\nu^-}\right)^{k_{++}}\left(\frac{1}{\nu^-}\right)^{k_{-+}}}
     \end{cases}
 \end{equation}
 where $\nu^{+, y} = \frac{q^{+, y, +}}{q^{+--}}$, $\nu^{-, y} = \frac{q^{-, y, -}}{\tilde{q}^{--+}}$, $\nu^{\times} = \frac{q^{++-}}{q^{+--}} = \frac{\tilde{q}^{-++}}{\tilde{q}^{--+}}$, $\nu^+=1+\nu^{++}+\nu^\times+\nu^{+-}$, $\nu^-=1+\nu^{-+}+\nu^\times+\nu^{--}$. I think that this notation
