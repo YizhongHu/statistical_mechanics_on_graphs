@@ -16,6 +16,7 @@
 \usepackage{csquotes}
 \allowdisplaybreaks
 
+\numberwithin{equation}{section}
 \begin{document}
 \title{Yizhong Hu Summer 2023 Results Report}
 \author{Yizhong Hu}
@@ -669,7 +670,7 @@ Indeed, numerically, $H(\nu_\mu \| \check{\nu}_\mu)$ is close to $0$ for all $\b
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=10cm]{img/EA_x0_B.png}
+    \includegraphics[width=12cm]{img/EA_x0_B.png}
     \caption{For Edward-Anderson model $\kappa=2$, the distribution of the root mark is only dependent on $B$, and not dependent on $\beta$. }
     \label{Fig.EA-x0-B}
 \end{figure}
@@ -687,7 +688,7 @@ Therefore, to extract the information, we have that
 In fact, assuming that the distribution is not dependent on $\beta$, $f$ should not be dependent on $\beta$.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=10cm]{img/EA_x0_B_logisitic_kappa_2.png}
+    \includegraphics[width=12cm]{img/EA_x0_B_logisitic_kappa_2.png}
     \caption{For Edward-Anderson model $\kappa=2$, we see that $2f(\beta, B) = 2B$, thus giving a distribution in the form $\mu_0(x_0) = \frac{e^{Bx_0}}{e^B + e^{-B}}$. }
     \label{Fig.EA-x0-B-logisitic}
 \end{figure}
@@ -853,5 +854,141 @@ Similarly,
     + \frac{1}{1-\gamma_\mu^-} - \frac{\gamma_\mu^+}{1-\gamma_\mu^+}+\frac{2\lambda}{\kappa}= 0
 \end{equation*}
 We should be able to solve for $\gamma_\mu^+$ and $\gamma_\mu^-$ with these two equations.
+
+\newpage
+
+\section{Jun 25 - Jul 1}
+
+\subsection{Edward-Anderson (Reduced) Analytical}
+
+For the Edward-Anderson Model, as discussed above, we model the edge-vertex configurations with counts $(k_{y, x})_{y\in\mathcal{Y}, x\in\mathcal{X}}$, where $k_{y, x}$ counts the number of edge-vertex pairs that have edge-mark of $y$ and vertex mark of $x$. This has an added constraint that
+\begin{equation}
+    \sum_{y\in\mathcal{Y}}\sum_{x\in\mathcal{X}} k_{y, x} = \kappa
+\end{equation}
+we can define a vector $\mathbf{k}\in \mathcal{K}$ such that $\mathcal{K} = \{(k_{y, x})_{y\in\mathcal{Y}, x\in\mathcal{X}} : \sum_{y\in\mathcal{Y}}\sum_{x\in\mathcal{X}} k_{y, x} = \kappa\}$ to represent the full state.
+
+In the case that $\mathcal{Y} = \{-1, 1\}$, we can rewrite
+\begin{equation}
+    \mathcal{H}(x_0, \mathbf{k}) = \frac\beta2 x_0 (k_{++} - k_{+-} - k_{-+} + k_{--}) + Bx_0 \quad\forall \mathbf{k}\in\mathbb{K}
+\end{equation}
+And $\eta$ is:
+\begin{equation*}
+    \eta(x_0, \mathbf{k}) = {\kappa \choose \mathbf{k}} 2^{-(2\kappa+1)} \quad\forall \mathbf{k}\in\mathbb{K}
+\end{equation*}
+where ${\kappa \choose \mathbf{k}} = {\kappa \choose k_{++}\ k_{+-}\ k_{-+}\ k_{--}} = \frac{\kappa!}{k_{++}!k_{+-}!k_{-+}!k_{--}!}$ is the
+multinomial coefficient.
+
+Additionally, the edge distribution becomes
+\begin{equation}
+    \pi_\mu(x_0, y_{0v}, x_v) = \frac1\kappa \sum_{\mathbf{k}\in \mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k})
+\end{equation}
+Our objective function is
+\begin{equation}
+    V(\beta, B, \kappa, \mu) = \mathbb{E}_\mu \mathcal{H}(\tau, X, Y) - H(\mu \| \eta) + \frac\kappa2 H(\pi_\mu \| \pi_\eta)
+\end{equation}
+Rewriting each term:
+\begin{align*}
+    \mathbb{E}_\mu \mathcal{H}(\tau, X, Y)                                                                                                  = & \sum_{\mathbf{k}\in\mathcal{K}}[\mu(+, \mathbf{k}) - \mu(-, \mathbf{k})]\left[\frac\beta2(k_{++} - k_{+-} - k_{-+} + k_{--}) + B\right]                                                                                                                                             \\
+    =                                                                                                                                         & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}x_0 y_{0v} x_v\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k}) + B\left[\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k})\right]
+\end{align*}
+and for the relative entropy terms:
+\begin{align*}
+    H(\mu \| \eta) & = \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+    - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\eta(x_0, \mathbf{k})                 \\
+                   & = \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+    - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}
+    + (2\kappa + 1)\log 2
+\end{align*}
+and
+\begin{align*}
+      & H(\pi_\mu \| \pi_\eta)                                                                                \\
+    = & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+    \pi_\mu(x_0, y_{0v}, x_v)\log \pi_\mu(x_0, y_{0v}, x_v) -
+    \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+    \pi_\mu(x_0, y_{0v}, x_v)\log \pi_\eta(x_0, y_{0v}, x_v)                                                  \\
+    = & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+    \left[\frac1\kappa\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
+    \log \left[\frac1\kappa\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right] + \log 8 \\
+    = & \frac1\kappa\sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+    \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
+    \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right] + \log \frac8\kappa
+\end{align*}
+Hence, the objective function becomes
+\begin{equation}
+    \begin{aligned}
+          & V(\beta, B, \kappa, \mu)                                                                                                                                                                                                                                                            \\
+        = & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}x_0 y_{0v} x_v\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k}) + B\left[\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k})\right] \\
+          & - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+        + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}                                                                                                                                                                            \\
+          & + \frac12\sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+        \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
+        \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]                                                                                                                                                                                                    \\
+          & - (2\kappa + 1)\log 2 + \frac\kappa2 \log \frac8\kappa
+    \end{aligned}
+    \label{Eq.Objective-expanded}
+\end{equation}
+Similar to I-Hsun's notes, we notice that besides line 2 of (\ref{Eq.Objective-expanded}):
+\begin{equation}
+    - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+    + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}
+\end{equation}
+everything else is dependent on $\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})$ and
+$\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})$, the latter a linear combination of the former. We optimize for $\mu$
+subject to the constraints: $\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v}\mu(x_0, \mathbf{k}) = m^{x_0, y_{0v}, x_v}$,
+$\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) + \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k}) = 1$, and
+$\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k}) = m$.
+
+Solving the problem gives the following solution:
+\begin{equation}
+    \begin{cases}
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{e^\gamma}{Z}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(q^{+,y,x}\right)^{k_{y,x}}}    \\
+        \mu(-, \mathbf{k}) = \displaystyle{\frac{e^{-\gamma}}{Z}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(q^{-,y,x}\right)^{k_{y,x}}} \\
+    \end{cases}
+    \label{Eq.dist-form1}
+\end{equation}
+where $Z = e^\gamma\left(\sum_{y_\in\mathcal{Y}, x\in\mathcal{X}}q^{+,y,x}\right)^\kappa + e^{-\gamma}\left(\sum_{y_\in\mathcal{Y}, x\in\mathcal{X}}q^{-,y,x}\right)^\kappa$ is the normalizing constant.
+
+For the distribution to be symmetric, we need
+\begin{align}
+    \pi_\mu(+, +, -) = \pi_\mu(-, +, +) \label{Eq.EA-reduced-Sym-constr1} \\
+    \pi_\mu(+, -, -) = \pi_\mu(-, -, +) \label{Eq.EA-reduced-Sym-constr2}
+\end{align}
+Substituting (\ref{Eq.dist-form1}) into (\ref{Eq.EA-reduced-Sym-constr1}), we have
+\begin{align}
+    \sum_{k\in\mathcal{K}}k_{+-}\mu(+, \mathbf{k})                                                       & = \sum_{k\in\mathcal{K}}k_{++}\mu(-, \mathbf{k})                                                         \nonumber                       \\
+    e^\gamma\kappa q^{++-} \left(\sum_{{y_\in\mathcal{Y}, x\in\mathcal{X}}}q^{+, y, x}\right)^{\kappa-1} & = e^{-\gamma}\kappa q^{-++} \left(\sum_{{y_\in\mathcal{Y}, x\in\mathcal{X}}}q^{-, y, x}\right)^{\kappa-1} \label{Eq.EA-reduced-Sym-soln}
+\end{align}
+Using (\ref{Eq.EA-reduced-Sym-soln}) in (\ref{Eq.dist-form1}) gives
+\begin{equation}
+    \begin{cases}
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{q^{-++}\sum_{y, x}q^{+,y,x}}{q^{-++}\sum_{y, x}q^{+,y,x} + q^{++-}\sum_{y, x}q^{-,y,x}}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(\frac{q^{+,y,x}}{\sum_{y', x'}q^{+,y',x'}}\right)^{k_{y,x}}} \\
+        \mu(-, \mathbf{k}) = \displaystyle{\frac{q^{++-}\sum_{y, x}q^{-,y,x}}{q^{-++}\sum_{y, x}q^{+,y,x} + q^{++-}\sum_{y, x}q^{-,y,x}}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(\frac{q^{-,y,x}}{\sum_{y', x'}q^{-,y',x'}}\right)^{k_{y,x}}}
+    \end{cases}
+    \label{Eq.dist-form2}
+\end{equation}
+This is a multinomial distribution. It means that the distribution has edge-vertex marks conditionally independent of each other given the root mark.
+
+Now consider the constraint (\ref{Eq.EA-reduced-Sym-constr2}). This gives a form similar to (\ref{Eq.EA-reduced-Sym-soln}), and we have
+\begin{equation}
+    \frac{q^{++-}}{q^{-++}}=\frac{q^{+--}}{q^{--+}}
+\end{equation}
+In fact, this hints at the (\ref{Eq.dist-form2}) having some redundancy. Let $r=\frac{q^{++-}}{q^{-++}}=\frac{q^{+--}}{q^{--+}}$
+and write $\tilde{q}^{-,y,x}=rq^{-,y,x}$, it gets simplified into
+\begin{equation}
+    \begin{cases}
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{\sum_{y, x}q^{+,y,x}}{\sum_{y, x}q^{+,y,x} + \sum_{y, x}\tilde{q}^{-,y,x}}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(\frac{q^{+,y,x}}{\sum_{y', x'}q^{+,y',x'}}\right)^{k_{y,x}}} \\
+        \mu(-, \mathbf{k}) = \displaystyle{\frac{\sum_{y, x}\tilde{q}^{-,y,x}}{\sum_{y, x}q^{+,y,x} + \sum_{y, x}\tilde{q}^{-,y,x}}{\kappa\choose\mathbf{k}} \prod_{y_\in\mathcal{Y}, x\in\mathcal{X}}\left(\frac{\tilde{q}^{-,y,x}}{\sum_{y', x'}\tilde{q}^{-,y',x'}}\right)^{k_{y,x}}}
+    \end{cases}
+\end{equation}
+And if you write $q^{++-} = \tilde{q}^{-++}$ and $q^{+--} = \tilde{q}^{--+}$, the number of independent variables can be reduced to $5$ (which brings it closer to the form we see with Ising model):
+\begin{equation}
+    \begin{cases}
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{\nu^+}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{v^{++}}{v^+}\right)^{k_{++}}\left(\frac{v^{+-}}{v^+}\right)^{k_{-+}}\left(\frac{v^{\times}}{v^+}\right)^{k_{+-}}\left(\frac{1}{v^+}\right)^{k_{--}}} \\
+        \mu(-, \mathbf{k}) = \displaystyle{\frac{\nu^-}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{v^{-+}}{v^-}\right)^{k_{+-}}\left(\frac{v^{--}}{v^-}\right)^{k_{--}}\left(\frac{v^{\times}}{v^-}\right)^{k_{++}}\left(\frac{1}{v^-}\right)^{k_{-+}}}
+    \end{cases}
+\end{equation}
+where $\nu^{+, y} = \frac{q^{+, y, +}}{q^{+--}}$, $\nu^{-, y} = \frac{q^{-, y, -}}{\tilde{q}^{--+}}$, $\nu^{\times} = \frac{q^{++-}}{q^{+--}} = \frac{\tilde{q}^{-++}}{\tilde{q}^{--+}}$, $\nu^+=1+\nu^{++}+\nu^\times+\nu^{+-}$, $\nu^-=1+\nu^{-+}+\nu^\times+\nu^{--}$. I think that this notation
+can extended to arbitrary number of values of $y$. Namely, for $|\mathcal{X}|=2$, there are $3|\mathcal{Y}| - 1$ independent variables. (For Ising,
+$|\mathcal{Y}|=1$, and there are $2$ independent variables. For EA with $|\mathcal{Y}|=2$, there are $5$ independent variables.)
 
 \end{document}
