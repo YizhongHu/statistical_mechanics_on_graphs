@@ -1021,16 +1021,16 @@ and
 
 With this, we can rewrite
 \begin{align}
-    H(\mu \| \eta) & = H(\mu_0) + \kappa H_{\pi_\mu}(X_v, Y_{0v} | X_0) - (2\kappa + 1) \log 2 \\
-                   & = -(\kappa-1)H(\mu_0) + \kappa H(\pi_\mu) - (2\kappa + 1) \log 2
+    H(\mu \| \eta) & = H(\mu_0) + \kappa H_{\pi_\mu}(X_v, Y_{0v} | X_0) + (2\kappa + 1) \log 2 \\
+                   & = (\kappa-1)H(\mu_0) - \kappa H(\pi_\mu) + (2\kappa + 1) \log 2
 \end{align}
 Hence
 \begin{equation}
-    V(\beta, B, \kappa, \mu) = \mathbb{E}_{\pi_\mu}\left(\frac{\beta\kappa}{2}X_0Y_{0v}X_v + BX_0\right) + (\kappa - 1) H(\mu_0) - \frac\kappa2 H(\pi_\mu) + \left(\frac\kappa2 + 1\right)\log 2
+    V(\beta, B, \kappa, \mu) = \mathbb{E}_{\pi_\mu}\left(\frac{\beta\kappa}{2}X_0Y_{0v}X_v + BX_0\right) - (\kappa - 1) H(\mu_0) + \frac\kappa2 H(\pi_\mu) - \left(\frac\kappa2 + 1\right)\log 2
 \end{equation}
 Applying Lagrange multipliers
 \begin{equation}
-    \partial \pi_\mu^{xyx'} = \frac{\beta\kappa}{2}xyx' + Bx - (\kappa - 1)\left(\log\mu_0^x + 1\right) + \frac\kappa2\left(\log\pi_\mu^{xyx'} + 1\right) + \lambda + \mathbf{1}_{\{x\neq x'\}} \gamma x = 0
+    \partial \pi_\mu^{xyx'} = \frac{\beta\kappa}{2}xyx' + Bx + (\kappa - 1)\left(\log\mu_0^x + 1\right) - \frac\kappa2\left(\log\pi_\mu^{xyx'} + 1\right) + \lambda + \mathbf{1}_{\{x\neq x'\}} \gamma x = 0
     \label{Eq.EA-LM-pi-mu}
 \end{equation}
 where $\lambda$ is the normalizer for the $\pi_\mu$ normalized and $\gamma$ for symmetric.
