@@ -857,7 +857,7 @@ We should be able to solve for $\gamma_\mu^+$ and $\gamma_\mu^-$ with these two 
 
 \newpage
 
-\section{Jun 25 - Jul 1}
+\section{Jun 25 - 30}
 
 \subsection{Edward-Anderson (Reduced) Analytical}
 
@@ -931,6 +931,7 @@ Similar to I-Hsun's notes, we notice that besides line 2 of (\ref{Eq.Objective-e
 \begin{equation}
     - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
     + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}
+    \label{Eq.EA-intermediate-obj}
 \end{equation}
 everything else is dependent on $\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})$ and
 $\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})$, the latter a linear combination of the former. We optimize for $\mu$
@@ -983,12 +984,67 @@ and write $\tilde{q}^{-,y,x}=rq^{-,y,x}$, it gets simplified into
 And if you write $q^{++-} = \tilde{q}^{-++}$ and $q^{+--} = \tilde{q}^{--+}$, the number of independent variables can be reduced to $5$ (which brings it closer to the form we see with Ising model):
 \begin{equation}
     \begin{cases}
-        \mu(+, \mathbf{k}) = \displaystyle{\frac{\nu^+}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{\nu^{++}}{\nu^+}\right)^{k_{++}}\left(\frac{\nu^{+-}}{\nu^+}\right)^{k_{-+}}\left(\frac{\nu^{\times}}{\nu^+}\right)^{k_{+-}}\left(\frac{1}{\nu^+}\right)^{k_{--}}} \\
+        \mu(+, \mathbf{k}) = \displaystyle{\frac{\nu^+}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{\nu^{++}}{\nu^+}\right)^{k_{++}}\left(\frac{\nu^{+-}}{\nu^+}\right)^{k{-+}}\left(\frac{\nu^{\times}}{\nu^+}\right)^{k_{+-}}\left(\frac{1}{\nu^+}\right)^{k_{--}}} \\
         \mu(-, \mathbf{k}) = \displaystyle{\frac{\nu^-}{\nu^+ + \nu^-}{\kappa\choose\mathbf{k}} \left(\frac{\nu^{-+}}{\nu^-}\right)^{k_{+-}}\left(\frac{\nu^{--}}{\nu^-}\right)^{k_{--}}\left(\frac{\nu^{\times}}{\nu^-}\right)^{k_{++}}\left(\frac{1}{\nu^-}\right)^{k_{-+}}}
     \end{cases}
 \end{equation}
 where $\nu^{+, y} = \frac{q^{+, y, +}}{q^{+--}}$, $\nu^{-, y} = \frac{q^{-, y, -}}{\tilde{q}^{--+}}$, $\nu^{\times} = \frac{q^{++-}}{q^{+--}} = \frac{\tilde{q}^{-++}}{\tilde{q}^{--+}}$, $\nu^+=1+\nu^{++}+\nu^\times+\nu^{+-}$, $\nu^-=1+\nu^{-+}+\nu^\times+\nu^{--}$. I think that this notation
 can extended to arbitrary number of values of $y$. Namely, for $|\mathcal{X}|=2$, there are $3|\mathcal{Y}| - 1$ independent variables. (For Ising,
 $|\mathcal{Y}|=1$, and there are $2$ independent variables. For EA with $|\mathcal{Y}|=2$, there are $5$ independent variables.)
+
+\newpage
+
+\section{Jul 1-4}
+
+\subsection{Edward-Anderson solving for the distribution}
+
+\subsubsection{Conditional Independence on root node}
+For the optimization in (\ref{Eq.EA-intermediate-obj}), we will remove the constraint $\mu_0(+) - \mu_0(-)=1$ and without applying the
+admissibility constraint, we have
+\begin{equation}
+    \mu(x, \mathbf{k}) = \frac{1}{{\sum_{x_0}\left(\sum_{y, x'} q^{x_0, y, x'}\right)^\kappa}}{\kappa \choose \mathbf{k}}\prod_{y, x'}(q^{xyx'})^{k_{yx'}}
+\end{equation}
+Alternatively, we can write
+\begin{equation}
+    \mu(x, \mathbf{k}) = \frac{\rho^x}{{\sum_{x_0} \rho^{x_0}}}{\kappa \choose \mathbf{k}}\prod_{y, x'}\left(\nu^{xyx'}\right)^{k_{yx'}}
+\end{equation}
+where $\rho^x = \left(\sum_{y, x'} q^{xyx'}\right)^\kappa$, and $\nu^{xyx'} = (q^x)^{-1}q^{xyx'}$
+
+We can see that
+\begin{equation}
+    \pi_\mu^{xyx'}:=\pi_\mu(x, y, x') = \frac1\kappa\sum_{\mathbf{k}\in\mathcal{K}}k_{yx'}\mu(x, \mathbf{k}) = \frac{\rho^x}{{\sum_{x_0} \rho^{x_0}}} \nu^{xyx'}
+\end{equation}
+and
+\begin{equation}
+    \mu_0^x:=\mu_0(x) = \sum_{\mathbf{k}\in\mathcal{K}} \mu(x, \mathbf{k}) = \frac{\rho^x}{{\sum_{x_0} \rho^{x_0}}}
+\end{equation}
+
+With this, we can rewrite
+\begin{align}
+    H(\mu \| \eta) & = H(\mu_0) + \kappa H_{\pi_\mu}(X_v, Y_{0v} | X_0) - (2\kappa + 1) \log 2 \\
+                   & = -(\kappa-1)H(\mu_0) + \kappa H(\pi_\mu) - (2\kappa + 1) \log 2
+\end{align}
+Hence
+\begin{equation}
+    V(\beta, B, \kappa, \mu) = \mathbb{E}_{\pi_\mu}\left(\frac{\beta\kappa}{2}X_0Y_{0v}X_v + BX_0\right) + (\kappa - 1) H(\mu_0) - \frac\kappa2 H(\pi_\mu) + \left(\frac\kappa2 + 1\right)\log 2
+\end{equation}
+Applying Lagrange multipliers
+\begin{equation}
+    \partial \pi_\mu^{xyx'} = \frac{\beta\kappa}{2}xyx' + Bx - (\kappa - 1)\left(\log\mu_0^x + 1\right) + \frac\kappa2\left(\log\pi_\mu^{xyx'} + 1\right) + \lambda + \mathbf{1}_{\{x\neq x'\}} \gamma x = 0
+    \label{Eq.EA-LM-pi-mu}
+\end{equation}
+where $\lambda$ is the normalizer for the $\pi_\mu$ normalized and $\gamma$ for symmetric.
+
+\subsubsection{Attempts at solving (\ref{Eq.EA-LM-pi-mu})}
+
+\newpage
+
+\subsection{Edward-Anderson with multiple edge marks}
+
+We experiment with different distributions of edge mark $Y$. We will try symmetric $Y$, i.e. $\eta_Y(y) = \eta_Y(-y)$.
+The probability space will also be evenly-spaced (e.g. $\mathcal{Y}=\{-1, 1\}$, $\mathcal{Y}=\{-1,0, 1\}$, $\mathcal{Y}=\{-3, -1, 1, 3\}$)
+
+We initialize with a vector $\mu$ where each component is iid. Uniform on $[-1, 1)$. They are solved with SLSQP with an objective function tolerance
+of $10^{-10}$.
 
 \end{document}
