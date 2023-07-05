@@ -55,7 +55,6 @@ def increment(lst: list):
 
 
 if __name__ == "__main__":
-    lst = [5, 0, 0, 0]
-    while lst is not None:
-        print(lst)
-        lst = increment(lst)
+    C = combinations_(6, 10)
+    print(C)
+    print(len(C))

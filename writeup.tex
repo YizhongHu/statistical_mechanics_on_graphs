@@ -1047,4 +1047,82 @@ The probability space will also be evenly-spaced (e.g. $\mathcal{Y}=\{-1, 1\}$, 
 We initialize with a vector $\mu$ where each component is iid. Uniform on $[-1, 1)$. They are solved with SLSQP with an objective function tolerance
 of $10^{-10}$.
 
+\subsubsection{Conditional Independence}
+
+We consider the distribution on $\mathcal{Y}=\{-1, 0, 1\}$ where $\eta_Y(0)=p$ and $\eta_Y(-1)=\eta_Y(1)=\frac12(1-p)$
+
+We see that conditional independence given the root node is still true.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=1_3s_p=0.50_kappa=2.png}
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=-1_3s_p=0.50_kappa=2.png}
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=1_3s_p=0.33_kappa=2.png}
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=-1_3s_p=0.33_kappa=2.png}
+    \caption{Edward-Anderson with edge marks $\{-1, 0, 1\}$ and $\kappa=2$. $\eta_Y(0)=p$ and $\eta_Y(-1)=\eta_Y(1)=\frac12(1-p)$. Edge-vertex marks are conditionally independent given the root mark.}
+    \label{Fig.EA-CI-k2-3s}
+\end{figure}
+
+\newpage
+
+Confirming with 5 states. We have $\mathcal{Y}=\{-2, -1, 0, 1, -2\}$ and $\eta_Y(0)=p$, $\eta_Y(\pm 1)=q$, $\eta_Y(\pm 2)=\frac12-\frac12p-q$
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=1_5s_p=0.38_q=0.25_kappa=2.png}
+    \includegraphics[width=7.5cm]{img/EA_x1_x2_x0=-1_5s_p=0.38_q=0.25_kappa=2.png}
+    \caption{Edward-Anderson with edge marks $\{-2, -1, 0, 1, 2\}$ and $\kappa=2$. $\kappa=2$. $\eta_Y(0)=p$, $\eta_Y(\pm 1)=q$, $\eta_Y(\pm 2)=\frac12-\frac12p-q$. Edge-vertex marks are conditionally independent given the root mark.}
+    \label{Fig.EA-CI-k2-5s}
+\end{figure}
+
+\newpage
+
+\subsubsection{Root mark distribution}
+
+We can see that for symmetric $\eta_Y$, we consistently get a root mark distribution independent on $\beta$. Again, we plot $\log\frac{\mu_0^+}{\mu_0^-}$:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.25.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.33.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.50.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.67.png}
+    \caption{Edward-Anderson model with edge marks $\{-1, 0, 1\}$ and $\kappa=2$. $\eta_Y(0)=p$ and $\eta_Y(-1)=\eta_Y(1)=\frac12(1-p)$. The root mark distribution is independent of $B$}
+    \label{Fig.EA-RM-k2-3s}
+\end{figure}
+
+\newpage
+
+The conclusion is consistent with 5 edge states.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.20_q=0.20.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.33_q=0.25.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.38_q=0.25.png}
+    \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.50_q=0.17.png}
+    \caption{Edward-Anderson model with edge marks $\{-2, -1, 0, 1, -2\}$ and $\kappa=2$. $\eta_Y(0)=p$, $\eta_Y(\pm 1)=q$, $\eta_Y(\pm 2)=\frac12-\frac12p-q$. The root mark distribution is independent of $B$}
+    \label{Fig.EA-RM-k2-5s}
+\end{figure}
+
+\newpage
+The conclusion does not change with more leaves:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{img/EA_x0_B_logi_kappa_3_3s_p=0.50.png}
+    \includegraphics[width=10cm]{img/EA_x0_B_logi_kappa_4_3s_p=0.50.png}
+    \caption{Edward-Anderson model with edge marks $\{-1, 0, 1\}$ and $\kappa=3$. $\eta_Y(0)=p$ and $\eta_Y(-1)=\eta_Y(1)=\frac12(1-p)$. The root mark distribution is independent of $B$}
+    \label{Fig.EA-RM-k3-3s}
+\end{figure}
+
+Recall that in Ising model, we have a cavity field term that makes the root mark distribution dependent on $\beta$. Why is it the case that by adding
+an edge mark makes this term disappear? We notice that Ising model is equivalent to Edward-Anderson with $\eta_Y=\delta_1$. This is not a symmetric
+distribution. This leads to the hypothesis that a non-symmetric $\eta$ leads to a root-mark distribution dependent on $\beta$.
+
+We instead consider a more general form of symmetry: $\eta_Y(\bar{Y}+\Delta y) = \eta_Y(\bar{Y}-\Delta y)$, still with evenly-spaced $\mathcal{Y}$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.50_symF.png}
+    \caption{Edward-Anderson model with edge marks $\{0, 1, 2\}$, $\eta_Y(1)=p$ and $\eta_Y(0)=\eta_Y(2)=\frac12(1-p)$. We see that the root mark distribution is now dependent on $\beta$}
+    \label{Fig.EA-RM-k2-3s-asym}
+\end{figure}
+
 \end{document}
