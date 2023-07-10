@@ -1099,7 +1099,7 @@ The conclusion is consistent with 5 edge states.
     \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.33_q=0.25.png}
     \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.38_q=0.25.png}
     \includegraphics[width=7.5cm]{img/EA_x0_B_logi_kappa_2_5s_p=0.50_q=0.17.png}
-    \caption{Edward-Anderson model with edge marks $\{-2, -1, 0, 1, -2\}$ and $\kappa=2$. $\eta_Y(0)=p$, $\eta_Y(\pm 1)=q$, $\eta_Y(\pm 2)=\frac12-\frac12p-q$. The root mark distribution is independent of $B$}
+    \caption{Edward-Anderson model with edge marks $\{-2, -1, 0, 1, -2\}$ and $\kappa=2$. $\eta_Y(0)=p$, $\eta_Y(\pm 1)=q$, $\eta_Y(\pm 2)=\frac12-\frac12p-q$. The root mark distribution is indepenident of $B$}
     \label{Fig.EA-RM-k2-5s}
 \end{figure}
 
@@ -1123,6 +1123,44 @@ We instead consider a more general form of symmetry: $\eta_Y(\bar{Y}+\Delta y) =
     \includegraphics[width=10cm]{img/EA_x0_B_logi_kappa_2_3s_p=0.50_symF.png}
     \caption{Edward-Anderson model with edge marks $\{0, 1, 2\}$, $\eta_Y(1)=p$ and $\eta_Y(0)=\eta_Y(2)=\frac12(1-p)$. We see that the root mark distribution is now dependent on $\beta$}
     \label{Fig.EA-RM-k2-3s-asym}
+\end{figure}
+
+\newpage
+
+\section{Jul 10-14}
+
+\subsection{Hardcore Ising model}
+
+\subsubsection{Numerical Method}
+We now have Hamiltonian
+\begin{equation}
+    \mathcal{H}(x_0, k) = \beta x_0
+\end{equation}
+with constraint that
+\begin{equation}
+    \mu(x_0, k) = 0 \qquad \forall x_0=1, k>0
+\end{equation}
+The optimization target is the same:
+\begin{equation*}
+    \mathbb{E}_\mu[\beta X_0] - H(\mu \| \eta) + \frac\kappa2 H(\pi_\mu \| \pi_\eta)
+\end{equation*}
+
+For the optimizer, it is easier to deal with a smaller vector and assume the rest are simply 0.
+\begin{equation*}
+    (\mu_{-0}, \mu_{-1}, \cdots, \mu_{-\kappa}, \mu_{+0})
+\end{equation*}
+
+\subsection{Conditional Independence}
+
+We observe conditional independence given root mark on small $\kappa$ values:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=7.5cm]{img/HA_Ising/CI_kappa2.png}
+    \includegraphics[width=7.5cm]{img/HA_Ising/CI_kappa3.png}
+    \includegraphics[width=7.5cm]{img/HA_Ising/CI_kappa4.png}
+    \includegraphics[width=7.5cm]{img/HA_Ising/CI_kappa5.png}
+    \caption{In Hardcore Ising model, we still observe conditional independence for $\kappa=2, 3, 4, 5$.}
+    \label{Fig.HAIS-CI}
 \end{figure}
 
 \end{document}
