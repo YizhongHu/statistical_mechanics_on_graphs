@@ -1129,9 +1129,7 @@ We instead consider a more general form of symmetry: $\eta_Y(\bar{Y}+\Delta y) =
 
 \section{Jul 10-14}
 
-\subsection{Hardcore Ising model}
-
-\subsubsection{Numerical Method}
+\subsection{Hardcore Ising Numerical}
 We now have Hamiltonian
 \begin{equation}
     \mathcal{H}(x_0, k) = \beta x_0
@@ -1150,7 +1148,7 @@ For the optimizer, it is easier to deal with a smaller vector and assume the res
     (\mu_{-0}, \mu_{-1}, \cdots, \mu_{-\kappa}, \mu_{+0})
 \end{equation*}
 
-\subsection{Conditional Independence}
+\subsubsection{Conditional Independence}
 
 We observe conditional independence given root mark on small $\kappa$ values:
 \begin{figure}[h]
@@ -1171,7 +1169,7 @@ The conclusion is not changed for higher $\kappa$ values:
     \label{Fig.HAIS-CI-large-kappa}
 \end{figure}
 
-\subsection{Root mark distribution}
+\subsubsection{Root mark distribution}
 
 This is the root mark distribution of Hardcore Ising
 \begin{figure}[h]
@@ -1180,5 +1178,32 @@ This is the root mark distribution of Hardcore Ising
     \caption{This is the Root mark distribution for Hardcore Ising model. No significant transition is seen at $\kappa=16$}
     \label{Fig.HAIS-RM}
 \end{figure}
+
+\newpage
+
+\subsubsection{Edge Distribution}
+
+We see that the root and leaf marks ($\pi_\mu$) are never independent, and only tends to a degenerate independence as $\beta\rightarrow-\infty$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{img/HA_Ising/RL_indep.png}
+    \caption{In Hardcore Ising, $X_0$ and $X_v$ tends to independence as $\beta\rightarrow-\infty$, and they tend towards dependence as $\beta\rightarrow\infty$. The top line is at $\log 2$, the maximum mutual information possible with Bernoulli random variables.
+        It is when $X_0$ are completely dependent on each other ($X_0=f(X_v)$).}
+    \label{Fig.HAIS-RL-indep}
+\end{figure}
+
+To see what type of dependence we have, we look at the $\pi_\mu$ distribution:
+\begin{figure}[h]
+    \raggedleft
+    \includegraphics[width=15cm]{img/HA_Ising/RL_indiv.png}
+    \caption{$\pi_\mu$ distribution under different $\beta$ values in Hardcore Ising is shown. Darker means greater value. $X_0=0$ is the top row and $X_v$ is the left column.}
+    \label{Fig.HAIS-RL-beta-trends}
+\end{figure}
+
+First observe that due to the symmetry constraint, the $\pi_\mu$ distribution is represented by a symmetric matrix. Then, see that $\pi_\mu(1, 1)$ has $0$ probability due to the hardcore constraint.
+
+When $\beta\rightarrow-\infty$, we observe that the distribution tends to have $X_0=X_v=0$. Indeed, this tends towards independence, but it is more
+degenerate. When $\beta\rightarrow\infty$, we see that it tends towards $X_0=1-X_v$, preferring the root and leaves to have different marks.
+Mark distributions also tend towards Bernoulli(1/2) (Due to the symmetry constraint).
 
 \end{document}
