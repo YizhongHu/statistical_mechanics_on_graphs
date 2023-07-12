@@ -1196,7 +1196,7 @@ To see what type of dependence we have, we look at the $\pi_\mu$ distribution:
 \begin{figure}[h]
     \centering
     \includegraphics[width=15cm]{img/HA_Ising/RL_indiv.png}
-    \caption{$\pi_\mu$ distribution under different $\beta$ values in Hardcore Ising is shown. Darker means greater value. $X_0=0$ is the top row and $X_v$ is the left column.}
+    \caption{$\pi_\mu$ distribution under different $\beta$ values in Hardcore Ising ($\kappa=2$) is shown. Darker means greater value. $X_0=0$ is the top row and $X_v$ is the left column.}
     \label{Fig.HAIS-RL-beta-trends}
 \end{figure}
 
@@ -1306,5 +1306,18 @@ From data gathered in Fig.\ref{Fig.HAIS-RM}, we see that the analytical results 
     \caption{Hardcore Ising, comparison of numerical and analytical predictions of $h$. The dashed lines show analytical predictions.}
     \label{Fig.HAIS-h-value}
 \end{figure}
+
+Regarding the edge distribution, we first notice that when $\beta\rightarrow\infty$, $h\rightarrow -\infty$, and when $\beta\rightarrow-\infty$, $h\rightarrow \infty$ (Desmos).
+
+We write $\pi_\mu$ in terms of $h$:
+\begin{align*}
+    \pi_\mu(0, 0)                 & = \frac{1}{2e^{-h} + 1} \\
+    \pi_\mu(1, 0) = \pi_\mu(0, 1) & = \frac{1}{2+e^h}
+\end{align*}
+When $\beta\rightarrow\infty$, $h\rightarrow-\infty$, so $\pi_\mu(0, 0)\rightarrow 0$, and $\pi_\mu(1, 0) = \pi_\mu(0, 1)\rightarrow \frac12$.
+
+When $\beta\rightarrow-\infty$, $h\rightarrow\infty$, so $\pi_\mu(0, 0)\rightarrow 1$, and $\pi_\mu(1, 0) = \pi_\mu(0, 1)\rightarrow 1$.
+
+This agrees with our predictions in Fig.\ref{Fig.HAIS-RL-beta-trends}.
 
 \end{document}
