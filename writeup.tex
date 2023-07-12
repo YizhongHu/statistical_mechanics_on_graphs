@@ -1194,7 +1194,7 @@ We see that the root and leaf marks ($\pi_\mu$) are never independent, and only 
 
 To see what type of dependence we have, we look at the $\pi_\mu$ distribution:
 \begin{figure}[h]
-    \raggedleft
+    \centering
     \includegraphics[width=15cm]{img/HA_Ising/RL_indiv.png}
     \caption{$\pi_\mu$ distribution under different $\beta$ values in Hardcore Ising is shown. Darker means greater value. $X_0=0$ is the top row and $X_v$ is the left column.}
     \label{Fig.HAIS-RL-beta-trends}
@@ -1205,5 +1205,90 @@ First observe that due to the symmetry constraint, the $\pi_\mu$ distribution is
 When $\beta\rightarrow-\infty$, we observe that the distribution tends to have $X_0=X_v=0$. Indeed, this tends towards independence, but it is more
 degenerate. When $\beta\rightarrow\infty$, we see that it tends towards $X_0=1-X_v$, preferring the root and leaves to have different marks.
 Mark distributions also tend towards Bernoulli(1/2) (Due to the symmetry constraint).
+
+\newpage
+
+\subsection{Hardcore Ising Analytical}
+
+\subsubsection{Conditional Independence}
+
+Similar to what we have been doing, we can write the objective function as
+\begin{equation*}
+    V = \beta\sum_{x\in\mathcal{X}} \mu_0(x) x + H(\mu) + \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k)\log{\kappa\choose k} - \frac\kappa2 H(\pi_\mu) - \log|\mathcal{X}|
+\end{equation*}
+where $\mu_0(x) = \sum_{k=0}^\kappa\mu(x, k)$.
+
+Solving for this optimization problem (over hardcore support) with constraints
+$\pi_\mu(0, 0) = \frac1\kappa\sum_{k=0}^\kappa k\mu(0, k) = \pi_\mu^-$, $\sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k)=1$, and $\mu_0(1) - \mu_0(0) = m$, we have the following form for $\mu$:
+\begin{equation}
+    \begin{cases}
+        \mu(0, k) & = \displaystyle\frac{e^{-\gamma}(1+q^-)^\kappa}{e^\gamma + e^{-\gamma}(1+q^-)^\kappa}{\kappa\choose k}\left(\frac{q^-}{1+q^-}\right)^k\left(\frac{1}{1+q^-}\right)^{\kappa-k} \\
+        \mu(1, 0) & = \displaystyle\frac{e^{\gamma}}{e^\gamma + e^{-\gamma}(1+q^-)^\kappa}
+    \end{cases}
+\end{equation}
+where $\log q^-$ and $\gamma$ are the Lagrange multipliers to $\pi_\mu(0, 0) = \frac1\kappa\sum_{k=0}^\kappa k\mu(0, k) = \pi_\mu^-$ and $\mu_0(1) - \mu_0(0) = m$ respectively.
+
+Applying the symmetry constraint, we have
+\begin{equation}
+    e^\gamma = e^{-\gamma}(1+q^-)^{\kappa-1}
+\end{equation}
+This gives
+\begin{equation}
+    \begin{cases}
+        \mu(0, k) & = \displaystyle\frac{1+q^-}{2+q^-}{\kappa\choose k}\left(\frac{q^-}{1+q^-}\right)^k\left(\frac{1}{1+q^-}\right)^{\kappa-k} \\
+        \mu(1, 0) & = \displaystyle\frac{1}{2+q^-}
+    \end{cases}
+    \label{Eq.HAIS-Q-SOL}
+\end{equation}
+
+\subsubsection{Solving for parameters}
+
+We therefore need to optimize
+\begin{equation*}
+    \sup_{\pi_\mu^-\in(0, 1)}\left[ \mathbb{E}_{\mu_0} \beta X_0 + \frac\kappa2 H(\pi_\mu) - (\kappa-1) H(\mu_0) \right]
+\end{equation*}
+where $\mu_0(x_0) = \sum_{x_v\in\mathcal{X}}\pi_\mu(x_0, x_v)$. We can write $\pi_\mu(1, 0) = \pi_\mu(0, 1) = \frac12(1 - \pi_\mu^-)$
+
+Applying Lagrange multiplier
+\begin{equation}
+    \partial_{\pi_\mu^-} = -\frac\beta2-\frac\kappa2 \left[\log\pi_\mu^- - \log \frac12(1 - \pi_\mu^-)\right] - \frac{\kappa-1}{2}\log\frac{1-\pi_\mu^-}{1+\pi_\mu^-} = 0
+\end{equation}
+If we substitute $\pi_\mu^-=\frac{q^-}{2+q^-}$, which can be obtained from (\ref{Eq.HAIS-Q-SOL}), we have
+\begin{equation*}
+    \beta + \kappa \log q^- - (\kappa-1)\log (1+q^-) = 0
+\end{equation*}
+or
+\begin{equation}
+    \frac{1}{1+q^-} = e^\beta \left(\frac{q^-}{1+q^-}\right)^\kappa
+\end{equation}
+We can then calculate the root mark distributions:
+\begin{align}
+    \mu_0(0) & = \frac{1+q^-}{2+q^-} = \frac{1}{1+\frac{1}{1+q^-}}  \nonumber          \\
+             & = \frac{1}{1 + e^\beta \left(\frac{q^-}{1+q^-}\right)^\kappa} \nonumber \\
+             & = \frac{(1+q^-)^\kappa }{(1+q^-)^\kappa + e^\beta (q^-)^\kappa}
+    \intertext{Similarly, }
+    \mu_0(1) & = \frac{e^\beta (q^-)^\kappa}{(1+q^-)^\kappa + e^\beta (q^-)^\kappa}
+\end{align}
+We then have distribution
+\begin{equation*}
+    \begin{cases}
+        \mu(0, k) = \displaystyle\frac{1}{(1+q^-)^\kappa + e^\beta (q^-)^\kappa}{\kappa\choose k} (q^-)^k \\
+        \mu(1, 0) = \displaystyle\frac{e^\beta (q^-)^\kappa}{(1+q^-)^\kappa + e^\beta (q^-)^\kappa}
+    \end{cases}
+\end{equation*}
+Alternatively, writing $q^- = \exp h$,
+\begin{equation}
+    \begin{cases}
+        \mu(0, k) = \frac1Z{\kappa\choose k} e^{kh} \\
+        \mu(1, 0) = \frac1Z e^{\beta + \kappa h}
+    \end{cases}
+\end{equation}
+where $Z = (1+e^h)^\kappa + e^{\beta + \kappa h}$.
+
+More concisely,
+\begin{equation}
+    \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right]
+\end{equation}
+where $h = (\kappa - 1)\log (1+e^{-h}) - \beta $
 
 \end{document}
