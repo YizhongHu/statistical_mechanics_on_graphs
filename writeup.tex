@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
 \usepackage{parskip}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{hyperref}
 \usepackage{fontspec}
 \usepackage{setspace}
@@ -15,6 +15,10 @@
 \usepackage[american]{babel}
 \usepackage{csquotes}
 \allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -1254,9 +1258,10 @@ Applying Lagrange multiplier
     \partial_{\pi_\mu^-} = -\frac\beta2-\frac\kappa2 \left[\log\pi_\mu^- - \log \frac12(1 - \pi_\mu^-)\right] - \frac{\kappa-1}{2}\log\frac{1-\pi_\mu^-}{1+\pi_\mu^-} = 0
 \end{equation}
 If we substitute $\pi_\mu^-=\frac{q^-}{2+q^-}$, which can be obtained from (\ref{Eq.HAIS-Q-SOL}), we have
-\begin{equation*}
+\begin{equation}
     \beta + \kappa \log q^- - (\kappa-1)\log (1+q^-) = 0
-\end{equation*}
+    \label{Eq.HAIS-q-1}
+\end{equation}
 or
 \begin{equation}
     \frac{1}{1+q^-} = e^\beta \left(\frac{q^-}{1+q^-}\right)^\kappa
@@ -1291,9 +1296,75 @@ More concisely,
 \end{equation}
 where $h = (\kappa - 1)\log (1+e^{-h}) - \beta $
 
+\subsubsection{Properties of $h$}
+
+\begin{proposition}
+    Given $\beta$ and $\kappa$, there exists a unique $h$ that solves
+    \begin{equation*}
+        h = (\kappa - 1)\log (1+e^{-h}) - \beta
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Solving for $h$ is equivalent to solving $f(h; \beta) = (\kappa - 1)\log (1+e^{-h}) - \beta - h = 0$.
+    First we show uniqueness. Notice that $f(h; \beta)$ is monotonic in $h$:
+    \begin{equation*}
+        \frac{\partial f}{\partial h} = -\frac{(\kappa - 1)e^{-h}}{1+e^{-h}} - 1 > 0 \qquad \forall h\in \mathbb{R}
+    \end{equation*}
+    This shows uniqueness of a root of $f(\cdot; \beta)$.
+
+    Next, we show that $f(h; \beta)$ can take both positive and negative values. Notice that when
+    $h\rightarrow \infty$, $\log (1+e^{-h}) \rightarrow 0$, so $f(h; \beta) \rightarrow -\infty$. Thus, the function can take negative values.
+    For positive values of $f(h; \beta)$, consider $h = -\beta$. We have $f(h; \beta) = (\kappa - 1)\log (1+e^\beta) > (\kappa - 1)\log(1) = 0$
+
+    By the intermediate function theorem, since $f(h; \beta)$ is continuous in $h$, there exists a solution for all $\beta$.
+
+\end{proof}
+
+We can define, based on the previous proposition, we define
+\begin{align*}
+    h: \mathbb{R} \times \mathbb{Z}_{\geq 2} & \mapsto \mathbb{R}       \\
+    (\beta, \kappa)                          & \mapsto h(\beta, \kappa)
+\end{align*}
+where $h(\beta, \kappa) = (\kappa - 1)\log (1+e^{-h(\beta, \kappa)}) - \beta$
+
+\begin{proposition}
+    $h(\beta, \kappa)$ has the following properties:
+    \begin{enumerate}
+        \item The function is monotonically decreasing with respect to $\beta$,
+        \item The function is monotonically increasing with respect to $\kappa$,
+        \item The function is convex with respect to $\beta$,
+        \item $\lim_{\beta\rightarrow\infty} h(\beta, \kappa) \rightarrow -\infty$ and $\lim_{\beta\rightarrow-\infty} h(\beta, \kappa) \rightarrow \infty$,
+        \item $\lim_{\kappa\rightarrow\infty} h(\beta, \kappa) \rightarrow \infty$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Implicit differentiation gives
+              \begin{equation*}
+                  \frac{\partial h}{\partial\beta} = -\frac{1+e^{-h}}{1+\kappa e^{-h}} < 0 \qquad \forall h\in \mathbb{R}.
+              \end{equation*}
+              Thus, $h$ monotonically decreases with $\beta$.
+        \item Similarly,
+              \begin{equation*}
+                  \frac{\partial h}{\partial \kappa} = \log(1+e^-h)\frac{1+e^{-h}}{1+\kappa e^{-h}} > 0 \forall h\in \mathbb{R}, \kappa\in\mathbb{Z}_{\geq 2}
+              \end{equation*}
+        \item Again, we have
+              \begin{align*}
+                  \frac{\partial^2h}{\partial\beta^2} = \left(-\frac{1+e^{-h}}{1+\kappa e^{-h}}\right)\frac{\partial}{\partial h}\left(-\frac{1+e^{-h}}{1+\kappa e^{-h}}\right) = \frac{[(\kappa-1)e^{-h}]^2}{(1+\kappa e^{-h})^3} > 0 .
+              \end{align*}
+              Thus, $h(\beta,\kappa)$ is convex.
+        \item The inverse of $h(\beta, \kappa)$ is $\beta = h-(\kappa-1)\log(1+e^{-h})$. This means that $h(\beta,\kappa)$ is bijective.
+              A bijective, continuous, monotonically decreasing function has these limits.
+        \item Similar to part 4. $\kappa = \frac{\beta+h}{\log(1+e^{-h})} + 1$
+    \end{enumerate}
+\end{proof}
+
+
 \newpage
 
-\subsection{Cross Reference}
+\subsection{Hardcore Ising Cross Reference}
 
 We will now check the analytical results to the numerical results. Note that
 \begin{equation*}
@@ -1307,17 +1378,59 @@ From data gathered in Fig.\ref{Fig.HAIS-RM}, we see that the analytical results 
     \label{Fig.HAIS-h-value}
 \end{figure}
 
-Regarding the edge distribution, we first notice that when $\beta\rightarrow\infty$, $h\rightarrow -\infty$, and when $\beta\rightarrow-\infty$, $h\rightarrow \infty$ (Desmos).
+Regarding the edge distribution, recall that when $\beta\rightarrow\infty$, $h\rightarrow -\infty$, and when $\beta\rightarrow-\infty$, $h\rightarrow \infty$.
 
 We write $\pi_\mu$ in terms of $h$:
-\begin{align*}
-    \pi_\mu(0, 0)                 & = \frac{1}{2e^{-h} + 1} \\
-    \pi_\mu(1, 0) = \pi_\mu(0, 1) & = \frac{1}{2+e^h}
-\end{align*}
+\begin{equation}
+    \begin{aligned}
+        \pi_\mu(0, 0)                 & = \frac{1}{2e^{-h} + 1} \\
+        \pi_\mu(1, 0) = \pi_\mu(0, 1) & = \frac{1}{2+e^h}
+    \end{aligned}
+    \label{Eq.HAIS-pimu-h}
+\end{equation}
 When $\beta\rightarrow\infty$, $h\rightarrow-\infty$, so $\pi_\mu(0, 0)\rightarrow 0$, and $\pi_\mu(1, 0) = \pi_\mu(0, 1)\rightarrow \frac12$.
 
 When $\beta\rightarrow-\infty$, $h\rightarrow\infty$, so $\pi_\mu(0, 0)\rightarrow 1$, and $\pi_\mu(1, 0) = \pi_\mu(0, 1)\rightarrow 1$.
 
 This agrees with our predictions in Fig.\ref{Fig.HAIS-RL-beta-trends}.
+
+\newpage
+
+\subsection{Hardcore Ising Annealed Pressure}
+
+The annealed pressure is
+\begin{equation*}
+    \psi(\beta, \kappa) = \sup_{\mu} \left[\mathbb{E}_\mu(\beta X_0) - H(\mu\|\eta) + \frac\kappa2H(\pi_\mu\|\pi_\eta)\right]
+\end{equation*}
+which we have shown to be equivalent to
+\begin{equation*}
+    \psi(\beta, \kappa) = \sup_{\pi_\mu} \left[\mathbb{E}_{\mu_0}(\beta X_0) - (\kappa-1)H(\mu_0) + \frac\kappa2H(\pi_\mu) - \log|\mathcal{X}|\right]
+\end{equation*}
+Substitute (\ref{Eq.HAIS-pimu-h}), we have
+\begin{align*}
+    \mathbb{E}_{\mu_0}(\beta X_0) & = \beta \frac{1}{2+e^h}                        \\
+    H(\mu_0)                      & = \log(2+e^h) - \frac{1+e^h}{2+e^h}\log(1+e^h) \\
+    H(\pi_\mu)                    & = \log(2+e^h) - \frac{he^h}{2+e^h}
+\end{align*}
+Hence
+\begin{equation*}
+    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + (\kappa-1)\frac{1+e^h}{2+e^h}\log(1+e^h)
+\end{equation*}
+Recall (\ref{Eq.HAIS-q-1}). Substitute $q^-=e^h$ and we have
+\begin{equation}
+    \beta + \kappa h - (\kappa-1)\log(1+e^h) = 0
+\end{equation}
+so
+\begin{equation*}
+    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + \frac{(\beta + \kappa h)(1+e^h)}{2+e^h}
+\end{equation*}
+which simplifies to
+\begin{equation}
+    \psi(\beta, \kappa) = \beta + \frac{\kappa h}{2} - \left(\frac\kappa2 - 1\right)\log(2 + e^h)
+\end{equation}
+or
+\begin{equation}
+    \psi(\beta, \kappa) = \beta + h - \left(\frac\kappa2 - 1\right)\log(2e^{-h} + 1)
+\end{equation}
 
 \end{document}
