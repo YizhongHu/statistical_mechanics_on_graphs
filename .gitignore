@@ -3,3 +3,6 @@
 *.synctex.gz
 *.pdf
 src/__pycache__
+source/files
+*.bbl
+*.run.xml

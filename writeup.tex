@@ -14,6 +14,11 @@
 \usepackage{multicol}
 \usepackage[american]{babel}
 \usepackage{csquotes}
+
+
+\usepackage[style=verbose]{biblatex}
+\addbibresource{source/source.bib}
+
 \allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[section]
@@ -1294,7 +1299,11 @@ More concisely,
 \begin{equation}
     \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right]
 \end{equation}
-where $h = (\kappa - 1)\log (1+e^{-h}) - \beta $
+where
+\begin{equation}
+    h = (\kappa - 1)\log (1+e^{-h}) - \beta
+    \label{Eq.HAIS-h}
+\end{equation}
 
 \subsubsection{Properties of $h$}
 
@@ -1414,7 +1423,7 @@ Substitute (\ref{Eq.HAIS-pimu-h}), we have
 \end{align*}
 Hence
 \begin{equation*}
-    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + (\kappa-1)\frac{1+e^h}{2+e^h}\log(1+e^h)
+    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + (\kappa-1)\frac{1+e^h}{2+e^h}\log(1+e^h) - \log 2
 \end{equation*}
 Recall (\ref{Eq.HAIS-q-1}). Substitute $q^-=e^h$ and we have
 \begin{equation}
@@ -1422,15 +1431,57 @@ Recall (\ref{Eq.HAIS-q-1}). Substitute $q^-=e^h$ and we have
 \end{equation}
 so
 \begin{equation*}
-    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + \frac{(\beta + \kappa h)(1+e^h)}{2+e^h}
+    \psi(\beta, \kappa) = \frac{\beta - \frac\kappa2he^h}{2+e^h} - \left(\frac\kappa2 - 1\right)\log(2+e^h) + \frac{(\beta + \kappa h)(1+e^h)}{2+e^h}- \log 2
 \end{equation*}
 which simplifies to
 \begin{equation}
-    \psi(\beta, \kappa) = \beta + \frac{\kappa h}{2} - \left(\frac\kappa2 - 1\right)\log(2 + e^h)
+    \psi(\beta, \kappa) = \beta + \frac{\kappa h}{2} - \left(\frac\kappa2 - 1\right)\log(2 + e^h)- \log 2
+    \label{Eq.HAIS-psi1}
 \end{equation}
 or
 \begin{equation}
-    \psi(\beta, \kappa) = \beta + h - \left(\frac\kappa2 - 1\right)\log(2e^{-h} + 1)
+    \psi(\beta, \kappa) = \beta + h - \left(\frac\kappa2 - 1\right)\log(2e^{-h} + 1)- \log 2
+    \label{Eq.HAIS-psi2}
+\end{equation}
+
+Barbier et al. \footcite{barbier_hard-core_2013} gives the annealed pressure as the following form:
+\begin{equation}
+    \psi(\beta, \beta) = -\log(1+\bar{\pi})+\frac\kappa2\log(1-\bar{\pi}^2)
+\end{equation}
+where
+\begin{equation*}
+    \bar{\pi} = e^\beta (1-\bar{\pi})^\kappa
+\end{equation*}
+Our form is similar but missing a sign, as shown below.
+
+Let
+\begin{equation}
+    \bar{\pi} = \frac{1}{1+e^h}
+\end{equation}
+We have
+\begin{equation*}
+    h = \log\frac{1-\bar{\pi}}{\bar{\pi}}
+\end{equation*}
+Rewrite (\ref{Eq.HAIS-q-1}) as
+\begin{equation}
+    \log(\bar{\pi}) = \beta + \kappa \log(1 - \bar{\pi})
+\end{equation}
+or
+\begin{equation}
+    \bar{\pi} = e^\beta(1 - \bar{\pi})^\kappa
+\end{equation}
+
+From (\ref{Eq.HAIS-h}), we have
+\begin{equation*}
+    \beta + h = -(\kappa-1)\log(1-\bar{\bar{\pi}})
+\end{equation*}
+and
+\begin{equation*}
+    \log(2e^{-h}+1) = \log\frac{1+\bar{\pi}}{1-\bar{\pi}}
+\end{equation*}
+Substituting into (\ref{Eq.HAIS-psi2}), and simplifying, we have
+\begin{equation}
+    \psi(\beta, \kappa) = \log(1+\bar{\pi}) - \frac\kappa2\left(1-\bar{\pi}^2\right) - \log 2
 \end{equation}
 
 \end{document}
