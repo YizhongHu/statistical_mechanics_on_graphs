@@ -1356,26 +1356,28 @@ Note that
 
 \begin{lemma}
     \begin{enumerate}
-        The optimizers of the Hardcore Ising optimization problem
+        The unique optimizers of the Hardcore Ising optimization problem
         \begin{equation*}
-            \psi(\beta, \kappa) = \sup_{\mu\in M} \left\{\mathbb{E}_\mu\left[\beta X_0\right] - \left[H(\mu\|\eta) - \frac\kappa2 H(\pi_\mu\| \pi_\eta)\right]\right\}
+            \psi(\beta, \kappa) = \sup_{\widehat{\pi}\in\Delta} \tilde{V}(\beta, \kappa, \widehat{\pi}) = \sup_{\widehat{\pi}\in\Delta} \left[\mathbb{E}_{\widehat{\mu}_0} \beta X_0 + \frac\kappa2 H(\widehat{\pi}) - (\kappa-1) H(\widehat{\mu}_0) - \log|\mathcal{X}| \right]
         \end{equation*}
         are in the form
         \begin{equation}
-            \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right],
+            \begin{aligned}
+                \widehat{\pi}^{00}                      & = \displaystyle\frac{\bar{q}}{2+\bar{q}} \\
+                \widehat{\pi}^{01} = \widehat{\pi}^{10} & = \displaystyle\frac{1}{2+\bar{q}}.
+            \end{aligned}
+            \label{Eq.HAIS-pi-qbar}
         \end{equation}
-        with $h$ being a solution to
+        with $\bar{q}$ being a solution to
         \begin{equation}
-            h = (\kappa-1)\log(1+e^{-h}) - \beta,
-            \label{Eq.HAIS-h}
+            \beta + \kappa \log \bar{q} - (\kappa-1)\log (1+\bar{q}) = 0.
+            \label{Eq.HAIS-q-1}
         \end{equation}
-        and $Z = (1+e^h)^\kappa + e^{\beta + \kappa h}$ the normalizing constant
     \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-    Leveraging the Lemma 7.1, we optimize for $\tilde{V}$ for $\widehat{\pi}\in \Delta$. We parametrize with (\ref{Eq.HAIS-pi-param}),
-    and the gradient is
+    Parametrizing with (\ref{Eq.HAIS-pi-param}), the gradient is
     \begin{equation}
         \frac{d\widetilde{V}}{d\widehat{\pi}^{00}} = -\frac\beta2-\frac\kappa2 \left[\log\widehat{\pi}^{00} - \log \frac12(1 - \widehat{\pi}^{00})\right] - \frac{\kappa-1}{2}\log\frac{1-\widehat{\pi}^{00}}{1+\widehat{\pi}^{00}} = 0.
         \label{Eq.HAIS-pi-Lagrange}
@@ -1396,55 +1398,32 @@ Note that
         \widehat{\pi}^{01} = \widehat{\pi}^{10} & = \frac{q^{10}}{2q^{01}+q^{00}}.
     \end{align*}
     Let $\bar{q} = \frac{q^{00}}{q^{01}}$, we have
-    \begin{equation}
+    \begin{equation*}
         \begin{aligned}
             \widehat{\pi}^{00}                      & = \displaystyle\frac{\bar{q}}{2+\bar{q}} \\
             \widehat{\pi}^{01} = \widehat{\pi}^{10} & = \displaystyle\frac{1}{2+\bar{q}}.
         \end{aligned}
-        \label{Eq.HAIS-pi-qbar}
-    \end{equation}
+    \end{equation*}
     Substituting (\ref{Eq.HAIS-pi-qbar}) into (\ref{Eq.HAIS-pi-Lagrange}), we have
-    \begin{equation}
+    \begin{equation*}
         \beta + \kappa \log \bar{q} - (\kappa-1)\log (1+\bar{q}) = 0.
-        \label{Eq.HAIS-q-1}
-    \end{equation}
+    \end{equation*}
     or
     \begin{equation}
         \frac{1}{1+\bar{q}} = e^\beta \left(\frac{\bar{q}}{1+\bar{q}}\right)^\kappa
+        \label{Eq.HAIS-q-2}
     \end{equation}
 
-    We can then calculate the root mark distributions:
-    \begin{align}
-        \mu_0(0) & = \frac{1+\bar{q}}{2+\bar{q}} = \frac{1}{1+\frac{1}{1+\bar{q}}}  \nonumber       \\
-                 & = \frac{1}{1 + e^\beta \left(\frac{\bar{q}}{1+\bar{q}}\right)^\kappa} \nonumber  \\
-                 & = \frac{(1+\bar{q})^\kappa }{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
-        \intertext{Similarly, }
-        \mu_0(1) & = \frac{e^\beta (\bar{q})^\kappa}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
-    \end{align}
-    We then have distribution
-    \begin{equation*}
-        \begin{cases}
-            \mu(0, k) = \displaystyle\frac{1}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}{\kappa\choose k} (\bar{q})^k \\
-            \mu(1, 0) = \displaystyle\frac{e^\beta (\bar{q})^\kappa}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
-        \end{cases}
-    \end{equation*}
-    Alternatively, writing $\bar{q} = \exp h$,
-    \begin{equation}
-        \begin{cases}
-            \mu(0, k) = \frac1Z{\kappa\choose k} e^{kh} \\
-            \mu(1, 0) = \frac1Z e^{\beta + \kappa h}
-        \end{cases}
-    \end{equation}
-    where $Z = (1+e^h)^\kappa + e^{\beta + \kappa h}$.
+    To prove that this is unique, it is sufficient to show that $\tilde{V}(\beta, \kappa, \widehat{\pi})$ is concave in $\widehat{\pi}$.
+    More specifically, since $\widehat{\pi}\in\Delta$ can be parametrized by some $\widehat{\pi}^{00}\in[0, 1]$,
+    we only need to show that $\widetilde{V}(\beta, \kappa, \pi^{00})$ is concave.
 
-    More concisely,
-    \begin{equation}
-        \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right]
-    \end{equation}
-    where
+    Indeed,
     \begin{equation*}
-        h = (\kappa - 1)\log (1+e^{-h}) - \beta
+        \frac{d^2\widetilde{V}}{(d\widehat{\pi}^{00})^2} = \frac{\left(\frac\kappa2-1\right)(\widehat{\pi}^{00} - 1) - 1}{\widehat{\pi}^{00} - (\widehat{\pi}^{00})^3} < 0, \qquad \forall \widehat{\pi}^{00}\in[0, 1], \kappa \geq 2.
     \end{equation*}
+    Therefore, the above stationary point is indeed is a unique maximizer of $\widetilde{V}$.
+
 \end{proof}
 
 \begin{lemma}
@@ -1516,14 +1495,15 @@ where $h(\beta, \kappa) = (\kappa - 1)\log (1+e^{-h(\beta, \kappa)}) - \beta$
         \psi(\beta, \kappa) = \sup_{\mu\in M} \left\{\mathbb{E}_\mu\left[\beta X_0\right] - \left[H(\mu\|\eta) - \frac\kappa2 H(\pi_\mu\| \pi_\eta)\right]\right\}
     \end{equation*}
     has a unique optimizer
-    \begin{equation*}
-        \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h(\beta, \kappa) \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right],
-    \end{equation*}
+    \begin{equation}
+        \mu(\mathbf{x}, \tau; \beta, \kappa) = \frac{1}{Z(\beta, \kappa)} \exp\left[\beta x_0 + h(\beta, \kappa) \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right],
+    \end{equation}
     with $h(\beta, \kappa)$ being the unique solution to
-    \begin{equation*}
+    \begin{equation}
         h = (\kappa-1)\log(1+e^{-h}) - \beta,
-    \end{equation*}
-    and $Z = (1+e^h)^\kappa + e^{\beta + \kappa h}$.
+        \label{Eq.HAIS-h}
+    \end{equation}
+    and $Z(\beta, \kappa) = (1+e^{h(\beta, \kappa)})^\kappa + e^{\beta + \kappa h(\beta, \kappa)}$.
 
     The corresponding annealed pressure is
     \begin{equation}
@@ -1532,20 +1512,57 @@ where $h(\beta, \kappa) = (\kappa - 1)\log (1+e^{-h(\beta, \kappa)}) - \beta$
 \end{theorem}
 
 \begin{proof}
-    From Lemma 7.2, we have shown stationary points exists in the form described above.
-    In Lemma 7.3, we have shown that for given $\beta$ and $\kappa$, the stationary point exists and is unique.
-    It remains to show that the stationary point is a maximum.
-
-    In Lemma 7.1, we have shown that for each edge distribution $\widehat{\pi}$, $\widehat{\mu}$ is the unique maximizer for $V$.
-    It is therefore sufficient to show that $\tilde{V}(\beta, \kappa, \widehat{\pi})$ is concave in $\widehat{\pi}$.
-    More specifically, since $\widehat{\pi}\in\Delta$ can be parametrized by some $\widehat{\pi}^{00}\in[0, 1]$,
-    we only need to show that $\widetilde{V}(\beta, \kappa, \pi^{00})$ is concave.
-
-    Indeed,
+    From Lemma 7.2, we have shown that the unique maximizer of $\widetilde{V}$ exists in following form:
     \begin{equation*}
-        \frac{d^2\widetilde{V}}{(d\widehat{\pi}^{00})^2} = \frac{\left(\frac\kappa2-1\right)(\widehat{\pi}^{00} - 1) - 1}{\widehat{\pi}^{00} - (\widehat{\pi}^{00})^3} < 0, \qquad \forall \widehat{\pi}^{00}\in[0, 1], \kappa \geq 2.
+        \begin{aligned}
+            \widehat{\pi}^{00}                      & = \displaystyle\frac{\bar{q}}{2+\bar{q}} \\
+            \widehat{\pi}^{01} = \widehat{\pi}^{10} & = \displaystyle\frac{1}{2+\bar{q}},
+        \end{aligned}
     \end{equation*}
-    Therefore, the above stationary point is indeed is a unique maximizer of the objective.
+    with $\bar{q}$ being a solution to
+    \begin{equation*}
+        \beta + \kappa \log \bar{q} - (\kappa-1)\log (1+\bar{q}) = 0.
+    \end{equation*}
+
+    We can then calculate the root mark distributions:
+    \begin{align}
+        \mu_0(0) & = \frac{1+\bar{q}}{2+\bar{q}} = \frac{1}{1+\frac{1}{1+\bar{q}}}  \nonumber       \\
+                 & = \frac{1}{1 + e^\beta \left(\frac{\bar{q}}{1+\bar{q}}\right)^\kappa} \nonumber  \\
+                 & = \frac{(1+\bar{q})^\kappa }{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
+        \intertext{Similarly, }
+        \mu_0(1) & = \frac{e^\beta (\bar{q})^\kappa}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
+    \end{align}
+    We then have distribution
+    \begin{equation*}
+        \begin{cases}
+            \mu(0, k) = \displaystyle\frac{1}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}{\kappa\choose k} (\bar{q})^k \\
+            \mu(1, 0) = \displaystyle\frac{e^\beta (\bar{q})^\kappa}{(1+\bar{q})^\kappa + e^\beta (\bar{q})^\kappa}
+        \end{cases}
+    \end{equation*}
+    Alternatively, writing $\bar{q} = \exp h$,
+    \begin{equation}
+        \begin{cases}
+            \mu(0, k) = \frac1Z{\kappa\choose k} e^{kh} \\
+            \mu(1, 0) = \frac1Z e^{\beta + \kappa h}
+        \end{cases}
+    \end{equation}
+    where $Z = (1+e^h)^\kappa + e^{\beta + \kappa h}$.
+
+    In Lemma 7.3, we have shown that for given $\beta$ and $\kappa$, $h$ exists and is unique.
+    This makes $\mu$ well-defined for all $\beta$ and $\kappa$.
+
+    To see that $\mu$ is a unique maximizer, note that in Lemma 7.1, we have shown that for each edge distribution $\widehat{\pi}$, $\widehat{\mu}$ is the unique maximizer for $V$.
+    In other words, the unique maximizer for $\widetilde{V}$ gives a unique maximizer for $V$. Since in Lemma 7.2, we have shown that $\widehat{\pi}$ is
+    indeed a unique maximizer for $\widetilde{V}$, the above expression is indeed a unique maximizer.
+
+    An alternative form of $\mu$ is
+    \begin{equation}
+        \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right]
+    \end{equation}
+    where
+    \begin{equation*}
+        h = (\kappa - 1)\log (1+e^{-h}) - \beta
+    \end{equation*}
 
     For the annealed pressure, recall from Lemma 7.1 that it is equivalent to
     \begin{equation*}
