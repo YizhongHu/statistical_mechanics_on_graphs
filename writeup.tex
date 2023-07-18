@@ -1221,47 +1221,165 @@ Mark distributions also tend towards Bernoulli(1/2) (Due to the symmetry constra
 
 \subsubsection{Conditional Independence}
 
-Similar to what we have been doing, we can write the objective function as
-\begin{equation*}
-    V = \beta\sum_{x\in\mathcal{X}} \mu_0(x) x + H(\mu) + \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k)\log{\kappa\choose k} - \frac\kappa2 H(\pi_\mu) - \log|\mathcal{X}|
-\end{equation*}
-where $\mu_0(x) = \sum_{k=0}^\kappa\mu(x, k)$.
+Let the set of symmetric probability measure on a marked $\kappa$ stars that satisfy the hardcore constraint:
+\begin{equation}
+    M = \left\{\mu: \mathcal{X} \times [\kappa] \mapsto [0, \infty) \middle| \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k) = 1, \pi_\mu(1, 0) = \pi_\mu(1, 0), \mu(1, k) = 0\forall k=1:\kappa\right\}
+\end{equation}
+The corresponding edge distribution $\pi_\mu$ satisfies
+\begin{equation}
+    \Delta = \left\{\pi_\mu: \mathcal{X}^2 \mapsto [0, \infty) \middle| \sum_{x, x'\in\mathcal{X}}\pi_\mu(x, x') = 1, \pi_\mu(1, 0) = \pi_\mu(1, 0), \pi_\mu(1, 1) = 0\right\}
+\end{equation}
 
-Solving for this optimization problem (over hardcore support) with constraints
-$\pi_\mu(0, 0) = \frac1\kappa\sum_{k=0}^\kappa k\mu(0, k) = \pi_\mu^-$, $\sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k)=1$, and $\mu_0(1) - \mu_0(0) = m$, we have the following form for $\mu$:
-\begin{equation}
-    \begin{cases}
-        \mu(0, k) & = \displaystyle\frac{e^{-\gamma}(1+q^-)^\kappa}{e^\gamma + e^{-\gamma}(1+q^-)^\kappa}{\kappa\choose k}\left(\frac{q^-}{1+q^-}\right)^k\left(\frac{1}{1+q^-}\right)^{\kappa-k} \\
-        \mu(1, 0) & = \displaystyle\frac{e^{\gamma}}{e^\gamma + e^{-\gamma}(1+q^-)^\kappa}
-    \end{cases}
-\end{equation}
-where $\log q^-$ and $\gamma$ are the Lagrange multipliers to $\pi_\mu(0, 0) = \frac1\kappa\sum_{k=0}^\kappa k\mu(0, k) = \pi_\mu^-$ and $\mu_0(1) - \mu_0(0) = m$ respectively.
+\begin{lemma}
+    For probability measure $\mu$ on marked $\kappa$-stars that satisfy the hardcore constraint,
+    \begin{enumerate}
+        \item the solution of the optimization problem
+              \begin{equation*}
+                  \psi(\beta, \kappa) = \sup_{\mu\in M} \left\{\mathbb{E}_\mu\left[\beta X_0\right] - \left[H(\mu\|\eta) - \frac\kappa2 H(\pi_\mu\| \pi_\eta)\right]\right\}
+              \end{equation*}
+              is in the form
+              \begin{equation}
+                  \begin{cases}
+                      \widehat{\mu}(0, k) & = \displaystyle\widehat{\mu}_0^0{\kappa\choose k}\left(\frac{\widehat{\pi}^{00}}{\widehat{\mu}_0^0}\right)^k\left(\frac{\widehat{\pi}^{01}}{\widehat{\mu}_0^0}\right)^{\kappa-k} \\
+                      \widehat{\mu}(1, 0) & = \displaystyle\widehat{\mu}_0^1,
+                  \end{cases}
+              \end{equation}
+              where $\widehat{\pi}^{x, x'}\in\Delta$ and $\widehat{\mu}_0^x = \sum_{x'\in\mathcal{X}} \widehat{\pi}^{x, x'}$ is the corresponding root marginal,
+        \item and the optimization problem is equivalent to
+              \begin{equation*}
+                  \psi(\beta, \kappa) = \sup_{\widehat{\pi}\in\Delta}\left[ \mathbb{E}_{\widehat{\mu}_0} \beta X_0 + \frac\kappa2 H(\widehat{\pi}) - (\kappa-1) H(\widehat{\mu}_0) - \log|\mathcal{X}| \right].
+                  \label{Eq.HAIS-V-tilde}
+              \end{equation*}
+    \end{enumerate}
+\end{lemma}
 
-Applying the symmetry constraint, we have
-\begin{equation}
-    e^\gamma = e^{-\gamma}(1+q^-)^{\kappa-1}
-\end{equation}
-This gives
-\begin{equation}
-    \begin{cases}
-        \mu(0, k) & = \displaystyle\frac{1+q^-}{2+q^-}{\kappa\choose k}\left(\frac{q^-}{1+q^-}\right)^k\left(\frac{1}{1+q^-}\right)^{\kappa-k} \\
-        \mu(1, 0) & = \displaystyle\frac{1}{2+q^-}
-    \end{cases}
-    \label{Eq.HAIS-Q-SOL}
-\end{equation}
+Note that
+\begin{enumerate}
+    \item The edge measure $\pi_{\widehat{\mu}}(x, x') = \widehat{\pi}^{x, x'}$, thus $\widehat{\mu}_0(x)=\widehat{\mu}_0^x$,
+    \item the symmetric measure $\widehat{\pi}$ can be parametrized by one parameter, since:
+          \begin{equation}
+              \widehat{\pi}^{01} = \widehat{\pi}^{10} = \frac12(1-\widehat{\pi}^{00}),
+              \label{Eq.HAIS-pi-param}
+          \end{equation}
+    \item and $\widehat{\mu}\in M$.
+\end{enumerate}
+
+\begin{proof}
+    It is sufficient to prove that $\widehat{\mu}$ with $\widehat{\pi} = \pi_\mu$ is the optimizer of
+    \begin{equation}
+        \begin{aligned}
+            \text{maximize}   & _{\tilde{\mu}\in M}\qquad \mathbb{E}_{\tilde{\mu}}\left[\beta X_0\right] - \left[H(\tilde{\mu}\|\eta) - \frac\kappa2 H(\pi_{\tilde{\mu}}\| \pi_\eta)\right] \\
+            \text{subject to} & \qquad \pi_{\tilde{\mu}} = \pi_\mu
+        \end{aligned}
+    \end{equation}
+
+    First, rewriting the objective function, which we define as $V$.
+    \begin{equation*}
+        V(\beta, \kappa, \tilde{\mu}) = \beta\sum_{x\in\mathcal{X}} \tilde{\mu}_0(x) x + H(\tilde{\mu}) + \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \tilde{\mu}(x, k)\log{\kappa\choose k} - \frac\kappa2 H(\pi_{\tilde{\mu}}) - \log|\mathcal{X}|
+    \end{equation*}
+    where $\tilde{\mu}_0(x) = \sum_{k=0}^\kappa\tilde{\mu}(x, k)$.
+
+    Since $\pi_{\tilde{\mu}} = \pi_\mu$ we can rewrite
+    \begin{equation}
+        V(\beta, \kappa, \tilde{\mu}) = \beta\sum_{x\in\mathcal{X}} \mu_0^x x + H(\tilde{\mu}) + \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \tilde{\mu}(x, k)\log{\kappa\choose k} - \frac\kappa2 H(\pi_{\mu}) - \log|\mathcal{X}|
+        \label{Eq.HAIS-V-2}
+    \end{equation}
+    Observe that $V$ is only dependent on $\tilde{\mu}$ in the second and third term after the constraints are applied.
+
+    Solving for this optimization problem (over hardcore support) with constraints
+    \begin{equation}
+        \begin{aligned}
+            \pi_\mu(0, 0) & = \frac1\kappa \sum_{k=0}^\kappa k\tilde{\mu}(0, k)          \\
+            \pi_\mu(0, 1) & = \frac1\kappa \sum_{k=0}^\kappa (\kappa-k)\tilde{\mu}(0, k) \\
+            \pi_\mu(1, 0) & = \tilde{\mu}(1, 0)
+        \end{aligned}
+    \end{equation}
+    with corresponding Lagrange multipliers $\lambda^{00}$, $\lambda^{01}$, and $\lambda^{10}$.
+
+    This gives the following equations:
+    \begin{equation}
+        \begin{cases}
+            \partial \tilde{\mu}(0, k) & = -\log \tilde{\mu}(0, k) - 1 + \log {\kappa \choose k} + \lambda^{00} k  + \lambda^{01} (\kappa-k) = 0 \\
+            \partial \tilde{\mu}(1, 0) & = -\log \tilde{\mu}(0, 1) - 1 + \lambda^{10} \kappa = 0.
+        \end{cases}
+    \end{equation}
+    Let $q^{x, x'} = \exp\left(\lambda^{x, x'} - 1 / \kappa\right)$, we have the following form for $\tilde{\mu}$:
+    \begin{equation}
+        \begin{cases}
+            \tilde{\mu}(0, k) & = \displaystyle{\kappa \choose k} (q^{00})^k (q^{01})^{\kappa - k} \\
+            \tilde{\mu}(1, 0) & = \displaystyle (q^{10})^\kappa.
+        \end{cases}
+    \end{equation}
+    We therefore need to solve for
+    \begin{equation}
+        \begin{aligned}
+            \pi_\mu(0, 0) & = q^{00}(q^{00} + q^{01})^{\kappa-1} \\
+            \pi_\mu(0, 1) & = q^{01}(q^{00} + q^{01})^{\kappa-1} \\
+            \pi_\mu(1, 0) & = (q^{10})^\kappa
+        \end{aligned}
+    \end{equation}
+    with
+    \begin{equation}
+        \begin{aligned}
+            \mu_0(0) & = (q^{00} + q^{01})^{\kappa} \\
+            \mu_0(1) & = (q^{10})^\kappa.
+        \end{aligned}
+    \end{equation}
+
+    Hence, the stationary point is
+    \begin{equation*}
+        \begin{cases}
+            \mu(0, k) & = \displaystyle\mu_0(0){\kappa\choose k}\left[\frac{\pi_\mu(0, 0)}{\mu_0(0)}\right]^k\left[\frac{\pi_\mu(0, 1)}{\mu_0(0)}\right]^{\kappa-k} \\
+            \mu(1, 0) & = \displaystyle\mu_0(1).
+        \end{cases}
+    \end{equation*}
+
+    To see that the stationary point is indeed a maximum, notice that in (\ref{Eq.HAIS-V-2}), $H(\mu)$ is concave in probability measure $\mu$ and $\sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \mu(x, k)\log{\kappa\choose k}$ is linear in $\mu$. This gives that $V$ is concave in $\mu$. Thus, by continuity of $V$, all stationary points are local maxima, and the maximum lies on the interior of $M$.
+
+    This means that the above expression, or $\widehat{\mu}$ maximizes the objective function given edge probability measure $\pi_\mu$,
+    and is thus the form of an optimizer.
+
+    Hence, given $\widehat{\mu}$ parametrized by $\widehat{\pi}$ we can rewrite the terms
+    \begin{align*}
+        H(\widehat{\mu}) + \sum_{x\in\mathcal{X}}\sum_{k=0}^\kappa \widehat{\mu}(x, k)\log{\kappa\choose k} = -(\kappa-1) H(\widehat{\mu}_0) + \kappa H(\pi_{\widehat{\mu}})
+    \end{align*}
+    Thus we can write
+    \begin{equation*}
+        \psi(\beta, \kappa) = \sup_{\widehat{\pi}\in\Delta} \tilde{V}(\beta, \kappa, \widehat{\pi}) = \sup_{\widehat{\pi}\in\Delta} \left[\mathbb{E}_{\widehat{\mu}_0} \beta X_0 + \frac\kappa2 H(\widehat{\pi}) - (\kappa-1) H(\widehat{\mu}_0) - \log|\mathcal{X}| \right]
+    \end{equation*}
+
+\end{proof}
+
 
 \subsubsection{Solving for parameters}
 
-We therefore need to optimize
-\begin{equation*}
-    \sup_{\pi_\mu^-\in(0, 1)}\left[ \mathbb{E}_{\mu_0} \beta X_0 + \frac\kappa2 H(\pi_\mu) - (\kappa-1) H(\mu_0) \right]
-\end{equation*}
-where $\mu_0(x_0) = \sum_{x_v\in\mathcal{X}}\pi_\mu(x_0, x_v)$. We can write $\pi_\mu(1, 0) = \pi_\mu(0, 1) = \frac12(1 - \pi_\mu^-)$
+\begin{lemma}
+    \begin{enumerate}
+        An optimizer of the Hardcore Ising optimization problem
+        \begin{equation*}
+            \psi(\beta, \kappa) = \sup_{\mu\in M} \left\{\mathbb{E}_\mu\left[\beta X_0\right] - \left[H(\mu\|\eta) - \frac\kappa2 H(\pi_\mu\| \pi_\eta)\right]\right\}
+        \end{equation*}
+        is
+        \begin{equation}
+            \mu(\mathbf{x}, \tau) = \frac1Z \exp\left[\beta x_0 + h \sum_{v\in\mathcal{N}_o(\tau)}(1-x_v)\right],
+        \end{equation}
+        with $h$ being a solution to
+        \begin{equation}
+            h = (\kappa-1)\log(1+e^{-h}) - \beta,
+        \end{equation}
+    \end{enumerate}
+\end{lemma}
 
-Applying Lagrange multiplier
-\begin{equation}
-    \partial_{\pi_\mu^-} = -\frac\beta2-\frac\kappa2 \left[\log\pi_\mu^- - \log \frac12(1 - \pi_\mu^-)\right] - \frac{\kappa-1}{2}\log\frac{1-\pi_\mu^-}{1+\pi_\mu^-} = 0
-\end{equation}
+\begin{proof}
+    Leveraging the previous lemma, we optimize for $\tilde{V}$ for $\widehat{\pi}\in \Delta$. We parametrize with (\ref{Eq.HAIS-pi-param}),
+    and applying Lagrange multiplier, we have
+    \begin{equation}
+        \partial \pi^{00} = -\frac\beta2-\frac\kappa2 \left[\log\pi^{00} - \log \frac12(1 - \pi^{00})\right] - \frac{\kappa-1}{2}\log\frac{1-\pi^{00}}{1+\pi^{00}} = 0.
+    \end{equation}
+
+    Now consider
+\end{proof}
+
 If we substitute $\pi_\mu^-=\frac{q^-}{2+q^-}$, which can be obtained from (\ref{Eq.HAIS-Q-SOL}), we have
 \begin{equation}
     \beta + \kappa \log q^- - (\kappa-1)\log (1+q^-) = 0
@@ -1352,12 +1470,12 @@ where $h(\beta, \kappa) = (\kappa - 1)\log (1+e^{-h(\beta, \kappa)}) - \beta$
     \begin{enumerate}
         \item Implicit differentiation gives
               \begin{equation*}
-                  \frac{\partial h}{\partial\beta} = -\frac{1+e^{-h}}{1+\kappa e^{-h}} < 0 \qquad \forall h\in \mathbb{R}.
+                  \frac{\partial h}{\partial\beta} = -\frac{1+e^{-h}}{1+\kappa e^{-h}} < 0, \qquad \forall h\in \mathbb{R}.
               \end{equation*}
               Thus, $h$ monotonically decreases with $\beta$.
         \item Similarly,
               \begin{equation*}
-                  \frac{\partial h}{\partial \kappa} = \log(1+e^-h)\frac{1+e^{-h}}{1+\kappa e^{-h}} > 0 \forall h\in \mathbb{R}, \kappa\in\mathbb{Z}_{\geq 2}
+                  \frac{\partial h}{\partial \kappa} = \log(1+e^-h)\frac{1+e^{-h}}{1+\kappa e^{-h}} > 0, \qquad \forall h\in \mathbb{R}, \kappa\in\mathbb{Z}_{\geq 2}
               \end{equation*}
         \item Again, we have
               \begin{align*}
