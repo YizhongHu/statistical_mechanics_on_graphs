@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
 \usepackage{parskip}
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathabx}
 \usepackage{hyperref}
 \usepackage{fontspec}
 \usepackage{setspace}
@@ -1676,5 +1676,78 @@ Substituting into (\ref{Eq.HAIS-psi2}), and simplifying, we have
 
 \section{Jul 18 - Jul 21}
 
+\subsection{Bipartite Ising Model Numerical}
+
+\subsubsection{Numerical Methods}
+We consider independent probability measures $\mu^a$ and $\mu^v$, on $\ell$-star and $k$-star respectively.
+Since the leaves are considered identical, we can write $\mu^a(x, j)$ and $\mu^v(x, i)$ to represent the probabilities
+that the root mark is $x$ and there are $j$ and $i$ leaves with mark $+$ respectively.
+
+The edge distribution is
+\begin{align*}
+    \begin{cases}
+        \displaystyle\pi_{\mu^a} (x_0, +) = \frac1\ell\sum_{j=0}^\ell j \mu^a(x_0, j) \\
+        \displaystyle\pi_{\mu^a} (x_0, -) = \frac1\ell\sum_{j=0}^\ell (\ell-j) \mu^a(x_0, j)
+    \end{cases}
+    \intertext{and}
+    \begin{cases}
+        \displaystyle\pi_{\mu^v} (x_0, +) = \frac1k\sum_{i=0}^k k \mu^v(x_0, i) \\
+        \displaystyle\pi_{\mu^v} (x_0, -) = \frac1k\sum_{i=0}^k (k-i) \mu^v(x_0, i).
+    \end{cases}
+\end{align*}
+
+The symmetry constraint gives
+\begin{equation*}
+    \pi_{\mu^a} (x_0, x_v) = \pi_{\mu^v} (x_v, x_0),\qquad \forall x_0, x_v\in\mathcal{X}.
+\end{equation*}
+
+We want to solve the optimization problem
+\begin{align*}
+    \psi(\beta, B, \ell, k) = & \sup_{\mu^a, \mu^v}\left\{\alpha\mathbb{E}_{\mu^a}\left[\frac\beta2\sum_v x_0 x_v + B x_0\right] + \mathbb{E}_{\mu^v}\left[\frac\beta2\sum_v x_0 x_v + B x_0\right] \right.      \\
+                              & - \alpha\frac12\left[H(\mu^a\|\widecheck{\mu}^a) + H(\mu^a\|\widehat{\mu}^a)\right] \left.- \frac12\left[H(\mu^v\|\widecheck{\mu}^v) + H(\mu^v\|\widehat{\mu}^v)\right]\right\},
+\end{align*}
+where
+\begin{equation*}
+    \begin{cases}
+        \displaystyle\widecheck{\mu}^a(x_0, j) = \frac12{\ell \choose j}[\pi_{\mu^a}^v(+)]^j[\pi_{\mu^a}^v(-)]^{\ell-j} \\
+        \displaystyle\widecheck{\mu}^v(x_0, i) = \frac12{k \choose j}[\pi_{\mu^a}^v(+)]^i[\pi_{\mu^a}^v(-)]^{k-i}
+    \end{cases}
+\end{equation*}
+and
+\begin{equation*}
+    \begin{cases}
+        \displaystyle\widehat{\mu}^a(x_0, j) = \frac12{\ell \choose j}[\pi_{\mu^a}^{v|0}(+|x_0)]^j[\pi_{\mu^a}^v(-|x_0)]^{\ell-j} \\
+        \displaystyle\widehat{\mu}^v(x_0, i) = \frac12{k \choose j}[\pi_{\mu^a}^{v|0}(+|x_0)]^i[\pi_{\mu^a}^{v|0}(-|x_0)]^{k-i},
+    \end{cases}
+\end{equation*}
+with
+\begin{align*}
+    \pi_{\mu^{(\cdot)}}^0(x_0)         & = \sum_{x_v\in\mathcal{X}}\pi_{\mu^{(\cdot)}}(x_0, x_v)             \\
+    \pi_{\mu^{(\cdot)}}^v(x_v)         & = \sum_{x_0\in\mathcal{X}}\pi_{\mu^{(\cdot)}}(x_0, x_v)             \\
+    \pi_{\mu^{(\cdot)}}^{v|0}(x_v|x_0) & = \frac{\pi_{\mu^{(\cdot)}}(x_0, x_v)}{\pi_{\mu^{(\cdot)}}^0(x_0)}.
+\end{align*}
+
+The SLSQP optimizer in SciPy will be used. We initialize with $\text{Uniform}(-1, 1)$ for all entries in $\mu^a$ and $\mu^v$.
+The objective tolerance is $10^{-10}$, and the tolerance for normality and symmetry constraints is $10^{-15}$ (We must allow for some
+wiggle room to find the optimizer). We take 5 such trials with different initial values and choose the one that maximizes the objective.
+For each trial, we retry if a failure is encountered.
+
+\subsubsection{Conditional Independence}
+
+We hypothesize that two distinct leaves chosen uniformly from the $a$ or the $v$ trees are conditionally independent on the root mark, i.e.
+\begin{align*}
+    \mathbb{P}_{\mu^{(\cdot)}}(X_v=x_v, X_{v'}=x_{v'}|X_0=x_0) = \mathbb{P}_{\mu^{(\cdot)}}(X_v=x_v|X_0=x_0)\mathbb{P}_{\mu^{(\cdot)}}(X_{v'}=x_{v'}|X_0=x_0)
+\end{align*}
+In other words, we hypothesize that
+\begin{equation*}
+    \begin{cases}
+        \mu^a(x_0, j)=\pi_{\mu^a}^0(x){\ell\choose j}[\pi_{\mu^a}^{v|0}(+|x_0)]^j[\pi_{\mu^a}^{v|0}(-|x_0)]^{\ell-j} \\
+        \mu^v(x_0, i)=\pi_{\mu^v}^0(x){k\choose i}[\pi_{\mu^v}^{v|0}(+|x_0)]^i[\pi_{\mu^v}^{v|0}(-|x_0)]^{k-i}
+    \end{cases}
+\end{equation*}
+Since by the symmetry constraint, $\pi_{\mu^a}(x_0, x_v)=\pi_{\mu^a}(x_v, x_0)$, $\pi_{\mu^a}$ and $\pi_{\mu^v}$ are transposed versions
+of each other. This means that the optimizer can be parametrized by some $\pi_\mu$.
+
+But we are getting ahead of ourselves here. Let's try and prove our hunch.
 
 \end{document}
