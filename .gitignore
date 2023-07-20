@@ -6,3 +6,4 @@ src/__pycache__
 source/files
 *.bbl
 *.run.xml
+*.npz

@@ -1748,6 +1748,16 @@ In other words, we hypothesize that
 Since by the symmetry constraint, $\pi_{\mu^a}(x_0, x_v)=\pi_{\mu^a}(x_v, x_0)$, $\pi_{\mu^a}$ and $\pi_{\mu^v}$ are transposed versions
 of each other. This means that the optimizer can be parametrized by some $\pi_\mu$.
 
-But we are getting ahead of ourselves here. Let's try and prove our hunch.
+Indeed, the leaf mark distributions, given the root mark, are independent. We can see this by looking at the mutual information
+between two distinct leaves chosen uniformly.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{img/Ising_bptt/CI_l3_k3.png}
+    \caption{For Ising on a bipartite graph, $l=3$, $k=3$, leaves are conditionally independent given the root node. It is true for both the $a$ star
+    and the $k$ star. Note that sometimes the optimizers seem to fail to find the optimizer, and we get spikes in mutual information, but they are not
+    consistent and disappear after a trial with a different seed.}
+    \label{Eq.ISBP-CI-l3-k3}
+\end{figure}
 
 \end{document}
