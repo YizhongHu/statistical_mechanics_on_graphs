@@ -11,8 +11,6 @@ from multiprocessing import Pool
 from itertools import repeat
 import functools
 
-l, k = 3, 3
-
 
 def eta_partial(kappa):
     """
@@ -307,7 +305,9 @@ def vertex_mutual_info(mu, l):
 
 def calc_mutual_info(args):
     beta, B, l, k = args
-    mu_a, mu_v = optimize(beta, B, 3, 3, ftol=1e-10, constraint_tol=1e-15, num_trials=1)
+    mu_a, mu_v = optimize(
+        beta, B, l, k, ftol=1e-10, constraint_tol=1e-15, num_trials=10
+    )
 
     mu0a = np.sum(mu_a, axis=1)
     mu0v = np.sum(mu_v, axis=1)
@@ -341,8 +341,12 @@ def job(l, k, seed):
     with open(f"../data/ising_bptt/{l=}_{k=}.npz", "wb+") as f:
         np.savez(
             f,
+            betas=betas,
+            Bs=Bs,
             l=l,
             k=k,
+            betam=betam,
+            Bm=Bm,
             seed=seed,
             mu_a=mu_a,
             mu_v=mu_v,
@@ -354,4 +358,7 @@ def job(l, k, seed):
 
 
 if __name__ == "__main__":
-    job(l=3, k=3, seed=0)
+    for l in range(4, 7):
+        for k in range(l, 7):
+            print(f"{l=}, {k=}")
+            job(l=l, k=k, seed=0)
