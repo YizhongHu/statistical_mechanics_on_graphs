@@ -1782,6 +1782,65 @@ Among the 900 or so optimization attempts, about 10 will fail.
 
 \subsubsection{Conditional Independence}
 
+In this part, we will try to prove conditional independence. First, we notice that we can split the objective function into two independent parts.
+Since $\mu^a$ and $\mu^v$ are independent,
+\begin{equation}
+    \begin{aligned}
+        V(\beta, B, \ell, k, \mu^a, \mu^v) = \alpha & \left\{\mathbb{E}_{\mu^a}\left[\frac\beta2\sum_{v=1}^l x_0x_v + B x_0\right]
+        - \frac12\left[H(\mu^a\|\widecheck{\mu}^a)+H(\mu^a\|\widehat{\mu}^a)\right]\right\} +                                      \\
+                                                    & \left\{\mathbb{E}_{\mu^v}\left[\frac\beta2\sum_{v=1}^k x_0x_v + B x_0\right]
+        - \frac12\left[H(\mu^v\|\widecheck{\mu}^v)+H(\mu^v\|\widehat{\mu}^v)\right]\right\},
+    \end{aligned}
+\end{equation}
+Can be solved quite easily by fixing one distribution.
+Say we fix $\mu^v$. By the symmetry constraint,
+\begin{equation*}
+    \pi_{\mu^a}(x_0, x_v) = \pi_{\mu^a}(x_v, x_0),
+\end{equation*}
+which means that the edge distribution is fixed. Therefore, the optimization problem becomes
+\begin{equation}
+    \sup_{\substack{\mu^a\in M \\ \pi_{\mu^a}=\pi}} \left\{\mathbb{E}_{\mu^a}\left[\frac\beta2\sum_{v=1}^l x_0x_v + B x_0\right]
+    - \frac12\left[H(\mu^a\|\widecheck{\mu}^a)+H(\mu^a\|\widehat{\mu}^a)\right]\right\}
+\end{equation}
+for $\pi$ a probability measure on $\mathcal{X}^2$. In this case, $\pi(x_0, x_v) = \pi_{\mu^v}(x_v, x_0)$. We define the new objective as $U^a(\beta, B, \ell, \mu^a; \pi)$.
+This is a similar problem to the one we solved for Ising on regular trees. We have
+\begin{align*}
+    \mathbb{E}_{\mu^a}\left[\frac\beta2\sum_{v=1}^l x_0x_v + B x_0\right] & = \mathbb{E}_\pi\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right]                                                                        \\
+    H(\mu^a\|\widecheck{\mu}^a)                                           & = -H(\mu^a)-\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j} +\ell H(\pi_{\mu^a}^1)  + \log2                     \\
+    H(\mu^a\|\widehat{\mu}^a)                                             & = -H(\mu^a)-\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j} +\ell H(\pi_{\mu^a})-\ell H(\pi_{\mu^a}^0) + \log2.
+\end{align*}
+Thus, neglecting constants, write the objective as
+\begin{equation*}
+    \mathbb{E}_{\pi_{\mu^a}}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right] - H(\mu^a) -\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j} + \frac\ell2\left[H(\pi_{\mu^a}^1)+H(\pi_{\mu^a})-H(\pi_{\mu^a}^0)\right].
+\end{equation*}
+Taking $\pi_{\mu^a}=\pi$, most terms become constants, and we are left with
+\begin{equation*}
+    - H(\mu^a) -\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j}.
+\end{equation*}
+We can solve this problem with Lagrange multipliers, constraints being $\pi_{\mu^a}=\pi$. Solving for the constraint, we get optimizer
+\begin{equation}
+    \bar{\mu}^a(x_0, j; \pi) = \pi^0(x_0){\ell\choose j}\left[\frac{\pi(x_0,x_0)}{\pi^0(x_0)}\right]^j\left[\frac{\pi(x_0,-x_0)}{\pi^0(x_0)}\right]^{\ell-j}.
+\end{equation}
+Similarly, for $\mu^v$, we can set $\pi_{\mu^v}(x_0, x_v) = \pi(x_v, x_0)$, the transpose of $\pi$, and obtain
+\begin{equation}
+    \bar{\mu}^v(x_0, i; \pi) = \pi^1(x_0){k\choose i}\left[\frac{\pi(x_0,x_0)}{\pi^1(x_0)}\right]^i\left[\frac{\pi(-x_0,x_0)}{\pi^1(x_0)}\right]^{k-i}.
+\end{equation}
+
+Plug in the expressions,
+\begin{equation}
+    U^a(\beta, B, \ell, \bar{\mu}^a(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right]-H(\pi^0)+\frac\ell2\left[H(\pi^0)+H(\pi^1)-H(\pi)\right]
+\end{equation}
+and
+\begin{equation}
+    U^v(\beta, B, k, \bar{\mu}^v(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta k}{2}x_0 x_v+Bx_v\right]-H(\pi^1)+\frac{k}{2}\left[H(\pi^0)+H(\pi^1)-H(\pi)\right].
+\end{equation}
+Hence, rewriting the objective, define
+\begin{equation}
+    \widetilde{V}(\beta, B, \ell, k, \pi) = \mathbb{E}_{\pi}\left[\beta k x_0 x_v + \alpha Bx_0 + B x_v\right] + (k-\alpha)H(\pi^0) + (k-1)H(\pi^1) - kH(\pi)
+\end{equation}
+
 \subsubsection{Solve for edge distribution}
+
+
 
 \end{document}
