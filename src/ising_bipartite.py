@@ -358,7 +358,6 @@ def job(l, k, seed):
 
 
 if __name__ == "__main__":
-    for l in range(4, 7):
-        for k in range(l, 7):
-            print(f"{l=}, {k=}")
-            job(l=l, k=k, seed=0)
+    for l, k in [(3, 4), (6, 7), (4, 7), (5, 7), (4, 8), (5, 8), (6, 8), (7, 8), (8, 8)]:
+        print(f"{l=}, {k=}")
+        job(l=l, k=k, seed=0)
