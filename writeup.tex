@@ -1753,11 +1753,35 @@ between two distinct leaves chosen uniformly.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=14cm]{img/Ising_bptt/CI_l3_k3.png}
-    \caption{For Ising on a bipartite graph, $l=3$, $k=3$, leaves are conditionally independent given the root node. It is true for both the $a$ star
-    and the $k$ star. Note that sometimes the optimizers seem to fail to find the optimizer, and we get spikes in mutual information, but they are not
-    consistent and disappear after a trial with a different seed.}
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l3_k3.png}
+    \caption{For Ising on a bipartite graph, $l=3$, $k=3$, leaves are conditionally independent given the root mark. It is true for both the $a$ star
+        and the $k$ star.}
     \label{Eq.ISBP-CI-l3-k3}
 \end{figure}
+
+Notice that sometimes we get spikes in mutual information, but they are not
+consistent and disappear after a trial with a different seed, so they are likely failed optimization attempts.
+Among the 900 or so optimization attempts, about 10 will fail.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l4_k4.png}
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l4_k5.png}
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l5_k5.png}
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l5_k6.png}
+    \includegraphics[width=16cm]{img/Ising_bptt/CI_l6_k6.png}
+    \caption{For Ising on a bipartite graph, leaves are conditionally independent given the root mark. We attempted on higher $l$ and $k$ values, and it seems to hold.}
+    \label{Eq.ISBP-CI-large-lk}
+\end{figure}
+
+\newpage
+
+\subsubsection{Edge distribution}
+
+\subsection{Bipartite Ising Analytical}
+
+\subsubsection{Conditional Independence}
+
+\subsubsection{Solve for edge distribution}
 
 \end{document}
