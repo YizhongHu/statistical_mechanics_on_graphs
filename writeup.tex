@@ -1841,6 +1841,96 @@ Hence, rewriting the objective, define
 
 \subsubsection{Solve for edge distribution}
 
+Taking the Lagrange multiplier of the above target $\widetilde{V}(\beta, B, \ell, k, \pi)$ on $\pi$, we have
+\begin{equation*}
+    \frac{\partial \widetilde{V}}{\partial \pi(x, x')} = \beta k x x' + \alpha B x + B x' - (k+\alpha) \log \pi^0(x) - (k+1)\log\pi^1(x') - k\log\pi(x, x') + \lambda = 0,
+\end{equation*}
+where $\lambda$ is a constant coming from the Lagrange multiplier of $\sum_{x, x'\in\mathcal{X}} \pi(x, x') = 1$.
+
+Since $\pi$ is a probability measure on $\mathcal{X}^2$, we know that $\pi^0$ and $\pi^1$ are probability measures on $\mathcal{X}$.
+Therefore, we can parametrize $\pi^0$ and $\pi^1$ as
+\begin{equation}
+    \begin{aligned}
+        \pi^0(x)  & = \frac{e^{h^a x}}{e^{h^a} + e^{-h^a}}   \\
+        \pi^1(x') & = \frac{e^{h^v x'}}{e^{h^v} + e^{-h^v}},
+    \end{aligned}
+    \label{Eq.ISBP-h-def}
+\end{equation}
+where $h^a, h^v\in\mathbb{R}$.
+
+Substituting (\ref{Eq.ISBP-h-def}), rewrite
+\begin{equation}
+    \pi(x, x') = \frac1Z \exp\left[\beta xx' + \frac1\ell Bx + \frac1kBx' + \left(1-\frac1\ell\right)h^ax + \left(1-\frac1k\right)h^vx'\right],
+\end{equation}
+where the normalizing constant $Z=e^{\lambda/k}(2\cosh h^a)^{1/k-1}(2\cosh h^v)^{1/\ell-1}$.
+
+We can confirm this with numerics. We already showed that both $\mu^a$ and $\mu^v$ are parametrized by a probability $\pi$, so investigating the
+$\pi$ distribution should be sufficient. From the above prediction, we can find that
+\begin{equation}
+    \begin{aligned}
+        \frac12\log\frac{\pi(x, x)}{\pi(x, -x)}     & = \beta + \frac1kBx + \left(1 - \frac1\ell\right)h^v x     \\
+        \frac12\log\frac{\pi(x', x')}{\pi(-x', x')} & = \beta + \frac1\ell Bx' + \left(1 - \frac1k\right) h^a x'
+    \end{aligned}
+    \label{Eq.ISBP-h-num}
+\end{equation}
+Knowing the $\pi$ distribution, we can recover two values of $h^v$ from $x=+$ and $x=-$. For the distribution to be in this form, they should be the same. Similarly, we recover two $h^a$ values from $x'=+$ and $x'=-$ and compare them. Plotting the $h$ value recovered from $+$ and $-$ states on the
+horizontal axis and vertical axis respectively, we should expect to see a line $y=x$. This is exactly what happens.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=16cm]{img/Ising_bptt/hv_pred.png}
+    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^a}$. In (\ref{Eq.ISBP-h-num}), we predicted that $h^v$ values
+        recovered by taking different values of this distribution should be the same. This is confirmed by numerical samples, with some
+        deviation due to failure to converge exactly during optimization. (Note: these are not all the values.)}
+    \label{Fig.ISBP-hv-guess}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=16cm]{img/Ising_bptt/ha_pred.png}
+    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^a}$. In (\ref{Eq.ISBP-h-num}), we predicted that $h^a$ values
+        recovered by taking different values of this distribution should be the same. This is confirmed by numerical samples, with some
+        deviation due to failure to converge exactly during optimization. (Note: these are not all the values.)}
+    \label{Fig.ISBP-ha-guess}
+\end{figure}
+
+\newpage
+
+To solve for $h^a$ and $h^v$, we consider
+\begin{equation*}
+    \begin{aligned}
+        \frac{\pi^0(+)}{\pi^0(-)} & = \exp\left\{2\left[\frac1\ell B + \left(1 - \frac1\ell\right) h^a\right]\right\} \frac{\cosh\left[\beta+\frac1k B + \left(1 - \frac1k\right)h^v\right]}{\cosh\left[-\beta+\frac1k B + \left(1 - \frac1k\right)h^v\right]} \\
+                                  & = e^{2h^a} \qquad (\text{By definition }\ref{Eq.ISBP-h-def}).
+    \end{aligned}
+\end{equation*}
+Taking log and simplifying, get
+\begin{equation}
+    h^a = B + \ell\tanh^{-1}\left\{\tanh(\beta)\tanh\left[\frac1k B + \left(1 - \frac1k\right)h^v\right]\right\}.
+\end{equation}
+Similarly, on $\pi^1$, we have
+\begin{equation}
+    h^v = B + k\tanh^{-1}\left\{\tanh(\beta)\tanh\left[\frac1\ell B + \left(1 - \frac1\ell\right)h^a\right]\right\}
+\end{equation}
+Alternatively, let 
+\begin{equation*}
+    \begin{cases}
+        \bar{h}^a &= \frac1\ell B + \left(1 - \frac1\ell\right)h^a \\
+        \bar{h}^v &= \frac1k B + \left(1 - \frac1k\right)h^v,
+    \end{cases}
+\end{equation*}
+and we can rewrite 
+\begin{equation}
+    \begin{cases}
+        \bar{h}^a &= B + (\ell-1)\tanh^{-1}\left[\tanh(\beta)\tanh(\bar{h}^v)\right] \\
+        \bar{h}^v &= B + (k-1)\tanh^{-1}\left[\tanh(\beta)\tanh(\bar{h}^a)\right].
+    \end{cases}
+    \label{Eq.ISBP-hbar-cavity}
+\end{equation}
+Hence $\pi$ becomes
+\begin{equation}
+    \pi(x, x') = \frac1Z \exp\left[\beta xx' + \bar{h}^a x + \bar{h}^v x'\right].
+    \label{Eq.ISBP-pi-hbar}
+\end{equation}
+
 
 
 \end{document}
