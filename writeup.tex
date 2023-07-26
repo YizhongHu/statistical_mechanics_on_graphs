@@ -1676,9 +1676,7 @@ Substituting into (\ref{Eq.HAIS-psi2}), and simplifying, we have
 
 \section{Jul 18 - Jul 21}
 
-\subsection{Bipartite Ising Model Numerical}
-
-\subsubsection{Numerical Methods}
+\subsection{Numerical Methods}
 We consider independent probability measures $\mu^a$ and $\mu^v$, on $\ell$-star and $k$-star respectively.
 Since the leaves are considered identical, we can write $\mu^a(x, j)$ and $\mu^v(x, i)$ to represent the probabilities
 that the root mark is $x$ and there are $j$ and $i$ leaves with mark $+$ respectively.
@@ -1732,7 +1730,7 @@ The objective tolerance is $10^{-10}$, and the tolerance for normality and symme
 wiggle room to find the optimizer). We take 5 such trials with different initial values and choose the one that maximizes the objective.
 For each trial, we retry if a failure is encountered.
 
-\subsubsection{Conditional Independence}
+\subsection{Conditional Independence Numerical}
 
 We hypothesize that two distinct leaves chosen uniformly from the $a$ or the $v$ trees are conditionally independent on the root mark, i.e.
 \begin{align*}
@@ -1776,11 +1774,7 @@ Among the 900 or so optimization attempts, about 10 will fail.
 
 \newpage
 
-\subsubsection{Edge distribution}
-
-\subsection{Bipartite Ising Analytical}
-
-\subsubsection{Conditional Independence}
+\subsection{Conditional Independence Analytical}
 
 In this part, we will try to prove conditional independence. First, we notice that we can split the objective function into two independent parts.
 Since $\mu^a$ and $\mu^v$ are independent,
@@ -1811,11 +1805,11 @@ This is a similar problem to the one we solved for Ising on regular trees. We ha
 \end{align*}
 Thus, neglecting constants, write the objective as
 \begin{equation*}
-    \mathbb{E}_{\pi_{\mu^a}}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right] - H(\mu^a) -\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j} + \frac\ell2\left[H(\pi_{\mu^a}^1)+H(\pi_{\mu^a})-H(\pi_{\mu^a}^0)\right].
+    \mathbb{E}_{\pi_{\mu^a}}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right] + H(\mu^a) + \sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j} - \frac\ell2\left[H(\pi_{\mu^a}^1)+H(\pi_{\mu^a})-H(\pi_{\mu^a}^0)\right].
 \end{equation*}
 Taking $\pi_{\mu^a}=\pi$, most terms become constants, and we are left with
 \begin{equation*}
-    - H(\mu^a) -\sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j}.
+    H(\mu^a) + \sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\mu^a(x, j)\log{\ell\choose j}.
 \end{equation*}
 We can solve this problem with Lagrange multipliers, constraints being $\pi_{\mu^a}=\pi$. Solving for the constraint, we get optimizer
 \begin{equation}
@@ -1826,24 +1820,28 @@ Similarly, for $\mu^v$, we can set $\pi_{\mu^v}(x_0, x_v) = \pi(x_v, x_0)$, the 
     \bar{\mu}^v(x_0, i; \pi) = \pi^1(x_0){k\choose i}\left[\frac{\pi(x_0,x_0)}{\pi^1(x_0)}\right]^i\left[\frac{\pi(-x_0,x_0)}{\pi^1(x_0)}\right]^{k-i}.
 \end{equation}
 
-Plug in the expressions,
-\begin{equation}
-    U^a(\beta, B, \ell, \bar{\mu}^a(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right]-H(\pi^0)+\frac\ell2\left[H(\pi^0)+H(\pi^1)-H(\pi)\right]
-\end{equation}
+Plug in the expressions, we have
+\begin{equation*}
+    H(\bar{\mu}^a(\cdot; \pi)) + \sum_{x\in\mathcal{X}}\sum_{j=0}^\ell\bar{\mu}^a(\cdot; \pi)\log{\ell\choose j} = H(\pi^0)+ \ell H(\pi) - \ell H(\pi^0)
+\end{equation*}
 and
 \begin{equation}
-    U^v(\beta, B, k, \bar{\mu}^v(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta k}{2}x_0 x_v+Bx_v\right]-H(\pi^1)+\frac{k}{2}\left[H(\pi^0)+H(\pi^1)-H(\pi)\right].
+    U^a(\beta, B, \ell, \bar{\mu}^a(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta\ell}{2}x_0 x_v+Bx_0\right]+H(\pi^0)-\frac\ell2\left[H(\pi^0)+H(\pi^1)-H(\pi)\right].
+\end{equation}
+Similarly,
+\begin{equation}
+    U^v(\beta, B, k, \bar{\mu}^v(\cdot; \pi); \pi) = \mathbb{E}_{\pi}\left[\frac{\beta k}{2}x_0 x_v+Bx_v\right]+H(\pi^1)-\frac{k}{2}\left[H(\pi^0)+H(\pi^1)-H(\pi)\right].
 \end{equation}
 Hence, rewriting the objective, define
 \begin{equation}
-    \widetilde{V}(\beta, B, \ell, k, \pi) = \mathbb{E}_{\pi}\left[\beta k x_0 x_v + \alpha Bx_0 + B x_v\right] + (k-\alpha)H(\pi^0) + (k-1)H(\pi^1) - kH(\pi)
+    \widetilde{V}(\beta, B, \ell, k, \pi) = \mathbb{E}_{\pi}\left[\beta k x_0 x_v + \alpha Bx_0 + B x_v\right] - (k-\alpha)H(\pi^0) - (k-1)H(\pi^1) + kH(\pi)
 \end{equation}
 
-\subsubsection{Solve for edge distribution}
+\subsection{Solve for edge distribution}
 
 Taking the Lagrange multiplier of the above target $\widetilde{V}(\beta, B, \ell, k, \pi)$ on $\pi$, we have
 \begin{equation*}
-    \frac{\partial \widetilde{V}}{\partial \pi(x, x')} = \beta k x x' + \alpha B x + B x' - (k+\alpha) \log \pi^0(x) - (k+1)\log\pi^1(x') - k\log\pi(x, x') + \lambda = 0,
+    \frac{\partial \widetilde{V}}{\partial \pi(x, x')} = \beta k x x' + \alpha B x + B x' + (k+\alpha) \log \pi^0(x) + (k+1)\log\pi^1(x') - k\log\pi(x, x') + \lambda = 0,
 \end{equation*}
 where $\lambda$ is a constant coming from the Lagrange multiplier of $\sum_{x, x'\in\mathcal{X}} \pi(x, x') = 1$.
 
@@ -1860,77 +1858,185 @@ where $h^a, h^v\in\mathbb{R}$.
 
 Substituting (\ref{Eq.ISBP-h-def}), rewrite
 \begin{equation}
-    \pi(x, x') = \frac1Z \exp\left[\beta xx' + \frac1\ell Bx + \frac1kBx' + \left(1-\frac1\ell\right)h^ax + \left(1-\frac1k\right)h^vx'\right],
+    \pi(x, x') = \frac1{Z^\pi} \exp\left[\beta xx' + \frac1\ell Bx + \frac1kBx' + \left(1-\frac1\ell\right)h^ax + \left(1-\frac1k\right)h^vx'\right],
 \end{equation}
-where the normalizing constant $Z=e^{\lambda/k}(2\cosh h^a)^{1/k-1}(2\cosh h^v)^{1/\ell-1}$.
+where the normalizing constant $Z^\pi=e^{\lambda/k}(2\cosh h^a)^{1/k-1}(2\cosh h^v)^{1/\ell-1}$.
+
+Let
+\begin{equation}
+    \begin{cases}
+        \bar{h}^a & = \frac1\ell B + \left(1 - \frac1k\right)h^a  \\
+        \bar{h}^v & = \frac1k B + \left(1 - \frac1\ell\right)h^v,
+    \end{cases}
+    \label{Eq.ISBP-hbar-def}
+\end{equation}
+and $\pi$ becomes
+\begin{equation}
+    \pi(x, x') = \frac1{Z^\pi} \exp\left[\beta xx' + \bar{h}^a x + \bar{h}^v x'\right].
+    \label{Eq.ISBP-pi-hbar}
+\end{equation}
+
+To solve for $\bar{h}^a$ and $\bar{h}^v$, we consider
+\begin{equation*}
+    e^{2h^a} = \frac{\pi^0(+)}{\pi^0(-)} = \exp(2\bar{h}^a) \frac{\cosh\left[\beta+\bar{h}^v\right]}{\cosh\left[-\beta+\bar{h}^v\right]}
+\end{equation*}
+By definition (\ref{Eq.ISBP-hbar-def}),
+\begin{equation*}
+    \begin{cases}
+        h^a & = \displaystyle\frac{k(\ell\bar{h}^a - B)}{k\ell - \ell} \\
+        h^v & = \displaystyle\frac{\ell(k\bar{h}^v - B)}{k\ell - k}.
+    \end{cases}
+\end{equation*}
+Taking log and simplifying, get
+\begin{equation}
+    \bar{h}^a = B + (\ell - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^v)].
+    \label{Eq.ISBP-hbar-a}
+\end{equation}
+Similarly, on $\pi^1$, we have
+\begin{equation}
+    \bar{h}^v = B + (k - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^a)]
+    \label{Eq.ISBP-hbar-v}
+\end{equation}
+
+\subsection{Cross-checking with Numerical Results}
 
 We can confirm this with numerics. We already showed that both $\mu^a$ and $\mu^v$ are parametrized by a probability $\pi$, so investigating the
-$\pi$ distribution should be sufficient. From the above prediction, we can find that
+$\pi$ distribution should be sufficient. First, we want to confirm that $\pi$ comes in this form:
+\begin{equation}
+    \pi(x, x') = \frac1{Z_\pi} \exp\left[\beta xx' + \bar{h}^a x + \bar{h}^v x'\right].
+\end{equation}
+To check this, we can try and recover $\bar{h}^v$ and $\bar{h}^a$ values from $\pi_{\mu^a}$, namely
 \begin{equation}
     \begin{aligned}
-        \frac12\log\frac{\pi(x, x)}{\pi(x, -x)}     & = \beta + \frac1kBx + \left(1 - \frac1\ell\right)h^v x     \\
-        \frac12\log\frac{\pi(x', x')}{\pi(-x', x')} & = \beta + \frac1\ell Bx' + \left(1 - \frac1k\right) h^a x'
+        \frac12\log\frac{\pi(x, x)}{\pi(x, -x)}     & = \beta + \bar{h}^v x   \\
+        \frac12\log\frac{\pi(x', x')}{\pi(-x', x')} & = \beta + \bar{h}^a x'.
     \end{aligned}
     \label{Eq.ISBP-h-num}
 \end{equation}
-Knowing the $\pi$ distribution, we can recover two values of $h^v$ from $x=+$ and $x=-$. For the distribution to be in this form, they should be the same. Similarly, we recover two $h^a$ values from $x'=+$ and $x'=-$ and compare them. Plotting the $h$ value recovered from $+$ and $-$ states on the
-horizontal axis and vertical axis respectively, we should expect to see a line $y=x$. This is exactly what happens.
-\begin{figure}[h]
+Notice that by doing this, we can recover $\bar{h}^v$ values from both $x=+$ and $x=-$. If our form is correct,
+the two predictions should equal each other for all $\beta$ and $B$. More specifically, for
+\begin{equation*}
+    \begin{cases}
+        \bar{h}^v_+ & = -\frac12\log\frac{\pi(+, +)}{\pi(+, -)} + \beta \\
+        \bar{h}^v_- & = \frac12\log\frac{\pi(-, -)}{\pi(-, +)} - \beta
+    \end{cases}
+\end{equation*}
+we want $\bar{h}^v_- = \bar{h}^v_+$ for all $\pi$. We can plot $\bar{h}^v_+$ on the horizontal axis and $\bar{h}^v_-$
+on the vertical axis for each pair of $\beta$ and $B$ values. They should all lie on the line with slope 1 through the
+origin $y = x$. This is indeed true, with some noise due to optimizer not converging properly.
+\begin{figure}[!h]
     \centering
     \includegraphics[width=16cm]{img/Ising_bptt/hv_pred.png}
-    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^a}$. In (\ref{Eq.ISBP-h-num}), we predicted that $h^v$ values
-        recovered by taking different values of this distribution should be the same. This is confirmed by numerical samples, with some
-        deviation due to failure to converge exactly during optimization. (Note: these are not all the values.)}
+    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^a}$. In (\ref{Eq.ISBP-h-num}), $\bar{h}^v$
+        values recovered by taking different values of this distribution are the same. This is confirmed with some
+        deviation (Note: these are not all the values.)}
     \label{Fig.ISBP-hv-guess}
 \end{figure}
 
-\begin{figure}[h]
+Similarly for $\bar{h}^a$, we compare
+\begin{equation*}
+    \begin{cases}
+        \bar{h}^a_+ & = -\frac12\log\frac{\pi(+, +)}{\pi(-, +)} + \beta \\
+        \bar{h}^a_- & = \frac12\log\frac{\pi(-, -)}{\pi(+, -)} - \beta
+    \end{cases}
+\end{equation*}
+Indeed, they match our predictions.
+\begin{figure}[!h]
     \centering
     \includegraphics[width=16cm]{img/Ising_bptt/ha_pred.png}
-    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^a}$. In (\ref{Eq.ISBP-h-num}), we predicted that $h^a$ values
-        recovered by taking different values of this distribution should be the same. This is confirmed by numerical samples, with some
-        deviation due to failure to converge exactly during optimization. (Note: these are not all the values.)}
+    \caption{In the Ising bipartite model, we observe the edge distribution $\pi_{\mu^v}$. In (\ref{Eq.ISBP-h-num}), $\bar{h}^v$
+        values recovered by taking different values of this distribution are the same. This is confirmed with some
+        deviation (Note: these are not all the values.)}
     \label{Fig.ISBP-ha-guess}
 \end{figure}
 
 \newpage
 
-To solve for $h^a$ and $h^v$, we consider
-\begin{equation*}
-    \begin{aligned}
-        \frac{\pi^0(+)}{\pi^0(-)} & = \exp\left\{2\left[\frac1\ell B + \left(1 - \frac1\ell\right) h^a\right]\right\} \frac{\cosh\left[\beta+\frac1k B + \left(1 - \frac1k\right)h^v\right]}{\cosh\left[-\beta+\frac1k B + \left(1 - \frac1k\right)h^v\right]} \\
-                                  & = e^{2h^a} \qquad (\text{By definition }\ref{Eq.ISBP-h-def}).
-    \end{aligned}
-\end{equation*}
-Taking log and simplifying, get
-\begin{equation}
-    h^a = B + \ell\tanh^{-1}\left\{\tanh(\beta)\tanh\left[\frac1k B + \left(1 - \frac1k\right)h^v\right]\right\}.
-\end{equation}
-Similarly, on $\pi^1$, we have
-\begin{equation}
-    h^v = B + k\tanh^{-1}\left\{\tanh(\beta)\tanh\left[\frac1\ell B + \left(1 - \frac1\ell\right)h^a\right]\right\}
-\end{equation}
-Alternatively, let 
+We can also check the cavity equation (\ref{Eq.ISBP-hbar-a}) and (\ref{Eq.ISBP-hbar-v}):
 \begin{equation*}
     \begin{cases}
-        \bar{h}^a &= \frac1\ell B + \left(1 - \frac1\ell\right)h^a \\
-        \bar{h}^v &= \frac1k B + \left(1 - \frac1k\right)h^v,
+        \bar{h}^a & = B + (\ell - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^v)] \\
+        \bar{h}^v & = B + (k - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^a)]
     \end{cases}
 \end{equation*}
-and we can rewrite 
+
+This is a bit complicated. There seems to be multiple solutions to the cavity equation. We will deal with it later.
+
+\newpage
+
+\subsection{Form of optimizer given cavity field}
+
+To solve for $\mu^a$ and $\mu^v$, we first consider the root mark distributions:
+\begin{equation*}
+    \pi^0(x) = \frac1{Z_\pi}e^{\bar{h}^a x} 2\cosh(\beta x + \bar{h}^v)
+\end{equation*}
+we can see that
+\begin{equation*}
+    Z^\pi = 2e^{\bar{h}^a}\cosh(\beta + \bar{h}^v) + 2e^{-\bar{h}^a}\cosh(\beta - \bar{h}^v)
+\end{equation*}
+Thus
+\begin{align*}
+    \pi^0(x) & = \frac{e^{\bar{h}^a x} \cosh(\beta x + \bar{h}^v)}{e^{\bar{h}^a x}\cosh(\beta x + \bar{h}^v) + e^{-\bar{h}^ax}\cosh(\beta x - \bar{h}^v)} \\
+             & = \frac{1}{1 + e^{-2\bar{h}^ax}\frac{\cosh(\beta x - \bar{h}^v)}{\cosh(\beta x + \bar{h}^v)}}
+\end{align*}
+We can rewrite (\ref{Eq.ISBP-hbar-a}) as
+\begin{equation*}
+    2\bar{h}^a x = 2 B x + (\ell - 1) \log \frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)},
+\end{equation*}
+for all $x\in\{-1, 1\}$.
+
+Exponentiating and rearranging, we have
+\begin{equation*}
+    e^{2\bar{h}^ax}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right] = e^{Bx}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right]^\ell.
+\end{equation*}
+Thus,
+\begin{align*}
+    \pi^0(x) & = \frac{1}{1 + e^{-2Bx}\left[\frac{\cosh(\beta x - \bar{h}^v)}{\cosh(\beta x + \bar{h}^v)}\right]^\ell}                         \\
+             & = \frac{e^{Bx}[\cosh(\beta x + \bar{h}^v)]^\ell}{e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell}.
+\end{align*}
+Therefore,
+\begin{align*}
+    \bar{\mu}^a(x, j; \pi) & = \pi^0(x){\ell \choose j} \left[\frac{\pi(x, x)}{\pi^0(x)}\right]^j \left[\frac{\pi(x, -x)}{\pi^0(x)}\right]^{\ell-j}      \\
+                           & = \frac{e^{Bx}}{e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell}
+    {\ell \choose j} \left[e^{\beta xx + \bar{h}^a x + \bar{h}^v x}\right]^j
+    \left[e^{\beta x(-x) + \bar{h}^a x + \bar{h}^v (-x)}\right]^{\ell - j}
+    \intertext{Let $Z^a = e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell$}
+                           & = \frac1{Z^a} {\ell \choose j} \exp\left\{\beta x [jx - (\ell-j)x] + Bx + \bar{h}^a x + \bar{h}^v [jx - (\ell-j) x]\right\}
+\end{align*}
+Similarly, by calculating $\pi^1$,
+\begin{equation*}
+    \bar{\mu}^v(x, i; \pi) = \frac1{Z^v} {k \choose i} \exp\left\{\beta x [ix - (k-i)x] + Bx + \bar{h}^a [ix - (k-i) x] + \bar{h}^v x\right\}.
+\end{equation*}
+where
+\begin{equation*}
+    Z^v = e^{B}[\cosh(\beta + \bar{h}^a)]^k + e^{-B}[\cosh(\beta - \bar{h}^a)]^k.
+\end{equation*}
+This optimizer in the form
 \begin{equation}
     \begin{cases}
-        \bar{h}^a &= B + (\ell-1)\tanh^{-1}\left[\tanh(\beta)\tanh(\bar{h}^v)\right] \\
-        \bar{h}^v &= B + (k-1)\tanh^{-1}\left[\tanh(\beta)\tanh(\bar{h}^a)\right].
+        \bar{\mu}^a(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^a} \exp\left(\beta \sum_{v=1}^\ell x_0x_v + Bx_0 + \bar{h}^a x_0 + \bar{h}^v \sum_{v=0}^\ell x_v\right) \\
+        \bar{\mu}^v(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^v} \exp\left(\beta \sum_{v=1}^k x_0x_v + Bx_0 + \bar{h}^v x_0 + \bar{h}^a \sum_{v=0}^k x_v\right),
     \end{cases}
-    \label{Eq.ISBP-hbar-cavity}
 \end{equation}
-Hence $\pi$ becomes
+where
 \begin{equation}
-    \pi(x, x') = \frac1Z \exp\left[\beta xx' + \bar{h}^a x + \bar{h}^v x'\right].
-    \label{Eq.ISBP-pi-hbar}
+    \begin{cases}
+        Z^a = e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell \\
+        Z^v = e^{B}[\cosh(\beta + \bar{h}^a)]^k + e^{-B}[\cosh(\beta - \bar{h}^a)]^k,
+    \end{cases}
+\end{equation}
+and
+\begin{equation*}
+    \begin{cases}
+        \bar{h}^a = B + (\ell - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^v)] \\
+        \bar{h}^v = B + (k - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^a)].
+    \end{cases}
+\end{equation*}
+Since $Z^\pi$ is represented differently in $\pi^0$ and $\pi^1$, generally, we have $Z^a \neq Z^v$. However, they are indeed related:
+\begin{equation}
+    \frac{Z^a}{Z^v} = \frac{e^{-\bar{h}^a}[\cosh(\beta + \bar{h}^v)]^{\ell - 1}}{e^{-\bar{h}^v}[\cosh(\beta + \bar{h}^a)]^{k - 1}}
 \end{equation}
 
-
+\subsection{Bipartite Ising Annealed Pressure}
 
 \end{document}
