@@ -2011,7 +2011,7 @@ where
 \begin{equation*}
     Z^v = e^{B}[\cosh(\beta + \bar{h}^a)]^k + e^{-B}[\cosh(\beta - \bar{h}^a)]^k.
 \end{equation*}
-This optimizer in the form
+The optimizers are in the form
 \begin{equation}
     \begin{cases}
         \bar{\mu}^a(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^a} \exp\left(\beta \sum_{v=1}^\ell x_0x_v + Bx_0 + \bar{h}^a x_0 + \bar{h}^v \sum_{v=0}^\ell x_v\right) \\
@@ -2032,11 +2032,89 @@ and
         \bar{h}^v = B + (k - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^a)].
     \end{cases}
 \end{equation*}
-Since $Z^\pi$ is represented differently in $\pi^0$ and $\pi^1$, generally, we have $Z^a \neq Z^v$. However, they are indeed related:
+Since $Z^\pi$ is represented differently in $\pi^0$ and $\pi^1$, generally, we have $Z^a \neq Z^v$. However, they are indeed related.
+We can rewrite $Z^\pi$ in terms of $Z^a$ or $Z^v$, following the same steps as when we derived $\pi^0$ and $\pi^1$:
+\begin{align*}
+    Z^\pi & = 2e^{\bar{h}^a} \cosh(\beta + \bar{h}^v)\left[1 + e^{-2\bar{h}^a}\frac{\cosh(\beta - \bar{h}^v)}{\cosh(\beta + \bar{h}^v)}\right]             \\
+          & = 2e^{\bar{h}^a} \cosh(\beta + \bar{h}^v)\left\{1 + e^{-2B}\left[\frac{\cosh(\beta - \bar{h}^v)}{\cosh(\beta + \bar{h}^v)}\right]^\ell\right\} \\
+          & = 2e^{\bar{h}^a - B}[\cosh(\beta + \bar{h}^v)]^{-(\ell - 1)} Z^a
+\end{align*}
+Hence,
 \begin{equation}
-    \frac{Z^a}{Z^v} = \frac{e^{-\bar{h}^a}[\cosh(\beta + \bar{h}^v)]^{\ell - 1}}{e^{-\bar{h}^v}[\cosh(\beta + \bar{h}^a)]^{k - 1}}
+    \log Z^\pi = \log Z^a + \log 2 + (\bar{h}^a - B) - (\ell - 1) \log \cosh(\beta + \bar{h}^v).
+    \label{Eq.ISBP-Zpi-Za}
+\end{equation}
+Similarly,
+\begin{equation}
+    \log Z^\pi = \log Z^v + \log 2 + (\bar{h}^v - B) - (k - 1) \log \cosh(\beta + \bar{h}^a).
+    \label{Eq.ISBP-Zpi-Zv}
+\end{equation}
+Thus,
+\begin{equation}
+    \frac{Z^a}{Z^v} = \frac{e^{-\bar{h}^a}[\cosh(\beta + \bar{h}^v)]^{\ell - 1}}{e^{-\bar{h}^v}[\cosh(\beta + \bar{h}^a)]^{k - 1}}.
 \end{equation}
 
 \subsection{Bipartite Ising Annealed Pressure}
+
+Up to a constant, the annealed pressure is equal to the following property:
+\begin{equation*}
+    \widetilde{V}(\beta, B, \ell, k, \pi) = \mathbb{E}_{\pi}\left[\beta k x_0 x_v + \alpha Bx_0 + B x_v\right] - (k-\alpha)H(\pi^0) - (k-1)H(\pi^1) + kH(\pi)
+\end{equation*}
+and we take
+\begin{equation*}
+    \pi(x, x') = \frac1{Z_\pi} \exp\left[\beta xx' + \bar{h}^a x + \bar{h}^v x'\right].
+\end{equation*}
+for $Z^\pi = 2e^{\bar{h}^a}\cosh(\beta + \bar{h}^v) + 2e^{-\bar{h}^a}\cosh(\beta - \bar{h}^v) = 2e^{\bar{h}^v}\cosh(\beta + \bar{h}^a) + 2e^{-\bar{h}^v}\cosh(\beta - \bar{h}^a)$,
+and
+\begin{equation*}
+    \begin{aligned}
+        \pi^0(x) = \frac1{Z^a}e^{Bx}[\cosh(\beta x + \bar{h}^v)]^\ell \\
+        \pi^1(x) = \frac1{Z^v}e^{Bx}[\cosh(\beta x + \bar{h}^a)]^k.
+    \end{aligned}
+\end{equation*}
+Notice that all of these distributions are exponential distributions, and for exponential distribution
+\begin{equation*}
+    p(\mathbf{x}) = \frac1Z \exp[T(\mathbf{x})],
+\end{equation*}
+where normalizing constant $Z = \int_{x\in\mathcal{X}} \exp[T(\mathbf{x})] \mu(d\mathbf{x})$,
+we can write
+\begin{equation*}
+    H(p) = \log Z - \mathbb{E}_p [T(\mathbf{x})].
+\end{equation*}
+Thus,
+\begin{align*}
+    H(\pi)   & = \log Z^\pi - \mathbb{E}_\pi (\beta x_0 x_v + \bar{h}^a x_0 + \bar{h}^v x_v)    \\
+    H(\pi^0) & = \log Z^a - \mathbb{E}_{\pi^0} (Bx_0 + \ell \log \cosh (\beta x_0 + \bar{h}^v)) \\
+    H(\pi^0) & = \log Z^v - \mathbb{E}_{\pi^1} (Bx_v + k \log \cosh (\beta x_v + \bar{h}^a)).
+\end{align*}
+Plugging in, we have
+\begin{align*}
+    \widetilde{V}(\beta, B, \ell, k, \pi) = & k \log Z^\pi - (k-\alpha) \log Z^a - (k-1)\log Z^v                                  \\
+                                            & + k\mathbb{E}_{\pi^0} (B - \bar{h}^a) x_0 + k\mathbb{E}_{\pi^1} (B - \bar{h}^v) x_v \\
+                                            & + k (\ell - 1) \mathbb{E}_{\pi^0} \log\cosh(\beta x_0 + \bar{h}^v)
+    + k (k - 1) \mathbb{E}_{\pi^1} \log\cosh(\beta x_v + \bar{h}^a)
+\end{align*}
+To rewrite $\mathbb{E}_{\pi^0} \log\cosh(\beta x_0 + \bar{h}^v)$ and $\mathbb{E}_{\pi^1} \log\cosh(\beta x_v + \bar{h}^a)$,
+notice that we have (\ref{Eq.ISBP-Zpi-Za}), which gives
+\begin{equation}
+    \log Z^\pi = \log Z^a + \log 2 + (\bar{h}^a - B)x - (\ell - 1) \log \cosh(\beta x + \bar{h}^v),
+\end{equation}
+for all $x\in\{-1, 1\}$, since by rearranging the cavity equation (\ref{Eq.ISBP-hbar-v}), we have
+\begin{equation*}
+    (\bar{h}^a - B) - (\ell - 1) \log \cosh(\beta + \bar{h}^v) = -(\bar{h}^a - B) - (\ell - 1) \log \cosh(-\beta + \bar{h}^v).
+\end{equation*}
+This means we can rewrite the expectation
+\begin{align*}
+    \mathbb{E}_{\pi^0} (\ell - 1) \log\cosh(\beta x_0 + \bar{h}^v) & = \log Z^a - \log Z^\pi + \log 2 - \mathbb{E}_{\pi^0} (B - \bar{h}^a)x_0.
+\end{align*}
+Similarly,
+\begin{align*}
+    \mathbb{E}_{\pi^1} (k - 1) \log\cosh(\beta x_v + \bar{h}^a) & = \log Z^v - \log Z^\pi + \log 2 - \mathbb{E}_{\pi^1} (B - \bar{h}^v)x_v.
+\end{align*}
+Substituting in, we have an optimum
+\begin{equation}
+    \widetilde{V}(\beta, B, \ell, k, \pi) = \alpha \log Z^a + \log Z^v - k \log Z^\pi + 2k\log 2.
+    \label{Eq.ISBP-AP-Z-form}
+\end{equation}
 
 \end{document}
