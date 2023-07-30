@@ -1987,7 +1987,7 @@ for all $x\in\{-1, 1\}$.
 
 Exponentiating and rearranging, we have
 \begin{equation*}
-    e^{2\bar{h}^ax}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right] = e^{Bx}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right]^\ell.
+    e^{2\bar{h}^ax}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right] = e^{2Bx}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right]^\ell.
 \end{equation*}
 Thus,
 \begin{align*}
@@ -2017,6 +2017,7 @@ The optimizers are in the form
         \bar{\mu}^a(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^a} \exp\left(\beta \sum_{v=1}^\ell x_0x_v + Bx_0 + \bar{h}^a x_0 + \bar{h}^v \sum_{v=0}^\ell x_v\right) \\
         \bar{\mu}^v(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^v} \exp\left(\beta \sum_{v=1}^k x_0x_v + Bx_0 + \bar{h}^v x_0 + \bar{h}^a \sum_{v=0}^k x_v\right),
     \end{cases}
+    \label{Eq.ISBP-soln}
 \end{equation}
 where
 \begin{equation}
@@ -2116,5 +2117,136 @@ Substituting in, we have an optimum
     \widetilde{V}(\beta, B, \ell, k, \pi) = \alpha \log Z^a + \log Z^v - k \log Z^\pi + 2k\log 2.
     \label{Eq.ISBP-AP-Z-form}
 \end{equation}
+
+\subsection{Cavity Equation Numerical}
+
+We will check if solutions indeed satisfy the cavity equations. To do this, we recover the $\bar{h}^a$ and $\bar{h}^v$ values from
+the numerical results, and check whether they satisfy the cavity equation
+\begin{equation*}
+    \begin{cases}
+        B + (\ell - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^v)] - \bar{h}^a = 0 \\
+        B + (k - 1)\tanh^{-1}[\tanh(\beta)\tanh(\bar{h}^a)] - \bar{h}^v = 0.
+    \end{cases}
+\end{equation*}
+To do this, we plot the residue of this equation with respect to $\beta$ and $B$.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=-1.0.png}
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=-0.1.png}
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=-0.01.png}
+    \caption{In Bipartite Ising model with $l=3$ and $k=3$, we perform 15 numerical optimizations with each pair of $\beta$ and $B$ values.
+        $\bar{h}^a$ and $\bar{h}^v$ values recovered mostly satisfy the residue equations, with absolute residues mostly below $10^{-3}$.}
+    \label{Fig.ISBP-CE-l3k3-1}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=0.0.png}
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=0.01.png}
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=0.1.png}
+    \includegraphics[width=12cm]{img/Ising_bptt/cavity_equation/l=3,k=3,B=1.0.png}
+    \caption{In Bipartite Ising model with $l=3$ and $k=3$, we perform 15 numerical optimizations with each pair of $\beta$ and $B$ values.
+        $\bar{h}^a$ and $\bar{h}^v$ values recovered mostly satisfy the residue equations, with absolute residues mostly below $10^{-3}$.}
+    \label{Fig.ISBP-CE-l3k3-2}
+\end{figure}
+
+\newpage
+
+We can see that the residues are all fairly close to $0$, but for a few experiments, they clearly do not satisfy the equation, with residue
+on the same order of magnitude as $\bar{h}^a$ and $\bar{h}^v$. We want to see if they result from the optimizer failing to converge
+or if our analytical solution missed solutions. To do this, we see whether the ones with high residue satisfy the optimizer constraints,
+and whether they have a higher objective value.
+
+We find that distributions with high residues in the cavity equations has similar distributions in terms of constraint satisfaction.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{img/Ising_bptt/NC_l=3_k=3.png}
+    \includegraphics[width=15cm]{img/Ising_bptt/SC_l=3_k=3.png}
+    \caption{For each pair of $\beta$ and $B$ values, we calculate $11$ optimizers numerically.
+        We separate them into two groups, one for where $\bar{h}^a$ and $\bar{h}^v$ residues are both smaller than $10^{-3}$,
+        the other for ones that does not satisfy this condition. This shows the deviation from the distribution being normalized, or
+        $\sum_{x, j} \mu(x, j) - 1$ deviation from symmetry constraint, or $\pi_{\mu^a}(x, x') - \pi_{\mu^v}(x', x)$.
+        Ones with higher $\bar{h}$ residues do not have particularly high deviation in norm residue.
+        The deviations are also small, with most bounded between $\pm 10^{-10}$.}
+    \label{Fig.ISBP-NC-l3k3}
+\end{figure}
+
+This means that constraint satisfaction alone cannot be the reason that $\bar{h}$ is not satisfying the cavity equation.
+We now analyze the objective function values.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=18cm]{img/Ising_bptt/OBJ_l=3_k=3.png}
+    \caption{For each pair of $\beta$ and $B$ values, we calculate $11$ optimizers numerically. They are shown with crosses.
+        Their color represent their absolute cavity equation residue on $\bar{h}^a$. We also calculate the $\bar{h}^a$ and
+        $\bar{h}^v$ values, which, gives an analytical solution. We take the maximum of that. This is plotted as a line for comparison.}
+    \label{Fig.ISBP-OBJ-l3k3}
+\end{figure}
+
+\newpage
+
+First, notice that optimizers with higher cavity equation residue tend to stray further from the analytical optimal line.
+Most of them deviate downwards, but a few of them are on the optimal line, and some even have higher objective function values.
+While deviating downwards makes sense, as not satisfying the cavity equation results in a worse optimum, being
+on or above the line needs some more explanation.
+
+Then, notice that while most optimizers with low cavity residue lie on the line. Some deviate below the line, and some go slightly
+above. Again, deviating below the line makes sense, as cavity equation has multiple solutions, and not all of them may be optimal,
+but the deviation above, even though slightly, needs more explanation.
+
+I think that deviations above the line can have two reasons:
+\begin{enumerate}
+    \item $\bar{h}^a$ and $\bar{h}^v$ recovered are not optimal.
+    \item The constraints are exploited to obtain higher values.
+\end{enumerate}
+
+The first reason does not lead to the significant upwards deviation. To see this, we simply need to project $\bar{h}^a$ and $\bar{h}^v$
+to a nearby solution of the cavity equation. This does not significantly move the optimal line upwards, in some cases, it even moved it
+downwards.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=18cm]{img/Ising_bptt/OBJ_l=3_k=3_solve_h.png}
+    \caption{Objective function values for numerical, now compared with optima that are projected to cavity equation solutions.}
+    \label{Fig.ISBP-OBJ-l3k3-solveh}
+\end{figure}
+
+\newpage
+
+We can then test the second theory. It seems unlikely that constraint is being exploited, given that constraints are
+being satisfied to $10^{-10}$ accuracy. However, the following example shows that even small deviations in constraint
+may lead to big deviations in function value. To investigate, we select the high cavity residue point for $B=0.1$,
+$\beta=-0.87$, or the top left deviation point in the $B=0.1$ plot.
+
+The distribution looks like the following:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{img/Ising_bptt/DIST_sample_large_cavity_res.png}
+    \caption{One of the numerical solutions to $B=0.1$, $\beta=-0.87$, $l=3$, $k=3$.}
+    \label{Fig.ISBP-DIST-SMPL}
+\end{figure}
+
+We can see that the distributions almost normalized, with a residue of about $10^{-12}$. If we plug this into the
+distribution directly, it has a value of about $1.56$, as shown by the figure above. However, if we reduce all the
+small values in this distribution to zero, leaving a normalized, symmetric distribution, we now only have
+objective function value of about $1.21$. A small deviation in the constraint pushes the objective way beyond
+the supposed optimal value.
+
+I did not check each distribution individually, but I still think that this is the main reason why small deviations
+from constraint pushed the objective value way higher than it should be.
+
+\newpage
+
+\subsection{Cross-check Optimizer}
+
+Excluding the results with high cavity equation residue, we should see that the rest are close to the optimal distribution
+as described in (\ref{Eq.ISBP-soln}). Indeed, higher deviation from analytical optima happens only when higher cavity equation
+residues are present:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{img/Ising_bptt/SOLN_l=3_k=3.png}
+    \caption{Analytical solution deviation from numerical results, measured by relative entropy. $h$ recovered and from
+        numerical solution and projected to cavity equation solution. Low deviation scheme is dominated by solutions
+        with low cavity residues.}
+    \label{Fig.ISBP-SOLN-compare-l3k3}
+\end{figure}
 
 \end{document}
