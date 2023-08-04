@@ -1841,7 +1841,7 @@ Hence, rewriting the objective, define
 
 Taking the Lagrange multiplier of the above target $\widetilde{V}(\beta, B, \ell, k, \pi)$ on $\pi$, we have
 \begin{equation*}
-    \frac{\partial \widetilde{V}}{\partial \pi(x, x')} = \beta k x x' + \alpha B x + B x' + (k+\alpha) \log \pi^0(x) + (k+1)\log\pi^1(x') - k\log\pi(x, x') + \lambda = 0,
+    \frac{\partial \widetilde{V}}{\partial \pi(x, x')} = \beta k x x' + \alpha B x + B x' + (k-\alpha) \log \pi^0(x) + (k-1)\log\pi^1(x') - k\log\pi(x, x') + \lambda = 0,
 \end{equation*}
 where $\lambda$ is a constant coming from the Lagrange multiplier of $\sum_{x, x'\in\mathcal{X}} \pi(x, x') = 1$.
 
@@ -1968,16 +1968,20 @@ This is a bit complicated. There seems to be multiple solutions to the cavity eq
 
 To solve for $\mu^a$ and $\mu^v$, we first consider the root mark distributions:
 \begin{equation*}
-    \pi^0(x) = \frac1{Z_\pi}e^{\bar{h}^a x} 2\cosh(\beta x + \bar{h}^v)
+    \pi^0(x) = \frac1{Z_\pi}e^{\bar{h}^a x} 2\cosh(\beta + \bar{h}^vx)
 \end{equation*}
 we can see that
 \begin{equation*}
-    Z^\pi = 2e^{\bar{h}^a}\cosh(\beta + \bar{h}^v) + 2e^{-\bar{h}^a}\cosh(\beta - \bar{h}^v)
+    \pi^{1|0}(x'|x) =\frac{\pi(x, x')}{\pi^0(x)}= \frac{\exp[\beta xx' + \bar{h}^vx']}{2\cosh(\beta + \bar{h}^vx)}.
 \end{equation*}
-Thus
+and
+\begin{equation*}
+    Z^\pi = 2e^{\bar{h}^a}\cosh(\beta + \bar{h}^v) + 2e^{-\bar{h}^a}\cosh(\beta - \bar{h}^v),
+\end{equation*}
+Thus,
 \begin{align*}
-    \pi^0(x) & = \frac{e^{\bar{h}^a x} \cosh(\beta x + \bar{h}^v)}{e^{\bar{h}^a x}\cosh(\beta x + \bar{h}^v) + e^{-\bar{h}^ax}\cosh(\beta x - \bar{h}^v)} \\
-             & = \frac{1}{1 + e^{-2\bar{h}^ax}\frac{\cosh(\beta x - \bar{h}^v)}{\cosh(\beta x + \bar{h}^v)}}
+    \pi^0(x) & = \frac{e^{\bar{h}^a x} \cosh(\beta + \bar{h}^vx)}{e^{\bar{h}^a x}\cosh(\beta + \bar{h}^vx) + e^{-\bar{h}^ax}\cosh(\beta - \bar{h}^vx)} \\
+             & = \frac{1}{1 + e^{-2\bar{h}^ax}\frac{\cosh(\beta - \bar{h}^vx)}{\cosh(\beta + \bar{h}^vx)}}.
 \end{align*}
 We can rewrite (\ref{Eq.ISBP-hbar-a}) as
 \begin{equation*}
@@ -1987,43 +1991,43 @@ for all $x\in\{-1, 1\}$.
 
 Exponentiating and rearranging, we have
 \begin{equation*}
-    e^{2\bar{h}^ax}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right] = e^{2Bx}\left[\frac{\cosh(\beta x + \bar{h}^v)}{\cosh(\beta x - \bar{h}^v)}\right]^\ell.
+    e^{2\bar{h}^ax}\left[\frac{\cosh(\beta + \bar{h}^vx)}{\cosh(\beta - \bar{h}^vx)}\right] = e^{2Bx}\left[\frac{\cosh(\beta + \bar{h}^vx)}{\cosh(\beta - \bar{h}^vx)}\right]^\ell.
 \end{equation*}
 Thus,
 \begin{align*}
-    \pi^0(x) & = \frac{1}{1 + e^{-2Bx}\left[\frac{\cosh(\beta x - \bar{h}^v)}{\cosh(\beta x + \bar{h}^v)}\right]^\ell}                         \\
+    \pi^0(x) & = \frac{1}{1 + e^{-2Bx}\left[\frac{\cosh(\beta - \bar{h}^vx)}{\cosh(\beta + \bar{h}^vx)}\right]^\ell}                           \\
              & = \frac{e^{Bx}[\cosh(\beta x + \bar{h}^v)]^\ell}{e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell}.
 \end{align*}
 Therefore,
 \begin{align*}
-    \bar{\mu}^a(x, j; \pi) & = \pi^0(x){\ell \choose j} \left[\frac{\pi(x, x)}{\pi^0(x)}\right]^j \left[\frac{\pi(x, -x)}{\pi^0(x)}\right]^{\ell-j}      \\
-                           & = \frac{e^{Bx}}{e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell}
-    {\ell \choose j} \left[e^{\beta xx + \bar{h}^a x + \bar{h}^v x}\right]^j
-    \left[e^{\beta x(-x) + \bar{h}^a x + \bar{h}^v (-x)}\right]^{\ell - j}
-    \intertext{Let $Z^a = e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell$}
-                           & = \frac1{Z^a} {\ell \choose j} \exp\left\{\beta x [jx - (\ell-j)x] + Bx + \bar{h}^a x + \bar{h}^v [jx - (\ell-j) x]\right\}
+    \bar{\mu}^a(x, j; \pi) & = \pi^0(x){\ell \choose j} \left[\pi^{1|0}(x|x)\right]^j \left[\pi^{1|0}(-x|x)\right]^{\ell-j}                \\
+                           & = \frac{e^{Bx}}{e^{B}[2\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[2\cosh(\beta - \bar{h}^v)]^\ell}
+    {\ell \choose j} \left[e^{\beta xx + \bar{h}^v x}\right]^j
+    \left[e^{\beta x(-x) + \bar{h}^v (-x)}\right]^{\ell - j}
+    \intertext{Let $Z^a = e^{B}[2\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[2\cosh(\beta - \bar{h}^v)]^\ell$}
+                           & = \frac1{Z^a} {\ell \choose j} \exp\left\{\beta x [jx - (\ell-j)x] + Bx + \bar{h}^v [jx - (\ell-j) x]\right\}
 \end{align*}
 Similarly, by calculating $\pi^1$,
 \begin{equation*}
-    \bar{\mu}^v(x, i; \pi) = \frac1{Z^v} {k \choose i} \exp\left\{\beta x [ix - (k-i)x] + Bx + \bar{h}^a [ix - (k-i) x] + \bar{h}^v x\right\}.
+    \bar{\mu}^v(x, i; \pi) = \frac1{Z^v} {k \choose i} \exp\left\{\beta x [ix - (k-i)x] + Bx + \bar{h}^a [ix - (k-i) x]\right\}.
 \end{equation*}
 where
 \begin{equation*}
     Z^v = e^{B}[\cosh(\beta + \bar{h}^a)]^k + e^{-B}[\cosh(\beta - \bar{h}^a)]^k.
 \end{equation*}
-The optimizers are in the form
+The optimizers are of the form
 \begin{equation}
     \begin{cases}
-        \bar{\mu}^a(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^a} \exp\left(\beta \sum_{v=1}^\ell x_0x_v + Bx_0 + \bar{h}^a x_0 + \bar{h}^v \sum_{v=0}^\ell x_v\right) \\
-        \bar{\mu}^v(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^v} \exp\left(\beta \sum_{v=1}^k x_0x_v + Bx_0 + \bar{h}^v x_0 + \bar{h}^a \sum_{v=0}^k x_v\right),
+        \bar{\mu}^a(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^a} \exp\left(\beta \sum_{v=1}^\ell x_0x_v + Bx_0 + \bar{h}^v \sum_{v=0}^\ell x_v\right) \\
+        \bar{\mu}^v(\mathbf{x}; \bar{h}^a, \bar{h}^v) = \displaystyle\frac1{Z^v} \exp\left(\beta \sum_{v=1}^k x_0x_v + Bx_0 + \bar{h}^a \sum_{v=0}^k x_v\right),
     \end{cases}
     \label{Eq.ISBP-soln}
 \end{equation}
 where
 \begin{equation}
     \begin{cases}
-        Z^a = e^{B}[\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[\cosh(\beta - \bar{h}^v)]^\ell \\
-        Z^v = e^{B}[\cosh(\beta + \bar{h}^a)]^k + e^{-B}[\cosh(\beta - \bar{h}^a)]^k,
+        Z^a = e^{B}[2\cosh(\beta + \bar{h}^v)]^\ell + e^{-B}[2\cosh(\beta - \bar{h}^v)]^\ell \\
+        Z^v = e^{B}[2\cosh(\beta + \bar{h}^a)]^k + e^{-B}[2\cosh(\beta - \bar{h}^a)]^k,
     \end{cases}
 \end{equation}
 and
@@ -2038,21 +2042,21 @@ We can rewrite $Z^\pi$ in terms of $Z^a$ or $Z^v$, following the same steps as w
 \begin{align*}
     Z^\pi & = 2e^{\bar{h}^a} \cosh(\beta + \bar{h}^v)\left[1 + e^{-2\bar{h}^a}\frac{\cosh(\beta - \bar{h}^v)}{\cosh(\beta + \bar{h}^v)}\right]             \\
           & = 2e^{\bar{h}^a} \cosh(\beta + \bar{h}^v)\left\{1 + e^{-2B}\left[\frac{\cosh(\beta - \bar{h}^v)}{\cosh(\beta + \bar{h}^v)}\right]^\ell\right\} \\
-          & = 2e^{\bar{h}^a - B}[\cosh(\beta + \bar{h}^v)]^{-(\ell - 1)} Z^a
+          & = e^{\bar{h}^a - B}[2\cosh(\beta + \bar{h}^v)]^{-(\ell - 1)} Z^a
 \end{align*}
 Hence,
 \begin{equation}
-    \log Z^\pi = \log Z^a + \log 2 + (\bar{h}^a - B) - (\ell - 1) \log \cosh(\beta + \bar{h}^v).
+    \log Z^\pi = \log Z^a + (\bar{h}^a - B) - (\ell - 1) \log 2\cosh(\beta + \bar{h}^v).
     \label{Eq.ISBP-Zpi-Za}
 \end{equation}
 Similarly,
 \begin{equation}
-    \log Z^\pi = \log Z^v + \log 2 + (\bar{h}^v - B) - (k - 1) \log \cosh(\beta + \bar{h}^a).
+    \log Z^\pi = \log Z^v + (\bar{h}^v - B) - (k - 1) \log 2\cosh(\beta + \bar{h}^a).
     \label{Eq.ISBP-Zpi-Zv}
 \end{equation}
 Thus,
 \begin{equation}
-    \frac{Z^a}{Z^v} = \frac{e^{-\bar{h}^a}[\cosh(\beta + \bar{h}^v)]^{\ell - 1}}{e^{-\bar{h}^v}[\cosh(\beta + \bar{h}^a)]^{k - 1}}.
+    \frac{Z^a}{Z^v} = \frac{e^{-\bar{h}^a}[2\cosh(\beta + \bar{h}^v)]^{\ell - 1}}{e^{-\bar{h}^v}[2\cosh(\beta + \bar{h}^a)]^{k - 1}}.
 \end{equation}
 
 \subsection{Bipartite Ising Annealed Pressure}
@@ -2069,8 +2073,8 @@ for $Z^\pi = 2e^{\bar{h}^a}\cosh(\beta + \bar{h}^v) + 2e^{-\bar{h}^a}\cosh(\beta
 and
 \begin{equation*}
     \begin{aligned}
-        \pi^0(x) = \frac1{Z^a}e^{Bx}[\cosh(\beta x + \bar{h}^v)]^\ell \\
-        \pi^1(x) = \frac1{Z^v}e^{Bx}[\cosh(\beta x + \bar{h}^a)]^k.
+        \pi^0(x) = \frac1{Z^a}e^{Bx}[2\cosh(\beta + \bar{h}^vx)]^\ell \\
+        \pi^1(x) = \frac1{Z^v}e^{Bx}[2\cosh(\beta + \bar{h}^ax)]^k.
     \end{aligned}
 \end{equation*}
 Notice that all of these distributions are exponential distributions, and for exponential distribution
@@ -2084,37 +2088,37 @@ we can write
 \end{equation*}
 Thus,
 \begin{align*}
-    H(\pi)   & = \log Z^\pi - \mathbb{E}_\pi (\beta x_0 x_v + \bar{h}^a x_0 + \bar{h}^v x_v)    \\
-    H(\pi^0) & = \log Z^a - \mathbb{E}_{\pi^0} (Bx_0 + \ell \log \cosh (\beta x_0 + \bar{h}^v)) \\
-    H(\pi^0) & = \log Z^v - \mathbb{E}_{\pi^1} (Bx_v + k \log \cosh (\beta x_v + \bar{h}^a)).
+    H(\pi)   & = \log Z^\pi - \mathbb{E}_\pi (\beta x_0 x_v + \bar{h}^a x_0 + \bar{h}^v x_v)     \\
+    H(\pi^0) & = \log Z^a - \mathbb{E}_{\pi^0} (Bx_0 + \ell \log 2\cosh (\beta + \bar{h}^v x_0)) \\
+    H(\pi^0) & = \log Z^v - \mathbb{E}_{\pi^1} (Bx_v + k \log 2\cosh (\beta + \bar{h}^a x_v)).
 \end{align*}
 Plugging in, we have
 \begin{align*}
     \widetilde{V}(\beta, B, \ell, k, \pi) = & k \log Z^\pi - (k-\alpha) \log Z^a - (k-1)\log Z^v                                  \\
                                             & + k\mathbb{E}_{\pi^0} (B - \bar{h}^a) x_0 + k\mathbb{E}_{\pi^1} (B - \bar{h}^v) x_v \\
-                                            & + k (\ell - 1) \mathbb{E}_{\pi^0} \log\cosh(\beta x_0 + \bar{h}^v)
-    + k (k - 1) \mathbb{E}_{\pi^1} \log\cosh(\beta x_v + \bar{h}^a)
+                                            & + k (\ell - 1) \mathbb{E}_{\pi^0} \log2\cosh(\beta x_0 + \bar{h}^v)
+    + k (k - 1) \mathbb{E}_{\pi^1} \log2\cosh(\beta x_v + \bar{h}^a)
 \end{align*}
-To rewrite $\mathbb{E}_{\pi^0} \log\cosh(\beta x_0 + \bar{h}^v)$ and $\mathbb{E}_{\pi^1} \log\cosh(\beta x_v + \bar{h}^a)$,
+To rewrite $\mathbb{E}_{\pi^0} \log\cosh(\beta + \bar{h}^v x_0)$ and $\mathbb{E}_{\pi^1} \log\cosh(\beta + \bar{h}^a x_v)$,
 notice that we have (\ref{Eq.ISBP-Zpi-Za}), which gives
 \begin{equation}
-    \log Z^\pi = \log Z^a + \log 2 + (\bar{h}^a - B)x - (\ell - 1) \log \cosh(\beta x + \bar{h}^v),
+    \log Z^\pi = \log Z^a + (\bar{h}^a - B)x - (\ell - 1) \log 2\cosh(\beta + \bar{h}^v x),
 \end{equation}
 for all $x\in\{-1, 1\}$, since by rearranging the cavity equation (\ref{Eq.ISBP-hbar-v}), we have
 \begin{equation*}
-    (\bar{h}^a - B) - (\ell - 1) \log \cosh(\beta + \bar{h}^v) = -(\bar{h}^a - B) - (\ell - 1) \log \cosh(-\beta + \bar{h}^v).
+    (\bar{h}^a - B) - (\ell - 1) \log 2\cosh(\beta + \bar{h}^v) = -(\bar{h}^a - B) - (\ell - 1) \log 2\cosh(\beta - \bar{h}^v).
 \end{equation*}
 This means we can rewrite the expectation
 \begin{align*}
-    \mathbb{E}_{\pi^0} (\ell - 1) \log\cosh(\beta x_0 + \bar{h}^v) & = \log Z^a - \log Z^\pi + \log 2 - \mathbb{E}_{\pi^0} (B - \bar{h}^a)x_0.
+    \mathbb{E}_{\pi^0} (\ell - 1) \log2\cosh(\beta + \bar{h}^v x_0) & = \log Z^a - \log Z^\pi - \mathbb{E}_{\pi^0} (B - \bar{h}^a)x_0.
 \end{align*}
 Similarly,
 \begin{align*}
-    \mathbb{E}_{\pi^1} (k - 1) \log\cosh(\beta x_v + \bar{h}^a) & = \log Z^v - \log Z^\pi + \log 2 - \mathbb{E}_{\pi^1} (B - \bar{h}^v)x_v.
+    \mathbb{E}_{\pi^1} (k - 1) \log2\cosh(\beta + \bar{h}^a x_v) & = \log Z^v - \log Z^\pi - \mathbb{E}_{\pi^1} (B - \bar{h}^v)x_v.
 \end{align*}
 Substituting in, we have an optimum
 \begin{equation}
-    \widetilde{V}(\beta, B, \ell, k, \pi) = \alpha \log Z^a + \log Z^v - k \log Z^\pi + 2k\log 2.
+    \widetilde{V}(\beta, B, \ell, k, \pi) = \alpha \log Z^a + \log Z^v - k \log Z^\pi.
     \label{Eq.ISBP-AP-Z-form}
 \end{equation}
 
