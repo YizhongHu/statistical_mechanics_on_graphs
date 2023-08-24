@@ -14,12 +14,13 @@
 \usepackage{multicol}
 \usepackage[american]{babel}
 \usepackage{csquotes}
+\usepackage{showlabels}
 
 
 \usepackage[style=verbose]{biblatex}
 \addbibresource{source/source.bib}
 
-\allowdisplaybreaks
+% \allowdisplaybreaks
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -65,11 +66,14 @@ The marginal distribution is therefore
 \end{equation*}
 
 Rewriting each term,
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
     \mathbb{E}_\mu[\mathcal{H}(S)] & = \sum_{s\in \mathbb{S}} \mu(s) \mathcal{H}(s)                                                 \\
     H(\mu \| \eta)                 & = \sum_{s\in \mathbb{S}} \mu(s) \log\frac{\mu(s)}{\eta(s)}                                     \\
     H(\mu_{01} \| \eta_{01})       & = \sum_{y_{01}\in \mathcal{Y}} \mu_{01}(y_{01}) \log\frac{\mu_{01}(y_{01})}{\eta_{01}(y_{01})}
 \end{align*}
+\endgroup
 Note that since $\eta$ is uniform, the relative entropies can be written directly in terms of their entropies:
 \begin{align*}
     H(\mu \| \eta)           & = H(\mu) - \log |\mathbb{S}| \\
@@ -551,6 +555,8 @@ This describes $\pi_\mu$. Say $\nu_\mu^- := \nu_\mu(+, -)$, by admissibility,
     \pi_\mu(-, +) & = \nu_\mu^-\mu_0(+)       \\
     \pi_\mu(-, -) & = 1-(1+\nu_\mu^-)\mu_0(+)
 \end{align*}
+\begingroup
+\allowdisplaybreaks
 We can then write $\mu$ as a conditional binomial distribution:
 \begin{align*}
     \mu(x_0, k) & := \mathbb{P}_\mu\left(X_0=x_0, \sum_{v=1}^\kappa X_v = k\right).                                              \\
@@ -558,6 +564,7 @@ We can then write $\mu$ as a conditional binomial distribution:
                 & = \mathbb{P}_\mu(X_0=x_0)\mathbb{P}_\mu\left(K=k | X_0=x_0\right)                                              \\
                 & = \mu_0(x_0) {\kappa\choose k}\mathbb{P}_\mu(X_v=+ | X_0=x_0)^k(1-\mathbb{P}_\mu(X_v=+ | X_0=x_0))^{\kappa-k}.
 \end{align*}
+\endgroup
 Hence,
 \begin{align*}
     \mu(+, k) & = \mu_0(+){\kappa\choose k}\left(1-\nu_\mu^-\right)^k\left(\nu_\mu^-\right)^{\kappa-k}                                                                \\
@@ -763,6 +770,8 @@ The objective function (using I-Hsun's convention) is
     V = \mathbb{E}_\mu \mathcal{H}(X_0, \tau) - \left\{H(\mu_0\|\eta_0) + \frac12\left[H(\mu\|\check{\mu}) + H(\mu\|\hat{\mu})\right]\right\}
 \end{equation*}
 Simplifying each term:
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
       & \mathbb{E}_\mu \mathcal{H}(X_0, \tau)                                                       \\
     = & \sum_{k=0}^\kappa \mu(+, k)\mathcal{H}(+, k) + \sum_{k=0}^\kappa \mu(-, k)\mathcal{H}(-, k) \\
@@ -774,6 +783,7 @@ Simplifying each term:
     = & \beta \kappa\left(\mu_0^+\gamma_\pi^+ + \mu_0^-\gamma_\pi^-\right)
     + B\left(\mu_0^+ - \mu_0^-\right) - \frac{\beta\kappa}{2}
 \end{align*}
+\endgroup
 Continuing,
 \begin{align*}
     H(\mu_0\|\eta_0) = \mu_0^+\log\frac{\mu_0^+}{\eta_0^+} + \mu_0^-\log\frac{\mu_0^-}{\eta_0^-}
@@ -923,19 +933,29 @@ and
     \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right] + \log \frac8\kappa
 \end{align*}
 Hence, the objective function becomes
-\begin{equation}
-    \begin{aligned}
-          & V(\beta, B, \kappa, \mu)                                                                                                                                                                                                                                                            \\
-        = & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}x_0 y_{0v} x_v\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k}) + B\left[\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k})\right] \\
-          & - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
-        + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}                                                                                                                                                                            \\
-          & + \frac12\sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
-        \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
-        \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]                                                                                                                                                                                                    \\
-          & - (2\kappa + 1)\log 2 + \frac\kappa2 \log \frac8\kappa
-    \end{aligned}
+% \begin{equation}
+%     \begin{aligned}
+%           & V(\beta, B, \kappa, \mu)                                                                                                                                                                                                                                                            \\
+%         = & \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}x_0 y_{0v} x_v\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k}) + B\left[\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k})\right] \\
+%           & - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+%         + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}}                                                                                                                                                                            \\
+%           & + \frac12\sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+%         \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
+%         \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]                                                                                                                                                                                                    \\
+%           & - (2\kappa + 1)\log 2 + \frac\kappa2 \log \frac8\kappa
+%     \end{aligned}
+%     \label{Eq.Objective-expanded}
+% \end{equation}
+\begin{multline}
+    V(\beta, B, \kappa, \mu) = \sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}x_0 y_{0v} x_v\sum_{\mathbf{k}\in\mathcal{K}} k_{y_{0v}, x_v} \mu(x_0, \mathbf{k})
+    + B\left[\sum_{\mathbf{k}\in\mathcal{K}}\mu(+, \mathbf{k}) - \sum_{\mathbf{k}\in\mathcal{K}}\mu(-, \mathbf{k})\right] \\
+    - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
+    + \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log{\kappa \choose \mathbf{k}} \\
+    + \frac12\sum_{x_0\in\mathcal{X}}\sum_{y_{0v}\in\mathcal{Y}}\sum_{x_v\in\mathcal{X}}
+    \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right]
+    \log \left[\sum_{\mathbf{k}\in\mathcal{K}}k_{y_{0v}, x_v}\mu(x_0, \mathbf{k})\right] \\- (2\kappa + 1)\log 2 + \frac\kappa2 \log \frac8\kappa
     \label{Eq.Objective-expanded}
-\end{equation}
+\end{multline}
 Similar to I-Hsun's notes, we notice that besides line 2 of (\ref{Eq.Objective-expanded}):
 \begin{equation}
     - \sum_{x_0\in\mathcal{X}}\sum_{\mathbf{k}\in\mathcal{K}}\mu(x_0, \mathbf{k})\log\mu(x_0, \mathbf{k})
@@ -1778,14 +1798,12 @@ Among the 900 or so optimization attempts, about 10 will fail.
 
 In this part, we will try to prove conditional independence. First, we notice that we can split the objective function into two independent parts.
 Since $\mu^a$ and $\mu^v$ are independent,
-\begin{equation}
-    \begin{aligned}
-        V(\beta, B, \ell, k, \mu^a, \mu^v) = \alpha & \left\{\mathbb{E}_{\mu^a}\left[\frac\beta2\sum_{v=1}^l x_0x_v + B x_0\right]
-        - \frac12\left[H(\mu^a\|\widecheck{\mu}^a)+H(\mu^a\|\widehat{\mu}^a)\right]\right\} +                                      \\
-                                                    & \left\{\mathbb{E}_{\mu^v}\left[\frac\beta2\sum_{v=1}^k x_0x_v + B x_0\right]
-        - \frac12\left[H(\mu^v\|\widecheck{\mu}^v)+H(\mu^v\|\widehat{\mu}^v)\right]\right\},
-    \end{aligned}
-\end{equation}
+\begin{multline}
+    V(\beta, B, \ell, k, \mu^a, \mu^v) = \alpha \left\{\mathbb{E}_{\mu^a}\left[\frac\beta2\sum_{v=1}^l x_0x_v + B x_0\right]
+    - \frac12\left[H(\mu^a\|\widecheck{\mu}^a)+H(\mu^a\|\widehat{\mu}^a)\right]\right\} +                                      \\
+    \left\{\mathbb{E}_{\mu^v}\left[\frac\beta2\sum_{v=1}^k x_0x_v + B x_0\right]
+    - \frac12\left[H(\mu^v\|\widecheck{\mu}^v)+H(\mu^v\|\widehat{\mu}^v)\right]\right\},
+\end{multline}
 Can be solved quite easily by fixing one distribution.
 Say we fix $\mu^v$. By the symmetry constraint,
 \begin{equation*}
@@ -2252,5 +2270,210 @@ residues are present:
         with low cavity residues.}
     \label{Fig.ISBP-SOLN-compare-l3k3}
 \end{figure}
+
+\newpage
+
+\section{Aug 21 - Aug 25}
+
+\subsection{XY Model}
+
+We consider the following variational problem on a $\kappa$-star:
+\begin{equation}
+    \psi = \sup_{\mu\in\mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[[-\pi, \pi)])}
+    \left\{\mathbb{E}_\mu\left[B\cos x_0+\frac\beta2\sum_{v\sim0}\cos(x_0-x_v)\right]-\frac12[H(\mu\|\hat{\mu})+H(\mu\|\check{\mu})]\right\},
+    \label{Eq.XY-VP}
+\end{equation}
+where $\mathcal{T}^\kappa_{*, 1}(\mathcal{X})$ is the set of marked $\kappa$-stars equivalent under permutation of leaves, and $\mu$ is a symmetric
+(explained later) probability measure on it $H(\cdot\|\cdot)$ is the differential relative entropy.
+
+Most importantly, notice that $\mathcal{X}$ is an uncountable set $[-\pi, \pi)$. This means that our representation of $\mu$ changes. Say that a
+$\kappa$-star has marks $(x_0, x_1, \cdots, x_\kappa)$, we know that, it is the same as $(x_0, \sigma(x_1, x_2, \cdots, x_\kappa))$ for any
+permutation $\sigma$. Each marked star is therefore isomorphic to $(x_0, (x_1 \leq x_2 \leq \cdots \leq x_\kappa))$, where the leaves are ordered
+from low to high, given some order on the marks.
+
+We can then write the $\pi_\mu$ distribution, which is still the probability distribution on the root and a uniformly-selected leaf:
+\begin{align*}
+    d\pi_\mu(x, y) = \frac1\kappa\sum_{v=1}^\kappa \int_{-\pi}^y dx_1 \int_{x_1}^y dx_2 \cdots \int_{x_{v-2}}^y dx_{v-1}
+     & \int_{y}^\pi dx_{v+1}\int_{x_{v+1}}^\pi dx_{v+2} \cdots \int_{x_{\kappa-2}}^\pi dx_{\kappa-1}\int_{x_{\kappa-1}}^\pi dx_{\kappa} \\
+     & \mu(x, (x_1 \leq x_2 \leq x_{v-1} \leq y \leq x_{v+1}\leq \cdots \leq x_\kappa))
+\end{align*}
+Hence,
+\begin{equation*}
+    \begin{cases}
+        d\widecheck{\mu}(x_0, (x_1 \leq x_2 \leq \cdots \leq x_\kappa)) & =  \kappa! (2\pi)^{-1} dx_0 \prod_{v=1}^\kappa d\pi_\mu^v(x_v)           \\
+        d\widehat{\mu}(x_0, (x_1 \leq x_2 \leq \cdots \leq x_\kappa))   & =  \kappa! (2\pi)^{-1} dx_0 \prod_{v=1}^\kappa d\pi_\mu^{v|0}(x_v | x_0)
+    \end{cases}
+\end{equation*}
+As mentioned, $\mu$ needs to be symmetric, which means that $d\pi_\mu(x_0, x_v) = d\pi_\mu(x_v, x_0)$ for all $x_0, x_v\in\mathcal{X}$
+
+\subsection{Solve for $\pi_\mu$ assuming conditional independence}
+
+Assuming that the leaf marks is conditionally independent of each other given the root mark, we have the following form.
+For simplicity, we will write $\mathbf{x} = (x_0, (x_1 \leq x_2 \leq \cdots \leq x_\kappa))$:
+\begin{equation}
+    d\mu(\mathbf{x})=\kappa!d\pi_\mu^0(x_0) \prod_{v=1}^\kappa d\pi_\mu^{v|0}(x_v|x_0).
+    \label{Eq.XY-conditional-independent}
+\end{equation}
+With this form, the objective function is equal to the form below up to a constant:
+\begin{equation}
+    \widetilde{V}(\pi_\mu, \beta, B, \kappa) = \mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]
+    - (\kappa-1)H(\pi_\mu^0) + \frac\kappa2 H(\pi_\mu)
+    \label{Eq.XY-Vtilde}
+\end{equation}
+
+With the symmetry constraint and the norm constraint, and crutially, optimizing over $\pi_\mu$ and $\pi_\mu^0$ separately, we have Lagrangian multiplier
+\begin{multline*}
+    \widetilde{L}(\pi_\mu, \pi_\mu^0) = \widetilde{V}(\pi_\mu, \beta, B, \kappa) + \lambda \left[\int_{\mathcal{X}^2} d\pi_\mu(x_0, x_v)\right] + \int_{\mathcal{X}^2}\gamma(x_0, x_v) [d\pi_\mu(x_0, x_v) - d\pi_\mu(x_v, x_0)] \\
+    + \lambda^0 \left[\int_{\mathcal{X}} d\pi_\mu^0(x_0)\right] + \int_{\mathcal{X}} dx_0 \alpha(x_0) \left[\pi_\mu^0(x_0) - \int_{\mathcal{X}} dx_v \pi_\mu(x_0, x_v)\right]
+\end{multline*}
+Rewriting it as a single integral:
+\begin{equation*}
+    \widetilde{L} = \int_{\mathcal{X}^2} \widetilde{\mathcal{L}}(\pi_\mu(x_0, x_v), \pi_\mu^0(x_0), x_0, x_v) dx_0 dx_v ,
+\end{equation*}
+where $\mathcal{L}$, the Lagrangian density, is defined as
+\begin{multline*}
+    \widetilde{\mathcal{L}}(\pi_\mu(x_0, x_v), \pi_\mu^0(x_0), x_0, x_v) = \pi_\mu(x_0, x_v)\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)- \frac\kappa2\log\pi_\mu(x_0, x_v)\right.                                     \\
+        \left. \frac{\vphantom{\beta}}{\vphantom{2}}+ \lambda + (\gamma(x_0, x_v) - \gamma(x_v, x_0)) - \alpha(x_0)\right]
+    + \frac{1}{|\mathcal{X}|} \pi_\mu^0(x_0)\left[(\kappa-1)\log\pi_\mu^0(x_0) + \lambda^0 + \alpha(x_0)\right].
+\end{multline*}
+By using ``wiggle'' functions $\eta:\mathcal{X}^2\mapsto \mathbb{R}$ symmetric and with norm 0,
+i.e. $\eta(x_0, x_v) =\eta(x_v, x_0)$ and $\int_{\mathcal{X}^2}d\pi_\mu(x_0, x_v) = 0$,
+as well as $\eta^0: \mathcal{X}\mapsto\mathbb{R}$, where $\int_{\mathcal{X}^2}d\pi_\mu(x_0, x_v) = 0$, on $\pi_\mu$ and $\pi_\mu^0$ respectively,
+and wiggle factors $\varepsilon, \varepsilon^0 > 0$, we can do a first order expansion on $\widetilde{L}$:
+\begin{equation*}
+    \widetilde{L}(\pi_\mu+\varepsilon\eta, \pi_\mu^0+\varepsilon^0\eta^0) = \int_{\mathcal{X}^2} \widetilde{\mathcal{L}}(\pi_\mu, \pi_\mu^0, x_0, x_v) + \frac{\partial\mathcal{L}}{\partial\pi_\mu(x_0, x_v)}\varepsilon\eta(x_0, x_v) + \frac{\partial\mathcal{L}}{\partial\pi_\mu^0(x_0)}\varepsilon^0\eta^0(x_0) + O(\varepsilon, \varepsilon)^2 dx_0 dx_v .
+\end{equation*}
+Thus,
+\begin{equation}
+    \label{Eq.XY-Lagrange-pi-mu}
+    \frac{\partial\mathcal{L}}{\partial\pi_\mu(x_0, x_v)} = B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)- \frac\kappa2\left[\log\pi_\mu(x_0, x_v)+1\right] + \lambda + (\gamma(x_0, x_v) - \gamma(x_v, x_0)) - \alpha(x_0) = 0,
+\end{equation}
+and
+\begin{equation}
+    \label{Eq.XY-Lagrange-pi-mu0}
+    \frac{\partial\mathcal{L}}{\partial\pi_\mu^0(x_0)} = \frac{1}{|\mathcal{X}|} \left[(\kappa-1)(\log\pi_\mu^0(x_0)+1) + \lambda^0 + \alpha(x_0)\right]=0.
+\end{equation}
+Rearranging $(\ref{Eq.XY-Lagrange-pi-mu})$, apply norm constraint, we have
+\begin{equation*}
+    \pi_\mu(x_0, x_v) = \frac1{Z^\pi}\exp\left\{\beta\cos(x_0- x_v)+\frac2\kappa[\gamma(x_0, x_v) - \gamma(x_v, x_0)] + \frac{2B}{\kappa}\cos(x_0) - \frac2\kappa\alpha(x_0)\right\},
+\end{equation*}
+with normalization constant $Z^\pi$.
+
+Let
+\begin{equation}
+    h_\alpha(x_0)=\frac{1}{Z^h_\alpha}\exp\left[\frac{B}{\kappa}\cos x_0 + \frac1\kappa \alpha(x_0)\right],
+    \label{Eq.XY-hdef-alpha}
+\end{equation}
+we have
+\begin{equation*}
+    \pi_\mu(x_0, x_v) = \frac1{Z^\pi}\exp\left\{\beta\cos(x_0- x_v)+\frac2\kappa[\gamma(x_0, x_v) - \gamma(x_v, x_0)]\right\}h_\alpha(x_0)^2.
+\end{equation*}
+Applying the symmetry constraint $\pi_\mu(x_0, x_v) = \pi_\mu(x_v, x_0)$, we can solve for $\gamma$ and obtain
+\begin{equation}
+    \pi_\mu(x_0, x_v) = \frac1{Z^\pi}\exp\left[\beta\cos(x_0- x_v)\right]h_\alpha(x_0)h_\alpha(x_v),
+    \label{Eq.XY-pi-mu}
+\end{equation}
+with normalization factor
+\begin{equation}
+    \label{Eq.XY-Zpi}
+    Z^\pi = \int_{\mathcal{X}^2} \exp\left[\beta\cos(x_0- x_v)\right]h_\alpha(dx_0)h_\alpha(dx_v)
+\end{equation}
+
+\subsection{Recover cavity equation}
+
+The cavity equation comes from solving the last constraint unaccounted for, i.e. the root marginal is well-defined:
+\begin{equation*}
+    \pi_\mu^0(x_0) = \int_{\mathcal{X}} dx_v \pi_\mu(x_0, x_v).
+\end{equation*}
+Solving for it involves removing the dependence on $\alpha$. We will show how this can be done.
+
+From (\ref{Eq.XY-pi-mu}), we have root marginal in terms of $\alpha$:
+\begin{equation}
+    \pi_\mu^0(x_0) = \frac1{Z^\pi}h_\alpha(x_0)\int_{\mathcal{X}}\exp[\beta\cos(x_0-x_v)]h_\alpha(dx_0).
+    \label{Eq.XY-pi-mu0-alpha}
+\end{equation}
+From (\ref{Eq.XY-Lagrange-pi-mu0}), we have a different representation:
+\begin{equation*}
+    \pi_\mu^0(x_0) = \frac{1}{Z^0_\alpha}\exp\frac{\alpha(x_0)}{\kappa-1},
+\end{equation*}
+with normalization factor $Z^0_\alpha$.
+
+Given that they are equivalent, we equate both sides and take them to the $(\kappa-1)$-th power:
+\begin{equation*}
+    \exp\alpha(x_0) = \left(\frac{Z^0_\alpha}{Z^\pi}\right)^{\kappa-1}h_\alpha(x_0)^{\kappa-1}\left(\int_{\mathcal{X}}\exp[\beta\cos(x_0-x_v)]h_\alpha(dx_0)\right)^{\kappa-1}
+\end{equation*}
+Multiply by $h_\alpha(x_0)$ on both sides:
+\begin{align*}
+    h_\alpha(x_0)\exp\alpha(x_0) & = \left(\frac{Z^0_\alpha}{Z^\pi}\right)^{\kappa-1}h_\alpha(x_0)^\kappa\left(\int_{\mathcal{X}}\exp[\beta\cos(x_0-x_v)]h_\alpha(dx_0)\right)^{\kappa-1}                                        \\
+    \intertext{Apply (\ref{Eq.XY-hdef-alpha})}
+                                 & = \left(\frac{Z^0_\alpha}{Z^\pi}\right)^{\kappa-1}\frac{1}{(Z^h_\alpha)^\kappa}\exp(B\cos x_0 + \alpha(x_0))\left(\int_{\mathcal{X}}\exp[\beta\cos(x_0-x_v)]h_\alpha(dx_0)\right)^{\kappa-1}.
+\end{align*}
+Hence, we can remove dependence on $\alpha$, and obtain cavity equation
+\begin{equation}
+    h(x) = \text{BP}h(x) := \frac{1}{Z^h}\exp\{B\cos x\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x-y)\}h(dy)\right)^{\kappa-1},
+    \label{Eq.XY-cavity-equation}
+\end{equation}
+where the normalization constant
+\begin{equation}
+    \label{Eq.XY-Zh}
+    Z^h = \int_{\mathcal{X}} \exp\{B\cos x\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x-y)\}h(dy)\right)^{\kappa-1} dx.
+\end{equation}
+
+\newpage
+
+\subsection{Optimizer of XY Model}
+
+First, we rewrite the root marginal $\pi_\mu^0$ with the cavity equation.
+From (\ref{Eq.XY-cavity-equation}),
+\begin{align*}
+    \pi_\mu^0(x_0) & = \frac1{Z^\pi}h_\alpha(x_0)\int_{\mathcal{X}}\exp[\beta\cos(x_0-x_v)]h_\alpha(dx_0)                         \\
+                   & = \frac1{Z^\pi Z^h} \exp\{B\cos x_0\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x_0-x_v)\}h(dx_v)\right)^\kappa
+\end{align*}
+Thus the optimizer (\ref{Eq.XY-conditional-independent}) becomes
+\begin{align*}
+    \mu(\mathbf{x}) = \frac1{Z^\pi Z^h} \kappa! \exp\{B\cos x_0\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x_0-x_v)\}h(dx_v)\right)^\kappa \prod_{v=1}^\kappa \frac{\exp\{\beta\cos(x_0-x_v)\}h(x_0)h(x_v)}{h(x_0)\int_{\mathcal{X}}\exp\{\beta\cos(x_0-x_v)\}h(dx_v)}.
+\end{align*}
+Ignoring the leaf isomorphisms and simplifying,
+\begin{equation}
+    \label{Eq.XY-optimizer}
+    \mu(\mathbf{x}) = \frac1Z \exp\{B\cos x_0\} \prod_{v=1}^\kappa \exp\{\beta\cos(x_0-x_v)\}\prod_{v=1}^\kappa h(x_v),
+\end{equation}
+where normalizing factor $Z=Z^\pi Z^h$ can also be expressed as
+\begin{equation}
+    \label{Eq.XY-Z}
+    Z = \int_{\mathcal{X}} dx \exp\{B\cos x\} \left(\int_\mathcal{X}\exp\{\beta\cos(x-y)\}h(dy)\right)^\kappa
+\end{equation}
+
+\subsection{Annealed Pressure of XY model}
+
+Recall from (\ref{Eq.XY-Vtilde}) that the annealed pressure is the supremum of
+\begin{equation*}
+    \widetilde{V}(\pi_\mu, \beta, B, \kappa) = \mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]
+    - (\kappa-1)H(\pi_\mu^0) + \frac\kappa2 H(\pi_\mu).
+\end{equation*}
+We plug in expression for $\pi_\mu$ (\ref{Eq.XY-pi-mu}), invoking symmetry of $\pi_\mu$, and have
+\begin{align*}
+    H(\pi_\mu)   & = \log Z^\pi - \mathbb{E}_{\pi_\mu} \beta\cos(x_0-x_v) - 2\mathbb{E}_{\pi_\mu^0} \log h(x_0)                                              \\
+    H(\pi_\mu^0) & = \log Z^\pi - \mathbb{E}_{\pi_\mu^0}\left[ \log \int_\mathcal{X} \beta\cos(x_0-x_v) h(dx_v)\right] + \mathbb{E}_{\pi_\mu^0} \log h(x_0).
+\end{align*}
+Expand with cavity equation:
+\begin{equation*}
+    \mathbb{E}_{\pi_\mu^0} \log h(x_0) = -\log Z^h + \mathbb{E}_{\pi_\mu^0} B\cos x_0 + (\kappa-1) \mathbb{E}_{\pi_\mu^0} \left[ \log \int_\mathcal{X} \beta\cos(x_0-x_v) h(dx_v)\right].
+\end{equation*}
+Plugging in and simplifying $\widetilde{V}$, we can express the annealed pressure as the supremum over the following functional:
+\begin{equation}
+    \Phi(h) = \log Z - \frac\kappa2\log Z^\pi,
+    \label{Eq.XY-Bethe-functional}
+\end{equation}
+where, recall that
+\begin{align*}
+    Z &= \int_{\mathcal{X}} dx \exp\{B\cos x\} \left(\int_\mathcal{X}\exp\{\beta\cos(x-y)\}h(dy)\right)^\kappa \\
+    Z^h & = int_{\mathcal{X}^2} \exp\left[\beta\cos(x_0- x_v)\right]h_\alpha(dx_0)h_\alpha(dx_v).
+\end{align*}
+More specifically,
+\begin{equation}
+    \psi = \sup_{h\in H} \Phi(h),
+\end{equation}
+for $H := \left\{h\in \mathcal{P}(\mathcal{X}): h = \text{BP}h\right\}$
 
 \end{document}
