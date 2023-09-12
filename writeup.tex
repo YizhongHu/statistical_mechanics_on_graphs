@@ -14,7 +14,7 @@
 \usepackage{multicol}
 \usepackage[american]{babel}
 \usepackage{csquotes}
-\usepackage{showlabels}
+\usepackage[inline]{showlabels}
 
 
 \usepackage[style=verbose]{biblatex}
@@ -2467,13 +2467,178 @@ Plugging in and simplifying $\widetilde{V}$, we can express the annealed pressur
 \end{equation}
 where, recall that
 \begin{align*}
-    Z &= \int_{\mathcal{X}} dx \exp\{B\cos x\} \left(\int_\mathcal{X}\exp\{\beta\cos(x-y)\}h(dy)\right)^\kappa \\
-    Z^h & = int_{\mathcal{X}^2} \exp\left[\beta\cos(x_0- x_v)\right]h_\alpha(dx_0)h_\alpha(dx_v).
+    Z     & = \int_{\mathcal{X}} dx \exp\{B\cos x\} \left(\int_\mathcal{X}\exp\{\beta\cos(x-y)\}h(dy)\right)^\kappa \\
+    Z^\pi & = \int_{\mathcal{X}^2} \exp\left[\beta\cos(x_0- x_v)\right]h_\alpha(dx_0)h_\alpha(dx_v).
 \end{align*}
 More specifically,
 \begin{equation}
     \psi = \sup_{h\in H} \Phi(h),
 \end{equation}
 for $H := \left\{h\in \mathcal{P}(\mathcal{X}): h = \text{BP}h\right\}$
+
+\subsection{Conditional Independence}
+
+To prove conditional independence, we take the optimization target (\ref{Eq.XY-VP})
+\begin{equation*}
+    \psi = \sup_{\mu\in\mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[[-\pi, \pi)])}
+    \left\{\mathbb{E}_\mu\left[B\cos x_0+\frac\beta2\sum_{v\sim0}\cos(x_0-x_v)\right]-\frac12[H(\mu\|\hat{\mu})+H(\mu\|\check{\mu})]\right\},
+\end{equation*}
+and fix $\pi_\mu$.
+
+This gives a Lagrange multiplier. We take the Lagrangian density, and that gives $\mu$ in terms of multipliers. We will then rewrite the multipliers
+in terms of $\pi_\mu$, which gives us a conditionally independent form.
+
+\subsubsection{Integration domains}
+
+Before we start, we need to first define some integration domains. First, we define the support of $\mu$ as $\mathcal{X}\times\Delta^\kappa$,
+where
+\begin{equation}
+    \Delta^\kappa = \left\{\mathbf{x}\in\mathcal{X}^\kappa: x_1\leq x_2\leq \cdots \leq x_\kappa\right\}.
+\end{equation}
+We used $\Delta$ because this is a tetrahedron in $\kappa$-dimensional space $\mathcal{X}^\kappa$. A measure on $\mathcal{X}^\kappa$ and $\Delta^\kappa$ will be denoted $d^{\kappa}\mathbf{x}$.
+
+To see how $\Delta^\kappa$ and $\mathcal{X}^\kappa$ are related, observe that for almost all $\mathbf{x}\in\mathcal{X}^\kappa$, there exists
+a unique permutation $\sigma$ and $\mathbf{y}\in\Delta^\kappa$ such that $\mathbf{x}=\sigma(\mathbf{y})$. The exceptions only exist for $\mathbf{x}$
+with duplicate entries.
+
+A direct consequence of this is that the integral on a function $\eta: \mathcal{X}^\kappa\mapsto \mathbb{R}$ with permutation invariance, i.e. $\eta(\mathbf{x}) = \eta(\sigma(\mathbf{x}))$ satisfies
+\begin{equation*}
+    \int_{\mathcal{X}^\kappa} \eta(\mathbf{x}) d^\kappa \mathbf{x} = \kappa!\int_{\Delta^\kappa} \eta(\mathbf{x}) d^\kappa \mathbf{x}
+\end{equation*}
+Similar to how the domain is restricted in the above statement, we can also extend a function (or measure) from $\Delta^\kappa$ to $\mathcal{X}^\kappa$. For $\eta: \Delta^\kappa\mapsto \mathbb{R}$, define its extension to $\mathcal{X}^\kappa$ as
+\begin{align*}
+    \bar{\eta}:\mathcal{X}^\kappa & \mapsto\mathbb{R}                          \\
+    \mathbf{x}                    & \mapsto \frac{1}{\kappa!}\eta(\mathbf{x}).
+\end{align*}
+Observe that if $\eta$ is a probability measure, $\bar{\eta}$ would also be a probability measure.
+
+Additionally, we introduce a shorthand for integral that gives us $\pi_\mu$:
+\begin{equation}
+    \Delta^\kappa_{v, x} = \left\{\mathbf{x}\in\Delta^\kappa: \mathbf{x}_v = x\right\},
+\end{equation}
+with measure $d^{\kappa-1}\mathbf{x}$.
+
+Hence, we can express
+\begin{equation}
+    \pi_\mu(x, y) = \frac1\kappa \sum_{v=1}^\kappa \int_{\Delta^\kappa_{v, y}} \mu(x, (x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa))d^{\kappa-1}\mathbf{x}
+\end{equation}
+
+Again, we can remove the isometries on permutation in $\Delta^\kappa_{v, x}$, and define
+\begin{equation}
+    \mathcal{X}^\kappa_{v, x} = \left\{\mathbf{x}\in\mathcal{X}^\kappa: \mathbf{x}_v = x\right\}.
+\end{equation}
+And similarly,
+\begin{align*}
+    \int_{\mathcal{X}^\kappa_{v, y}} \eta(\mathbf{x}) d^{\kappa-1} \mathbf{x} = (\kappa-1)!\int_{\Delta^\kappa_{v, y}} \eta(\mathbf{x}) d^\kappa \mathbf{x}.
+\end{align*}
+
+\subsubsection{Lagrange Multiplier}
+
+We first rewrite the target function, the key trick being rewriting between $\Delta^\kappa$ and $\mathcal{X}^\kappa$:
+\begin{align*}
+    \mathbb{E}_\mu B\cos x_0 & = \int_\mathcal{X} \int_{\Delta^\kappa} B\cos x_0\mu(x_0, \mathbf{x}) d^\kappa\mathbf{x}dx_0                                                                             \\
+                             & = \int_\mathcal{X}B\cos x_0\int_{\mathcal{X}^\kappa} \widebar{\mu}(x_0, \mathbf{x}) d^\kappa\mathbf{x}dx_0                                                               \\
+                             & = \int_\mathcal{X}B\cos x_0\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\int_{\mathcal{X}^\kappa_{v, x_v}} \widebar{\mu}(x_0, \mathbf{x}) d^{\kappa-1}\mathbf{x}dx_vdx_0
+    \intertext{Due to permutation symmetries of $\bar{\mu}$}
+                             & = \int_{\mathcal{X}^2}B\cos x_0\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^\kappa_{v, x_v}} \widebar{\mu}(x_0, \mathbf{x}) d^{\kappa-1}\mathbf{x}dx_vdx_0             \\
+\end{align*}
+
+\newpage
+
+\section{Sep 10 - Sep 15}
+
+\begin{proposition}
+    Given continuous function $F:\mathcal{X}^2\mapsto\mathbb{R}$. If for all $\eta: \mathcal{X}^2\mapsto\mathbb{R}$ symmetric and
+    zero-total-measure, we have $\left\langle F, \eta \right\rangle=0$, then such an $F$ can be written as
+    \begin{equation*}
+        F(x, y)=\alpha + G(x, y)
+    \end{equation*}
+    where $\alpha \in \mathbb{R}$ and $G:\mathcal{X}^2\mapsto\mathbb{R}$ antisymmetric, i.e. $G(x, y) = -G(y, x), \forall x, y\in\mathcal{X}$.
+\end{proposition}
+
+\begin{proof}
+    $\alpha = F(0, 0)$ and $G = F - \alpha$ satisfy the conditions. Note that $G$ continuous and $G(0, 0) = 0$.
+
+    We show that $G$ is antisymmetric by contradiction.
+    Say, without loss of generality, that for some $x_0, y_0\in\mathcal{X}$, $G(x_0, y_0) > -G(y_0, x_0) \geq 0$.
+    Let $G_1 = G(x_0, y_0)$, $G_2 = -G(y_0, x_0)$.
+
+    By continuity of $G$, we have $r_1>0$ such that for all $(x, y)\in \mathbf{B}_{r_1}(x_0, y_0)$, $|G(x,y)-G_1|<\frac14(G_1-G_2)$, i.e. $G(x, y) > \frac34G_1 + \frac14G_2$.
+    Similarly, we have $r_2>0$ such that for all $(x, y)\in\mathbf{B}_{r_2}(y_0, x_0)$, $G(x, y) > -\frac14G_1 - \frac34G_2$,
+    and $r_0>0$ such that for all $(x, y)\in\mathbf{B}_{r_0}(0)$, $G(x, y) < \frac14G_1 - \frac14G_2$. (Need to use $G(0, 0) = 0$)
+
+    Let $r=\min(r_0, r_1, r_2)$. Define
+    \begin{equation*}
+        \eta = \mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}
+        + \mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}
+        - 2\cdot\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}.
+    \end{equation*}
+    Check that this $\eta$ is symmetric and has zero total measure. We will show that $\left\langle G, \eta \right\rangle \neq 0$:
+    \begin{align*}
+          & \int_{\mathcal{X}^2} G(x, y)\eta(x, y)dxdy                                                                                                            \\
+        = & \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}dxdy
+        + \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}dxdy
+        - 2\int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}dxdy                                                                            \\
+        > & |\mathbf{B}_{r}|\left[\left(\frac34G_1 + \frac14G_2\right) + \left(-\frac14G_1 - \frac34G_2\right) - \left(\frac12G_1 - \frac12G_2\right)\right] = 0.
+    \end{align*}
+    Hence, $\left\langle F, \eta \right\rangle = \left\langle G + \alpha, \eta \right\rangle = \left\langle G , \eta \right\rangle + \left\langle \alpha, \eta \right\rangle = \left\langle G, \eta \right\rangle \neq 0$ for some $\eta$. This contradicts our assumption.
+    Thus, $F$ must be the sum of a constant and an antisymmetric function.
+\end{proof}
+
+\begin{proposition}
+    For the functional target function
+    \begin{equation*}
+        \widetilde{V}(\pi_\mu; \beta, B, \kappa) = \mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]
+        - (\kappa-1)H(\pi_\mu^0) + \frac\kappa2 H(\pi_\mu)
+    \end{equation*}
+    The functional derivative
+    \begin{equation*}
+        \frac{\delta\widetilde{V}(\pi_\mu)}{\delta\pi_\mu}(x_0, x_v) = B\cos x_0 + \frac\beta2 \cos(x_0 - x_v) +
+        (\kappa-1)(\log\pi_\mu^0(x_0) + 1)  - \frac\kappa2(\log\pi_\mu(x_0, x_v) + 1)
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    By definition of the derivative,
+    \begin{align*}
+          & \left.\frac{\delta}{\delta\pi_\mu}\mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]\right|_{(x_0, x_v)}                                    \\
+        = & \left.\frac{\delta}{\delta\pi_\mu}\int_{\mathcal{X}^2} \left[B\cos x_0' + \frac{\beta\kappa}{2}\cos(x_0'-x_v')\right]\pi_\mu(x_0', x_v') dx_0'dx_v' \right|_{(x_0, x_v)} \\
+        = & B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v).
+    \end{align*}
+    By chain rule, we know that for any probability measure $p : S \mapsto [0, \infty)$, the derivative of the differential entropy
+    \begin{equation*}
+        \frac{\delta H(p)}{\delta p}(x) = -\log p(x) - 1,\qquad \forall x\in S
+    \end{equation*}
+    This gives
+    \begin{equation*}
+        \frac{\delta H(\pi_\mu)}{\delta \pi_\mu}(x_0, x_v) = -\log \pi_\mu(x_0, x_v) - 1.
+    \end{equation*}
+    To calculate the derivative of $H(\pi_\mu^0)$, we define
+    \begin{equation*}
+        \pi_\mu^0(x_0) := M(\pi_\mu)(x_0) = \int_{\mathcal{X}} \pi_\mu(x_0, x_v) dx_v,
+    \end{equation*}
+    so that we can apply functional chain rule
+    \begin{equation*}
+        \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} =
+        \int_\mathcal{X} \left.\frac{\delta H(\pi_\mu^0)}{\delta\pi_\mu^0}\right|_{x_0'} \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} dx_0' .
+    \end{equation*}
+    First, write
+    \begin{equation*}
+        M(\pi_\mu)(x_0') = \int_{\mathcal{X}^2} \delta(x_0 - x_0') \pi_\mu(x_0, x_v) dx_0dx_v
+    \end{equation*}
+    Thus, for a function $\eta : \mathcal{X}^2 \mapsto \mathbb{R}$,
+    \begin{align*}
+        M(\pi_\mu + \eta)(x_0') = M(\pi_\mu)(x_0') + \int_{\mathcal{X}^2} \delta(x_0 - x_0') \eta(x_0, x_v) dx_0dx_v.
+    \end{align*}
+    We therefore have 
+    \begin{equation*}
+        \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} = \delta(x_0 - x_0').
+    \end{equation*}
+    Hence, 
+    \begin{equation*}
+        \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} = -\log \pi_\mu^0(x_0) - 1.
+    \end{equation*}
+    The result can be obtained through linearity of differentiation.
+\end{proof}
 
 \end{document}
