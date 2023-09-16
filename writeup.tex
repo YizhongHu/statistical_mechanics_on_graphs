@@ -2630,15 +2630,113 @@ We first rewrite the target function, the key trick being rewriting between $\De
     \begin{align*}
         M(\pi_\mu + \eta)(x_0') = M(\pi_\mu)(x_0') + \int_{\mathcal{X}^2} \delta(x_0 - x_0') \eta(x_0, x_v) dx_0dx_v.
     \end{align*}
-    We therefore have 
+    We therefore have
     \begin{equation*}
         \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} = \delta(x_0 - x_0').
     \end{equation*}
-    Hence, 
+    Hence,
     \begin{equation*}
         \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} = -\log \pi_\mu^0(x_0) - 1.
     \end{equation*}
     The result can be obtained through linearity of differentiation.
+\end{proof}
+
+\newpage
+
+\begin{proposition}
+    For a continuous function $F: \mathcal{X}^{\kappa+1}\mapsto\mathbb{R}$, $\langle F, \eta \rangle = 0$ for all measures $\eta$ on $\mathcal{X}^{\kappa+1}$ such that
+    \begin{enumerate}
+        \item $\eta$ is symmetric: for all $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$ and $\sigma\in S_\kappa$
+              \begin{equation*}
+                  \eta(x_0, (x_1, \cdots, x_\kappa)) = \eta(x_0, \sigma(x_1, \cdots, x_\kappa)),
+              \end{equation*}
+        \item and $\pi_\eta=0$: for all $x, y\in \mathcal{X}$
+              \begin{equation*}
+                  \pi_\eta(x, y) := \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\eta(x, x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)dx_1\cdots dx_{v-1}dx_{v+1}\cdots dx_\kappa = 0
+              \end{equation*}
+    \end{enumerate}
+    if and only if
+    \begin{equation*}
+        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
+    \end{equation*}
+    For some $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta$ such that for all $x_0, x_1, \cdots, x_v\in\mathcal{X}$, $\sigma\in S_\kappa$
+    \begin{equation*}
+        \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(x_1, \cdots, x_\kappa)) = 0
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    (Sketch, will use delta functions). For simplicity, we will write $\mathbf{x}:=(x_1, \cdots, x_\kappa)$, and
+    $\mathbf{x}_{\{v\mapsto y\}}:= (x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)$.
+    Similarly, we define the differential form $d^{\kappa}\mathbf{x} := dx_1\cdots dx_\kappa$, and
+    $d^{\kappa-1}_v\mathbf{x}:= dx_1\cdots dx_{v-1}dx_{v+1}\cdots dx_\kappa$.
+
+    For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$.
+
+    Consider, using $\eta(x_0, \mathbf{x}) = \eta(x_0, \sigma(\mathbf{x}))$
+    \begin{align*}
+        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \sigma(\mathbf{x}))\eta(x_0, \sigma(\mathbf{x}))d^\kappa\mathbf{x}dx_0
+        = & \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right]\eta(x_0, \mathbf{x})d^\kappa\mathbf{x}dx_0 = 0
+        \intertext{On the other hand, taking $\mathbf{x'}=\sigma(\mathbf{x})$}
+        = & \kappa!\int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \mathbf{x}')\eta(x_0, \mathbf{x}')d^\kappa\mathbf{x}'dx_0 = \kappa!\langle\beta, \eta\rangle.
+    \end{align*}
+    Thus, we can deduce that $\langle\beta, \eta\rangle=0$.
+
+    For $\gamma$,
+    \begin{align*}
+          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \eta(x_0, \mathbf{x}) d\mathbf{x}dx_0                                      \\
+        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}dx_vdx_0
+        \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}\right]dx_vdx_0 \\
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_\eta(x_0, x_v)dx_vdx_0 = 0
+    \end{align*}
+
+    For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
+        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta(x, y, \cdots, y) = 0$.
+    We prove $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) = 0$ by contradiction.
+
+    Fix $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$. Consider
+    \begin{equation*}
+        \eta_{x_0, \mathbf{x}}(x_0', \mathbf{x}') := \delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_v)
+        - \frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_u),
+    \end{equation*}
+    and
+    \begin{equation*}
+        \eta(x_0', \mathbf{x}') := \sum_{\sigma\in S_\kappa}\eta_{x_0, \sigma(\mathbf{x})}(x_0', \mathbf{x}').
+    \end{equation*}
+    Check that $\eta$ is symmetric. On the other hand, to prove that $\pi_\eta=0$,
+    \begin{align*}
+          & \pi_{\eta_{x_0, \mathbf{x}}} (x, y)                                                                                                                                                      \\
+        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\delta(x_0' - x)\delta(x_w' - y)\prod_{v\neq w}\delta(x_v' - x_v)d^{\kappa-1}_w\mathbf{x}'                                     \\
+          & - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{u=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\delta(x_0' - x)\delta(x_w'-y)\prod_{v\neq w}^\kappa\delta(x_v' - x_u)d^{\kappa-1}_w\mathbf{x}' \\
+        = & \frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)
+        - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)                                                                                                 \\
+        = & \frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y) -\frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)=0.
+    \end{align*}
+    Hence, $\pi_\eta(x, y) = \sum_{\sigma\in S_\kappa}\pi_{\eta_{x_0, \sigma(\mathbf{x})}}(x, y) = 0$.
+
+    Assume that for some $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) \neq 0$, we will show that
+    $\langle\beta, \eta\rangle\neq 0$.
+
+    First notice that we can simplify $\eta$:
+    \begin{align*}
+        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
+        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_u)
+        \intertext{Take $u' = \sigma^{-1}(u)$, }
+                                & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
+        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{u'=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u'})           \\
+                                & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
+        - \kappa!\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u}).
+    \end{align*}
+    Further, see that
+    \begin{align*}
+        \sum_{\sigma\in S_\kappa}\int_{\mathcal{X}^{\kappa+1}}\beta(x_0', \mathbf{x}')\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)dx_0d^\kappa\mathbf{x}'
+         & = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) \neq 0 \\
+        \int_{\mathcal{X}^{\kappa+1}}\beta(x_0', \mathbf{x}')\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u})dx_0d^\kappa\mathbf{x}'
+         & = \beta(x_0, x_u, \cdots, x_u) = 0
+    \end{align*}
+    which means that $\langle\beta, \eta\rangle \neq 0$, and since $\langle\frac1\kappa\sum \gamma(\cdot), \eta \rangle = 0$, by linearity,
+    $\langle F, \eta\rangle\neq 0$, which is a contradiction.
 \end{proof}
 
 \end{document}
