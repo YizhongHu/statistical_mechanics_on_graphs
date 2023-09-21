@@ -15,6 +15,7 @@
 \usepackage[american]{babel}
 \usepackage{csquotes}
 \usepackage[inline]{showlabels}
+% \usepackage{stix} % for a dotted square
 
 
 \usepackage[style=verbose]{biblatex}
@@ -25,6 +26,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}[section]
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -2547,6 +2549,309 @@ We first rewrite the target function, the key trick being rewriting between $\De
 
 \section{Sep 10 - Sep 15}
 
+For each $\mu\in \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$, we can define a looser form $\widetilde{\mu}\in \mathcal{P}_u(\mathcal{X}^{\kappa+1})$,
+where $\mathcal{P}_u(\mathcal{X}^{\kappa+1})$ is the set of probability measures on $\mathcal{X}^{\kappa+1}$ such that they are
+\begin{enumerate}
+    \item symmetric: for all $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, permutation $\sigma\in S_\kappa$
+          \begin{equation*}
+              \widetilde{\mu}(x_0, (x_1, \cdots, x_\kappa)) = \widetilde{\mu}(x_0, \sigma(x_1, \cdots, x_\kappa)),
+          \end{equation*}
+    \item and admissible: for all $x, y\in\mathcal{X}$, define
+          \begin{equation*}
+              \pi_{\widetilde{\mu}}(x, y) = \int_{\mathcal{X}^{\kappa-1}}\widetilde{\mu}(x, x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)dx_1\cdots dx_{v-1}dx_{v-1}\cdots dx_\kappa,
+          \end{equation*}
+          and we have
+          \begin{equation*}
+              \pi_{\widetilde{\mu}}(x, y) = \pi_{\widetilde{\mu}}(y, x).
+          \end{equation*}
+\end{enumerate}
+
+For simplicity, we will write $\mathbf{x}:=(x_1, \cdots, x_\kappa)$, and
+$\mathbf{x}_{\{v\mapsto y\}}:= (x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)$.
+Similarly, we define the differential form $d^{\kappa}\mathbf{x} := dx_1\cdots dx_\kappa$, and
+$d^{\kappa-1}_v\mathbf{x}:= dx_1\cdots dx{v-1}dx_{v+1}\cdots dx_\kappa$.
+Define the norm $\|(x_0, \mathbf{x})\| := \sqrt{x_0^2 + \|\mathbf{x}\|^2}$.
+
+Define the function $\widetilde{\Box}: \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]) \mapsto \mathcal{P}_u(\mathcal{X}^{\kappa+1})$ such that
+\begin{equation*}
+    \widetilde{\mu}(x_0, \mathbf{x}) = \frac{1}{|S_\kappa / \mathbf{x}|}\mu(x_0, \mathbf{x}),
+\end{equation*}
+where $S_\kappa / \mathbf{x}$ is quotient defined by the equivalence relation $\sigma\sim\sigma'$ iff $\sigma(\mathbf{x}) = \sigma'(\mathbf{x})$.
+
+\begin{proposition}
+    $\widetilde{\Box}$ is a bijection and $\pi_\mu = \pi_{\widetilde{\mu}}$.
+\end{proposition}
+
+\begin{proof}
+    This is surjective because for each $\widetilde{\mu}$, we have $\mu(x_0, \mathbf{x}) = \sum_{\sigma\in S_\kappa / \mathbf{x}}\mu(x_0, \sigma\mathbf{x})$.
+\end{proof}
+
+\begin{proposition}
+    For $\widetilde{V}: \mathcal{P}_u(\mathcal{X}^{\kappa+1})\mapsto \mathbb{R}$, $\widetilde{\mu}\in\mathcal{P}_u(\mathcal{X}^{\kappa+1})$ is a stationary point of $\widetilde{V}$ if and only if $\mu\in \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ is a stationary point of
+    $V: \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])\mapsto \mathbb{R}$, where $V(\mu) = \widetilde{V}(\widetilde{\mu})$
+\end{proposition}
+
+To solve the optimization problem, we take the crucial step of partitioning the set $\mathcal{P}_u([-\pi, \pi)^{\kappa+1})$ by their $\pi_\mu$
+distribution. Say that
+\begin{equation*}
+    \mathcal{P}^\pi(\mathcal{X}^{\kappa+1}) = \{\widetilde{\mu}\in\mathcal{P}_u(\mathcal{X}^{\kappa+1}) | \pi_{\widetilde{\mu}} = \pi\}
+\end{equation*}
+for some admissible measure $\pi$ on $\mathcal{X}^2$. We can optimize for each slice.
+
+\begin{proposition}\label{Prp.optimizer-given-pi}
+    Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, there exists a stationary point of the functional
+    \begin{equation*}
+        V(\widetilde{\mu}) = \mathbb{E}_{\widetilde{\mu}}\left[B\cos x_0+\frac\beta2\sum_{v\sim0}\cos(x_0-x_v)\right]-\frac12[H(\mu\|\widehat{\mu})+H(\mu\|\widecheck{\mu})]
+    \end{equation*}
+    on $\mathcal{P}^\pi(\mathcal{X}^{\kappa+1})$, and it is in the form
+    \begin{equation*}
+        d\widetilde{\mu}(x_0, \sigma(\mathbf{x}))=d\pi^0(x_0) \prod_{v=1}^\kappa d\pi^{v|0}(x_v|x_0).
+    \end{equation*}
+\end{proposition}
+
+It helps to prove some lemmas first.
+
+\begin{definition}
+    A measure $\eta$ on $\mathcal{X}^{\kappa+1}$ is called $\pi$-null if $\pi_\eta = 0$.
+\end{definition}
+
+\begin{proposition}\label{Prp.eta-orthogonal-form}
+    For a continuous function $F: \mathcal{X}^{\kappa+1}\mapsto\mathbb{R}$
+    \begin{equation*}
+        \langle F, \eta \rangle = \int_{\mathcal{X}^{\kappa+1}} F(x_0, \mathbf{x}) \eta(dx_0d^\kappa\mathbf{x}) = 0
+    \end{equation*}
+    for all ``continuous'' symmetric and $\pi$-null measures $\eta$ on $\mathcal{X}^{\kappa+1}$
+    if and only if
+    \begin{equation*}
+        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
+    \end{equation*}
+    For some continuous $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta: \mathcal{X}^{\kappa+1} \mapsto \mathbb{R}$ such that for all $x_0, x_1, \cdots, x_v\in\mathcal{X}$, $\sigma\in S_\kappa$,
+    \begin{equation*}
+        \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) = 0.
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}[Proof of Prop. \ref{Prp.eta-orthogonal-form}]
+    For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$
+    satisfiying the above constraints.
+
+    Consider, using $\eta(x_0, \mathbf{x}) = \eta(x_0, \sigma(\mathbf{x}))$
+    \begin{align*}
+        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \sigma(\mathbf{x}))\eta(x_0, \sigma(\mathbf{x}))d^\kappa\mathbf{x}dx_0
+        = & \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right]\eta(x_0, \mathbf{x})d^\kappa\mathbf{x}dx_0 = 0
+        \intertext{On the other hand, taking $\mathbf{x'}=\sigma(\mathbf{x})$}
+        = & \kappa!\int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \mathbf{x}')\eta(x_0, \mathbf{x}')d^\kappa\mathbf{x}'dx_0 = \kappa!\langle\beta, \eta\rangle.
+    \end{align*}
+    Thus, we can deduce that $\langle\beta, \eta\rangle=0$.
+
+    For $\gamma$,
+    \begin{align*}
+          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \eta(x_0, \mathbf{x}) d\mathbf{x}dx_0                                      \\
+        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}dx_vdx_0
+        \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}\right]dx_vdx_0 \\
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_\eta(x_0, x_v)dx_vdx_0 = 0
+    \end{align*}
+
+    For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
+        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta$ is continuous and $\beta(x, y, \cdots, y) = 0$.
+    We prove $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) = 0$ by contradiction.
+
+    First, let $\Phi_r(x_0, \mathbf{x})$ be a continuous function positively supported on
+    $\mathbf{B}_r(\mathbf{0})\subseteq\mathcal{X}^{\kappa+1}$ with
+    spherical symmetry, i.e. for all $x_0, x_0'$, $\mathbf{x}, \mathbf{x}'\in\mathcal{X}^\kappa$,
+    if $\|(x_0, \mathbf{x})\| = \|x_0', \mathbf{x}'\|$, then $\Phi_r(x_0, \mathbf{x}) = \Phi_r(x_0', \mathbf{x}')$. Notably,
+    $\Phi_r(x_0, \mathbf{x}) = \Phi_r(x_0, \sigma(\mathbf{x}))$.
+
+    Fix $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$ and $r>0$ such that $\mathbf{B}_r(x_0, \mathbf{x}) \subseteq \mathcal{X}^{\kappa+1}$
+    and $\mathbf{B}_r(x_0, (x_v, \cdots, x_v)) \subseteq \mathcal{X}^{\kappa+1}$ for all $v=1,\cdots, \kappa$. Consider
+    \begin{equation*}
+        \eta_{r, x_0, \mathbf{x}}(x_0', \mathbf{x}') := \Phi_r(x_0' - x_0, \mathbf{x}' - \mathbf{x})
+        - \frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)),
+    \end{equation*}
+    and
+    \begin{equation*}
+        \eta_r(x_0', \mathbf{x}') := \sum_{\sigma\in S_\kappa}\eta_{r, x_0, \sigma(\mathbf{x})}(x_0', \mathbf{x}').
+    \end{equation*}
+    Notice that we can simplify $\eta$:
+    \begin{align*}
+        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
+        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (\sigma(\mathbf{x})_v, \cdots, \sigma(\mathbf{x})_v))
+        \intertext{Take $v' = \sigma^{-1}(v)$, }
+                                & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
+        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{v'=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)) \\
+                                & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)).
+    \end{align*}
+
+    We first check that $\eta$ is symmetric:
+    \begin{align*}
+        \eta_r(x_0', \sigma'(\mathbf{x}')) & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}') - \sigma(\mathbf{x}))
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}') - (x_v, \cdots, x_v))
+        \intertext{Subsititute $\sigma'' = \sigma'^{-1} \circ \sigma$, by $\sigma(\mathbf{x}') - \sigma(\mathbf{x}') = \sigma(\mathbf{x}' - \mathbf{x}),$}
+                                           & = \sum_{\sigma''\in S_\kappa}\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}' - \sigma''(\mathbf{x})))
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}' - (x_v, \cdots, x_v)))                               \\
+                                           & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma''(\mathbf{x}))
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)) = \eta_r(x_0', \mathbf{x}')
+    \end{align*}
+    On the other hand, to prove that $\pi_\eta=0$,
+    \begin{align*}
+          & \pi_{\eta_{r, x_0, \mathbf{x}}} (x, y)                                                                                                                                              \\
+        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, \mathbf{x}'_{v\mapsto y} - \mathbf{x})d^{\kappa-1}_w\mathbf{x}'
+        \\
+          & - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x_0' - x_0, \mathbf{x}'_{w\mapsto y} - (x_v, \cdots, x_v))d^{\kappa-1}_w\mathbf{x}' \\
+        \intertext{For simplicity, rearrange so that $y$ is at the $x_1$ position}
+        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2' - x_2, \cdots, x_\kappa' - x_\kappa)dx_2'\cdots dx_\kappa'
+        \\
+          & - \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2' - x_v, \cdots, x_\kappa' - x_v)dx_2'\cdots dx_\kappa'                                     \\
+        \intertext{Given that each $\Phi_r$ is supported on a ball completely inside $\mathcal{X}^\kappa$, we can perform change of variables with the same domain}
+        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2', \cdots, x_\kappa')dx_2'\cdots dx_\kappa'
+        \\
+          & - \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2', \cdots, x_\kappa')dx_2'\cdots dx_\kappa' =0.
+    \end{align*}
+    Hence, $\pi_{\eta_r}(x, y) = \sum_{\sigma\in S_\kappa}\pi_{\eta_{r, x_0, \sigma(\mathbf{x})}}(x, y) = 0$.
+
+    Assume that for some $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) \neq 0$, we will show that
+    $\langle\beta, \eta\rangle\neq 0$.
+
+    Select $\epsilon = \left|\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x}))\right|$. Note that $\epsilon > 0$. By the continuity of $\beta$,
+    choose $r > 0$ such that for all $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$ and $(x_0, (x_v, \cdots, x_v))$, we have $|\beta(x_0', \mathbf{x}') - \beta(x_0, \sigma(\mathbf{x}))| < \epsilon / (4\kappa!)$ and $|\beta(x_0', \mathbf{x}') - \beta(x_0, (x_v, \cdots, x_v))| < \epsilon / (4\kappa!)$ respectively. Additionally, the abovementioned balls are contained in $\mathcal{X}^{\kappa+1}$.
+
+    We want to show that
+    \begin{equation*}
+        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\left[\sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
+            - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))\right]dx_0'd^\kappa\mathbf{x}' = 0.
+    \end{equation*}
+
+    First, consider the case that $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) > 0$.
+    Then we can say that for $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$, $\beta(x_0', \mathbf{x}') > \beta(x_0, \sigma(\mathbf{x})) - \epsilon / (4\kappa!)$, and around $(x_0, (x_v, \cdots, x_v))$, $\beta(x_0', \mathbf{x}') < \beta(x_0, (x_v, \cdots, x_v)) + \epsilon / (4\kappa!)$
+
+    Hence,
+    \begin{align*}
+             & \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}   '                                                                      \\
+        \geq & \left[\inf_{\|(x_0', \mathbf{x}') - (x_0, \sigma(\mathbf{x}))\|<r}\beta(x_0', \mathbf{x}')\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}' \\
+        \geq & \left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{4\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                                                      \\
+        >    & \left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{2\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}',
+        \intertext{and similarly, using a supremum argument}
+             & \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))dx_0'd^\kappa\mathbf{x}'                                                                         \\
+        \leq & \left[\sup_{\|(x_0', \mathbf{x}') - (x_0, (x_v, \cdots, x_v))\|<r}\beta(x_0', \mathbf{x}')\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                            \\
+        <    & \left[\beta(x_0, (x_v, \cdots, x_v)) + \frac{\epsilon}{2\kappa!}\right] \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                                                     \\
+        \intertext{and since $\beta(x_0, (x_v, \cdots, x_v)) = 0$}
+        =    & \frac{\epsilon}{2\kappa!} \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'
+    \end{align*}
+    Thus,
+    \begin{align*}
+        \langle\beta, \eta\rangle & > \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left\{\sum_{\sigma\in S_\kappa}\left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{2\kappa!}\right] - \kappa!\frac{\epsilon}{2\kappa!}\right\} \\
+                                  & = \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) - \epsilon \right]                                                                   \\
+                                  & = \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) - \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right] = 0
+    \end{align*}
+
+    Similarly, for $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) < 0$, we conclude that
+    for $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$, $\beta(x_0', \mathbf{x}') < \beta(x_0, \sigma(\mathbf{x})) + \epsilon / (4\kappa!)$, and around $(x_0, (x_v, \cdots, x_v))$, $\beta(x_0', \mathbf{x}') > - \epsilon / (4\kappa!)$. Then,
+    \begin{align*}
+        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}'
+         & < \left[\beta(x_0, \sigma(\mathbf{x})) + \frac{\epsilon}{2\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}') \\
+        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))dx_0'd^\kappa\mathbf{x}'
+         & > \frac{\epsilon}{2\kappa!} \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}',
+    \end{align*}
+    and
+    \begin{equation*}
+        \langle\beta, \eta\rangle < \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) + \epsilon \right] = 0
+    \end{equation*}
+
+    $\langle\beta, \eta\rangle \neq 0$, combined with $\langle\frac1\kappa\sum \gamma(\cdot), \eta \rangle = 0$, by linearity, we can get
+    $\langle F, \eta\rangle\neq 0$, which is a contradiction. This means that $\beta$ has to satisfy $\sum_\sigma \beta(x_0, \sigma(\mathbf{x})) = 0$. This means that $F$ has to come in the form
+    \begin{equation*}
+        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v),
+    \end{equation*}
+    thus proving the forward direction.
+\end{proof}
+
+\begin{proposition}\label{Prp.target-in-more-pi}
+    The target function $V$ can be equivalently written as
+    \begin{equation*}
+        V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_{\mu} \| \pi_{\eta}).
+    \end{equation*}
+\end{proposition}
+
+\begin{proposition}\label{Prp.nu-makes-mu-stay-in}
+    For all $\widetilde{\mu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ and $\epsilon > 0$, the set
+    \begin{equation*}
+        \{\nu | \widetilde{\mu} + \epsilon \nu \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})\}
+    \end{equation*}
+    is the set of symmetric, $\pi$-null measures on $[-\pi, \pi)^{\kappa+1}$.
+\end{proposition}
+
+
+\begin{proof}[Proof of Prop.\ref{Prp.optimizer-given-pi}]
+    From Prop.\ref{Prp.target-in-more-pi}, we know that
+    \begin{equation*}
+        V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_\mu \| \pi_\eta).
+    \end{equation*}
+    Consider some $\widetilde{\mu} + \epsilon \widetilde{\nu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ for some $\epsilon > 0$. From Prop.\ref{Prp.nu-makes-mu-stay-in}, we know that $\widetilde{\nu}$ must be a symmetric, $\pi$-null measure.
+
+    Now fix symmetric and $\pi$-null measure $\nu$ on $\mathcal{X}^{\kappa+1}$. We can calculate the directional derivative
+    \begin{align*}
+        \frac{\partial V(\widetilde{\mu} + \epsilon \widetilde{\nu})}{\partial \epsilon}
+        = & \int_{\mathcal{X}^2}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right]d\pi_{\widetilde{\nu}}(x_0, x_v) + \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x}) \\
+          & - \frac\kappa2 \int_{\mathcal{X}^2}\left[\log\frac{\pi_\mu}{\pi_\eta} + 1\right]d\pi_{\nu}(x_0, x_v)
+        \intertext{Since $\pi_\nu = \pi_{\widetilde{\nu}} = 0$,}
+        = & \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x})
+        \intertext{Since $\nu$ has total measure of $0$ by $\pi_\nu=0$,}
+        = & \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\nu(x_0, \mathbf{x}).
+    \end{align*}
+    This means that the derivative is well-defined at all $\widetilde{\mu}\in\mathcal{P}^\pi(\mathcal{X}^{\kappa+1})$,
+    and it is
+    \begin{equation}\label{Eq.XY-V-deriv-mu}
+        \frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}} = \log\frac{\mu}{\eta} + 1,
+    \end{equation}
+    which, notice, is continuous on the interior when there does not exist some $\mu(x_0, \mathbf{x})=0$
+
+    A stationary point necessarily means that $\int_{\mathcal{X}^{\kappa+1}}\frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}}(x_0, \mathbf{x})d\nu(x_0, \mathbf{x}) = 0$. This is equivalent to for all symmetric and $\pi$-null measures,
+    \begin{equation*}
+        \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\widetilde{\nu}(x_0, \mathbf{x}) = 0.
+    \end{equation*}
+
+    By Prop.\ref{Prp.eta-orthogonal-form}, we can write
+    \begin{equation*}
+        \log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})} = \beta(x_0, \mathbf{x}) + \frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v),
+    \end{equation*}
+    where $\beta$ satisfies $\sum_{\sigma\in S_\kappa} \beta(x_0, \sigma(\mathbf{x})) = 0$.
+
+    To determine $\beta$, we notice that $\mu$ is defined on the equivalence class $(x_0, \mathbf{x})$ such that all permutations of
+    $\mathbf{x}$ are considered to be of the same equivalence class. Therefore, for $\mu$ to be well-defined, it needs to be symmetric.
+    This holds for $\log(\mu/\eta)$ as well. $\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)$ is already symmetric, but for $\beta$,
+    $\beta(x_0, \mathbf{x}) = \beta{x_0, \sigma\mathbf{x}}$ for all $\sigma\in S_\kappa$, combined with
+    $\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) = 0$ means that $\beta(x_0, \mathbf{x}) = 0$.
+
+    We can then write
+    \begin{equation*}
+        \mu(x_0, \mathbf{x}) = \eta(x_0, \mathbf{x})\exp\left[\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)\right].
+    \end{equation*}
+    For this to satisfy $\pi_\mu = \pi$, we first convert to the $\widetilde{\Box}$ form, let $q(x_0, x_v) = \exp\left[\frac1\kappa\gamma(x_0, x_v)\right]$:
+    \begin{equation*}
+        \widetilde{\mu}(x_0, \mathbf{x}) = \widetilde{\eta}(x_0, \mathbf{x})\prod_{v=1}^\kappa q(x_0, x_v).
+    \end{equation*}
+    And notice that since $\eta$ is a uniform distribution,
+    \begin{equation*}
+        \widetilde{\eta}(x_0, \mathbf{x}) = \widetilde{\eta}^0(x_0)\prod_{v=1}^\kappa \widetilde{\eta}^0(x_v).
+    \end{equation*}
+    In the $\widetilde{\Box}$ form, the $\pi$ distribution can be more easily evaluated.
+    \begin{align*}
+        \pi_{\widetilde{\mu}}(x, y) & = \widetilde{\eta}^0(x)\widetilde{\eta}^0(y)\left[\int\widetilde{\eta}^0(y')q(x, y')dy'\right]^{\kappa-1} \\
+        \pi_{\widetilde{\mu}}^0(x)  & = \widetilde{\eta}^0(x)\left[\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy\right]^\kappa.
+    \end{align*}
+    Thus,
+    \begin{equation*}
+        \pi_{\widetilde{\mu}}^{1|0}(y | x) := \frac{\pi_{\widetilde{\mu}}(x, y)}{\pi_{\widetilde{\mu}}^0(x)} = \frac{\widetilde{\eta}^0(y)q(x, y)}{\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy},
+    \end{equation*}
+    and set $\pi_{\widetilde{\mu}}= \pi$ we have
+    \begin{equation*}
+        \widetilde{\mu}(x_0, \mathbf{x}) = \pi^0(x_0)\prod_{v=1}^\kappa\pi^{1|0}(x_v|x_0).
+    \end{equation*}
+\end{proof}
+
+
 \begin{proposition}
     Given continuous function $F:\mathcal{X}^2\mapsto\mathbb{R}$. If for all $\eta: \mathcal{X}^2\mapsto\mathbb{R}$ symmetric and
     zero-total-measure, we have $\left\langle F, \eta \right\rangle=0$, then such an $F$ can be written as
@@ -2639,104 +2944,6 @@ We first rewrite the target function, the key trick being rewriting between $\De
         \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} = -\log \pi_\mu^0(x_0) - 1.
     \end{equation*}
     The result can be obtained through linearity of differentiation.
-\end{proof}
-
-\newpage
-
-\begin{proposition}
-    For a continuous function $F: \mathcal{X}^{\kappa+1}\mapsto\mathbb{R}$, $\langle F, \eta \rangle = 0$ for all measures $\eta$ on $\mathcal{X}^{\kappa+1}$ such that
-    \begin{enumerate}
-        \item $\eta$ is symmetric: for all $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$ and $\sigma\in S_\kappa$
-              \begin{equation*}
-                  \eta(x_0, (x_1, \cdots, x_\kappa)) = \eta(x_0, \sigma(x_1, \cdots, x_\kappa)),
-              \end{equation*}
-        \item and $\pi_\eta=0$: for all $x, y\in \mathcal{X}$
-              \begin{equation*}
-                  \pi_\eta(x, y) := \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\eta(x, x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)dx_1\cdots dx_{v-1}dx_{v+1}\cdots dx_\kappa = 0
-              \end{equation*}
-    \end{enumerate}
-    if and only if
-    \begin{equation*}
-        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
-    \end{equation*}
-    For some $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta$ such that for all $x_0, x_1, \cdots, x_v\in\mathcal{X}$, $\sigma\in S_\kappa$
-    \begin{equation*}
-        \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(x_1, \cdots, x_\kappa)) = 0
-    \end{equation*}
-\end{proposition}
-
-\begin{proof}
-    (Sketch, will use delta functions). For simplicity, we will write $\mathbf{x}:=(x_1, \cdots, x_\kappa)$, and
-    $\mathbf{x}_{\{v\mapsto y\}}:= (x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)$.
-    Similarly, we define the differential form $d^{\kappa}\mathbf{x} := dx_1\cdots dx_\kappa$, and
-    $d^{\kappa-1}_v\mathbf{x}:= dx_1\cdots dx_{v-1}dx_{v+1}\cdots dx_\kappa$.
-
-    For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$.
-
-    Consider, using $\eta(x_0, \mathbf{x}) = \eta(x_0, \sigma(\mathbf{x}))$
-    \begin{align*}
-        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \sigma(\mathbf{x}))\eta(x_0, \sigma(\mathbf{x}))d^\kappa\mathbf{x}dx_0
-        = & \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right]\eta(x_0, \mathbf{x})d^\kappa\mathbf{x}dx_0 = 0
-        \intertext{On the other hand, taking $\mathbf{x'}=\sigma(\mathbf{x})$}
-        = & \kappa!\int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \mathbf{x}')\eta(x_0, \mathbf{x}')d^\kappa\mathbf{x}'dx_0 = \kappa!\langle\beta, \eta\rangle.
-    \end{align*}
-    Thus, we can deduce that $\langle\beta, \eta\rangle=0$.
-
-    For $\gamma$,
-    \begin{align*}
-          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \eta(x_0, \mathbf{x}) d\mathbf{x}dx_0                                      \\
-        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}dx_vdx_0
-        \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}\right]dx_vdx_0 \\
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_\eta(x_0, x_v)dx_vdx_0 = 0
-    \end{align*}
-
-    For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
-        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta(x, y, \cdots, y) = 0$.
-    We prove $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) = 0$ by contradiction.
-
-    Fix $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$. Consider
-    \begin{equation*}
-        \eta_{x_0, \mathbf{x}}(x_0', \mathbf{x}') := \delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_v)
-        - \frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_u),
-    \end{equation*}
-    and
-    \begin{equation*}
-        \eta(x_0', \mathbf{x}') := \sum_{\sigma\in S_\kappa}\eta_{x_0, \sigma(\mathbf{x})}(x_0', \mathbf{x}').
-    \end{equation*}
-    Check that $\eta$ is symmetric. On the other hand, to prove that $\pi_\eta=0$,
-    \begin{align*}
-          & \pi_{\eta_{x_0, \mathbf{x}}} (x, y)                                                                                                                                                      \\
-        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\delta(x_0' - x)\delta(x_w' - y)\prod_{v\neq w}\delta(x_v' - x_v)d^{\kappa-1}_w\mathbf{x}'                                     \\
-          & - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{u=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\delta(x_0' - x)\delta(x_w'-y)\prod_{v\neq w}^\kappa\delta(x_v' - x_u)d^{\kappa-1}_w\mathbf{x}' \\
-        = & \frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)
-        - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)                                                                                                 \\
-        = & \frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y) -\frac1\kappa\sum_{w=1}^\kappa\delta(x_0' - x)\delta(x_w' - y)=0.
-    \end{align*}
-    Hence, $\pi_\eta(x, y) = \sum_{\sigma\in S_\kappa}\pi_{\eta_{x_0, \sigma(\mathbf{x})}}(x, y) = 0$.
-
-    Assume that for some $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) \neq 0$, we will show that
-    $\langle\beta, \eta\rangle\neq 0$.
-
-    First notice that we can simplify $\eta$:
-    \begin{align*}
-        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
-        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_u)
-        \intertext{Take $u' = \sigma^{-1}(u)$, }
-                                & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
-        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{u'=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u'})           \\
-                                & = \sum_{\sigma\in S_\kappa}\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)
-        - \kappa!\frac1\kappa\sum_{u=1}^\kappa\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u}).
-    \end{align*}
-    Further, see that
-    \begin{align*}
-        \sum_{\sigma\in S_\kappa}\int_{\mathcal{X}^{\kappa+1}}\beta(x_0', \mathbf{x}')\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - \sigma(\mathbf{x})_v)dx_0d^\kappa\mathbf{x}'
-         & = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) \neq 0 \\
-        \int_{\mathcal{X}^{\kappa+1}}\beta(x_0', \mathbf{x}')\delta(x_0' - x_0)\prod_{v=1}^\kappa\delta(x_v' - x_{u})dx_0d^\kappa\mathbf{x}'
-         & = \beta(x_0, x_u, \cdots, x_u) = 0
-    \end{align*}
-    which means that $\langle\beta, \eta\rangle \neq 0$, and since $\langle\frac1\kappa\sum \gamma(\cdot), \eta \rangle = 0$, by linearity,
-    $\langle F, \eta\rangle\neq 0$, which is a contradiction.
 \end{proof}
 
 \end{document}
