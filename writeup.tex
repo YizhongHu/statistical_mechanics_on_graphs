@@ -26,7 +26,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{definition}{Definition}[section]
+\newtheorem{definition}[theorem]{Definition}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -2549,54 +2549,183 @@ We first rewrite the target function, the key trick being rewriting between $\De
 
 \section{Sep 10 - Sep 15}
 
-For each $\mu\in \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$, we can define a looser form $\widetilde{\mu}\in \mathcal{P}_u(\mathcal{X}^{\kappa+1})$,
-where $\mathcal{P}_u(\mathcal{X}^{\kappa+1})$ is the set of probability measures on $\mathcal{X}^{\kappa+1}$ such that they are
-\begin{enumerate}
-    \item symmetric: for all $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, permutation $\sigma\in S_\kappa$
-          \begin{equation*}
-              \widetilde{\mu}(x_0, (x_1, \cdots, x_\kappa)) = \widetilde{\mu}(x_0, \sigma(x_1, \cdots, x_\kappa)),
-          \end{equation*}
-    \item and admissible: for all $x, y\in\mathcal{X}$, define
-          \begin{equation*}
-              \pi_{\widetilde{\mu}}(x, y) = \int_{\mathcal{X}^{\kappa-1}}\widetilde{\mu}(x, x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)dx_1\cdots dx_{v-1}dx_{v-1}\cdots dx_\kappa,
-          \end{equation*}
-          and we have
-          \begin{equation*}
-              \pi_{\widetilde{\mu}}(x, y) = \pi_{\widetilde{\mu}}(y, x).
-          \end{equation*}
-\end{enumerate}
+\subsection{Removing equivalence in leaves in probability measures}
 
-For simplicity, we will write $\mathbf{x}:=(x_1, \cdots, x_\kappa)$, and
-$\mathbf{x}_{\{v\mapsto y\}}:= (x_1, \cdots, x_{v-1}, y, x_{v+1}, \cdots, x_\kappa)$.
-Similarly, we define the differential form $d^{\kappa}\mathbf{x} := dx_1\cdots dx_\kappa$, and
-$d^{\kappa-1}_v\mathbf{x}:= dx_1\cdots dx{v-1}dx_{v+1}\cdots dx_\kappa$.
-Define the norm $\|(x_0, \mathbf{x})\| := \sqrt{x_0^2 + \|\mathbf{x}\|^2}$.
+Probability measures on marked $\kappa$-stars $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$, we instead consider the following measure on $\mathcal{X} \times \mathcal{X}^\kappa$.
+For simplicity, we will write $\mathbf{x}\doteq(x_1, \cdots, x_\kappa)$.
+We define the differential form $d^{\kappa}\mathbf{x} := dx_1\cdots dx_\kappa$, and
+the norm $\|(x_0, \mathbf{x})\| := \sqrt{x_0^2 + \|\mathbf{x}\|^2}$.
 
-Define the function $\widetilde{\Box}: \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]) \mapsto \mathcal{P}_u(\mathcal{X}^{\kappa+1})$ such that
+Further, we will define permutations on $\mathbf{x}$:
+\begin{definition}
+    For some permutation $\sigma: \{1, \cdots, \kappa\} \mapsto \{1, \cdots, \kappa\}$ bijective, define a permutation on
+    some $\mathbf{x}\in \mathcal{X}^\kappa$ to be
+    \begin{equation*}
+        \sigma\mathbf{x} \doteq (x_{\sigma^{-1}(1)}, \cdots, x_{\sigma^{-1}(1)})
+    \end{equation*}
+\end{definition}
+
+This construction sends $x_i$ to the $\sigma(i)$-th index, i.e. $(\sigma\mathbf{x})_{\sigma(i)} = x_i$. This explains why
+we take $\sigma^{-1}$ instead of $\sigma$ in the index.
+
+We can represent the set of marked $\kappa$-stars $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$ as a quotient on $\mathcal{X}\times\mathcal{X}^\kappa$,
+which we call \textbf{labelled marked $\kappa$-stars}.
+\begin{definition}
+    The symmetry relation $\sim$ is defined such that for all $(x_0, \mathbf{x}), (x_0', \mathbf{x}')\in \mathcal{X}\times\mathcal{X}^\kappa$,
+    \begin{equation*}
+        (x_0, \mathbf{x})\sim (x_0', \mathbf{x}') \iff x_0 = x_0'\ \wedge\ \exists \sigma\in S_\kappa\ \text{s.t.}\ \mathbf{x} = \sigma\mathbf{x}'
+    \end{equation*}
+\end{definition}
+
+It is an equivalence relation by properties of groups: the identity of $S_\kappa$ gives reflexivity, $\sigma$ has an inverse gives symmetry,
+and $S_\kappa$ closed under composition gives transitivity.
+
+We can see that the marked $\kappa$-stars $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$ can be represented by $\mathcal{X}\times\mathcal{X}^\kappa / \sim$.
+To better differentiate elements from both sets, we will denote elements in $\mathcal{X}\times\mathcal{X}^\kappa$ with a tilde, like $\widetilde{\tau}$, and elements in $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$ without a tilde, like $\tau$.
+
+For simplicity, for all $\widetilde{\tau} = (x_0, \mathbf{x})\in \mathcal{X}\times\mathcal{X}^\kappa$, and $\sigma\in S_\kappa$, we write
 \begin{equation*}
-    \widetilde{\mu}(x_0, \mathbf{x}) = \frac{1}{|S_\kappa / \mathbf{x}|}\mu(x_0, \mathbf{x}),
+    \sigma\widetilde{\tau} \doteq (x_0, \sigma\mathbf{x})
 \end{equation*}
-where $S_\kappa / \mathbf{x}$ is quotient defined by the equivalence relation $\sigma\sim\sigma'$ iff $\sigma(\mathbf{x}) = \sigma'(\mathbf{x})$.
 
-\begin{proposition}
-    $\widetilde{\Box}$ is a bijection and $\pi_\mu = \pi_{\widetilde{\mu}}$.
+\begin{definition}
+    For each $\widetilde{\tau} \in \mathcal{X}\times\mathcal{X}^\kappa$, $T\widetilde{\tau} := [\widetilde{\tau}]$, where $[\cdot]$ raises an element
+    to its equivalence class.
+\end{definition}
+
+Now that we have established a relationship between marked $\kappa$-stars and $\mathcal{X}\times\mathcal{X}^\kappa$, we will find a measure on
+$\mathcal{X}\times\mathcal{X}^\kappa$. Recall that $\eta$ can be defined in the following way. First, find independent uniform probability measures
+$\nu$ on $\mathcal{X}$\footnote{I think this should be pretty well-established in the formulation of the work. I added them to suit my proof.}:
+\begin{equation*}
+    \widetilde{\eta} = \nu \times \nu^\kappa.
+\end{equation*}
+Then, take equivalence class
+\begin{equation*}
+    \eta(B) = \widetilde{\eta}(T^{-1} B).
+\end{equation*}
+
+\begin{definition}
+    For each $\mu \in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ absolutely continuous relative to $\eta$, we define $\widetilde{\mu}$ such that for all $\widetilde{\tau}\in \mathcal{X}\times\mathcal{X}^\kappa$.\footnote{What conditions do we need for the density $\frac{d \mu}{d \eta}$ to exist? I guess for $H(\mu\|\eta)$ to be defined, this density has to exist.}
+    \begin{equation}\label{XY-tilde-def}
+        \frac{d\widetilde{\mu}}{d \widetilde{\eta}} (\widetilde{\tau}) =  \frac{d \mu}{d \eta} (T \widetilde{\tau}).
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    A probability measure $\widetilde{\mu}\in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ is called \textbf{symmetric} if for all $B\subseteq \mathcal{X}\times\mathcal{X}^\kappa$ measurable\footnote{measurable?}, $\sigma\in S_\kappa$,
+    \begin{equation*}
+        \widetilde\mu(\sigma B) = \widetilde{\mu}(B),
+    \end{equation*}
+    where $\sigma B \doteq \{\sigma\widetilde{\tau}\ |\ \widetilde{\tau}\in B\}$. We denote the set of symmetric probabilities on $\mathcal{X}\times \mathcal{X}^\kappa$ as $\mathcal{P}_s(\mathcal{X}\times \mathcal{X}^\kappa)$
+\end{definition}
+
+$\widetilde{\eta}$ is a symmetric probability measure on the labelled marked $\kappa$-stars $\mathcal{X}\times \mathcal{X}^\kappa$ due to it being
+a product measure.
+
+\begin{proposition}\label{Prp.XY-tilde-surj}
+    For $\mu \in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$, $\widetilde{\mu}(\mathcal{X}\times \mathcal{X}^\kappa)$ is a symmetric probability measure.
 \end{proposition}
-
 \begin{proof}
-    This is surjective because for each $\widetilde{\mu}$, we have $\mu(x_0, \mathbf{x}) = \sum_{\sigma\in S_\kappa / \mathbf{x}}\mu(x_0, \sigma\mathbf{x})$.
+    \begin{enumerate}
+        First, we show that $\widetilde{\mu}$ has total measure 1.
+        \begin{align*}
+            \widetilde{\mu}(\mathcal{X}\times \mathcal{X}^\kappa) & = \int_{\mathcal{X}\times \mathcal{X}^\kappa} \frac{d \widetilde\mu}{d \widetilde\eta} (\widetilde{\tau}) \widetilde{\eta}(d\widetilde{\tau}) \\
+                                                                  & = \int_{\mathcal{X}\times \mathcal{X}^\kappa} \frac{d \mu}{d \eta} (T \widetilde{\tau}) \widetilde{\eta}(d\widetilde{\tau})
+            \intertext{By a change of variables $\tau = T\widetilde{\tau}$}
+                                                                  & = \int_{\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]} \frac{d \mu}{d \eta} (\tau) \eta(d\tau)                                                       \\
+                                                                  & = \mu(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]) = 1
+        \end{align*}
+        Also notice that since $\mu$ is non-negative, $\widetilde{\mu}$ should also be non-negative. This shows that $\widetilde{\mu}$ is a probability measure.
+        \begin{align*}
+            \widetilde\mu(\sigma B) & = \int_{\sigma B} \frac{d \mu}{d \eta} (T\widetilde{\tau})\widetilde{\eta}(d\widetilde{\tau})
+            \intertext{Let $\widetilde\tau' = \sigma^{-1}\widetilde\tau$}
+                                    & = \int_{B} \frac{d \mu}{d \eta} (T\sigma\widetilde{\tau}')\widetilde{\eta}(\sigma d\widetilde{\tau}')
+            \intertext{Since $[\sigma\widetilde{\tau}'] = [\widetilde{\tau}']$, and by changing variables again to $\tau = T\widetilde{\tau}'$,}
+                                    & = \int_{T^{-1}B} \frac{d \mu}{d \eta} (\tau)\eta(d\tau)
+            \intertext{Similarly, }
+            \widetilde\mu(B)        & = \int_{T^{-1}B} \frac{d \mu}{d \eta} (\tau)\eta(d\tau)
+        \end{align*}
+        Thus we have
+        \begin{equation*}
+            \widetilde\mu(\sigma B) = \int_{T^{-1}B} \frac{d \mu}{d \eta} (\tau)\eta(d\tau) = \widetilde\mu(B)
+        \end{equation*}
+    \end{enumerate}
 \end{proof}
 
 \begin{proposition}
-    For $\widetilde{V}: \mathcal{P}_u(\mathcal{X}^{\kappa+1})\mapsto \mathbb{R}$, $\widetilde{\mu}\in\mathcal{P}_u(\mathcal{X}^{\kappa+1})$ is a stationary point of $\widetilde{V}$ if and only if $\mu\in \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ is a stationary point of
-    $V: \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])\mapsto \mathbb{R}$, where $V(\mu) = \widetilde{V}(\widetilde{\mu})$
+    \begin{align*}
+        \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]) & \mapsto \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa) \\
+        \mu                                                 & \mapsto\widetilde{\mu}
+    \end{align*}
+    is a bijective function.
 \end{proposition}
 
-To solve the optimization problem, we take the crucial step of partitioning the set $\mathcal{P}_u([-\pi, \pi)^{\kappa+1})$ by their $\pi_\mu$
-distribution. Say that
-\begin{equation*}
-    \mathcal{P}^\pi(\mathcal{X}^{\kappa+1}) = \{\widetilde{\mu}\in\mathcal{P}_u(\mathcal{X}^{\kappa+1}) | \pi_{\widetilde{\mu}} = \pi\}
-\end{equation*}
-for some admissible measure $\pi$ on $\mathcal{X}^2$. We can optimize for each slice.
+\begin{proof}
+    We have proved that it is surjective in Proposition \ref{Prp.XY-tilde-surj}. It is injective because the densities uniquely determine
+    the probability measures $\mu$ and $\widetilde{\mu}$. Since the density of $\widetilde{\mu}$ is also uniquely determined
+    by that of $\mu$\footnote{How dubious of a claim is this?}, we know that the $\mu$ that gives $\widetilde{\mu}$ is unique.
+\end{proof}
+
+\begin{proposition}
+    For each $\mu, \eta \in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$,
+    \begin{equation}
+        H(\widetilde{\mu} \| \widetilde{\eta}) = H(\mu \| \eta)
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    Applying definitions,
+    \begin{align*}
+        H(\widetilde{\mu} \| \widetilde{\eta}) & = \int_{\mathcal{X}\times\mathcal{X}^\kappa} \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde{\tau})\log \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde{\tau})\widetilde{\eta}(d\widetilde{\tau}) \\
+                                               & = \int_{\mathcal{X}\times\mathcal{X}^\kappa} \frac{d{\mu}}{d{\eta}}(T\widetilde{\tau})\log \frac{d{\mu}}{d{\eta}}(T\widetilde{\tau})\widetilde{\eta}(d\widetilde{\tau})                                       \\
+        \intertext{Making the substitution $\tau = T\widetilde{\tau}$}
+                                               & = \int_{\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]} \frac{d{\mu}}{d{\eta}}(\tau)\log \frac{d{\mu}}{d{\eta}}(\tau)\eta(d\tau) = H(\mu \| \eta).
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    Given a probability measure $\widetilde{\mu}$ on the labelled marked $\kappa$-stars $\mathcal{X}\times\mathcal{X}^\kappa$,
+    \begin{equation}\label{Eq.XY-pi-tilde-def}
+        \pi_{\widetilde{\mu}} = \frac1\kappa \sum_{v=1}^\kappa \widetilde{\mu}^{0, v}
+    \end{equation}
+    where $\widetilde{\mu}^{u, v}$ is the $u$-$v$ marginal\footnote{I don't know the definition of marginals, but this is probably sound.}
+    of $\widetilde{\mu}$.
+\end{definition}
+
+Note that $\pi_{\widetilde{\mu}}$ is a probability measure on $\mathcal{X}^2$. We denote as $\mathcal{P}(\mathcal{X}^2)$.
+
+\begin{proposition}
+    Given symmetric probability measure $\widetilde{\mu}$ on $\mathcal{X}\times\mathcal{X}^\kappa$,
+    \begin{equation*}
+        \pi_{\widetilde{\mu}} = \widetilde{\mu}^{0, 1}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Should be apparent. Not proving because we may not need this result.
+\end{proof}
+
+\begin{proposition}
+    Given $\mu$ probability measure on $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$,
+    \begin{equation*}
+        \pi_\mu = \pi_{\widetilde{\mu}}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    TODO.
+\end{proof}
+
+We can therefore define admissibility on $\mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$.
+
+\begin{proposition}
+    For each $\mu\in\mathcal{P}_u\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$, there exists a unique
+    $\widetilde{\mu}$ such that $\pi_{\widetilde{\mu}}$ is symmetric.
+\end{proposition}
+
+Denote the set of symmetric probability measures on $\mathcal{X}^2$, $\mathcal{P}_s(\mathcal{X}^2)$, and the set
+of symmetric measures on $\mathcal{X}\times\mathcal{X}^\kappa$ that has a symmetric $\pi_{\widetilde{\mu}}$ distribution
+as $\mathcal{P}_{u, s}(\mathcal{X}\times\mathcal{X}^\kappa)$.
 
 \begin{proposition}\label{Prp.optimizer-given-pi}
     Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, there exists a stationary point of the functional
@@ -2612,7 +2741,7 @@ for some admissible measure $\pi$ on $\mathcal{X}^2$. We can optimize for each s
 It helps to prove some lemmas first.
 
 \begin{definition}
-    A measure $\eta$ on $\mathcal{X}^{\kappa+1}$ is called $\pi$-null if $\pi_\eta = 0$.
+    A signed measure $\eta$ on $\mathcal{X}^{\kappa+1}$ is called $\pi$-null if $\pi_\eta = 0$.
 \end{definition}
 
 \begin{proposition}\label{Prp.eta-orthogonal-form}
