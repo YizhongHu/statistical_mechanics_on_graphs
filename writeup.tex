@@ -2666,7 +2666,28 @@ a product measure.
     by that of $\mu$\footnote{How dubious of a claim is this?}, we know that the $\mu$ that gives $\widetilde{\mu}$ is unique.
 \end{proof}
 
-\begin{proposition}
+\begin{proposition}\label{Prp.XY-tilde-EXP-eq}
+    Given $\mu, \eta \in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$,
+    $f : \mathcal{T}^\kappa_{*, 1}[\mathcal{X}] \mapsto \mathbb{R}$, and
+    $\widetilde{f} : \mathcal{X}\times\mathcal{X}^\kappa \mapsto \mathbb{R}$ defined as
+    \begin{equation*}
+        \widetilde{f}(\widetilde{\tau}) = f(T\widetilde{\tau}),
+    \end{equation*}
+    we have
+    \begin{equation*}
+        \mathbb{E}_\mu f(\tau) = \mathbb{E}_{\widetilde{\mu}} \widetilde{f}(\widetilde{\tau})
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Using the change of variables $\tau = T\widetilde{\tau}$,
+    \begin{align*}
+        \mathbb{E}_\mu f(\tau) = & \int_{\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]} f(\tau)\frac{d\mu}{d\eta}(\tau) \eta(d\tau)                                                                                                               \\
+        =                        & \int_{\mathcal{X}\times\mathcal{X}^\kappa} f(\widetilde{\tau})\frac{d\widetilde\mu}{d\widetilde\eta}(\widetilde\tau) \eta(d\widetilde\tau) = \mathbb{E}_{\widetilde{\mu}} \widetilde{f}(\widetilde\tau)
+    \end{align*}
+\end{proof}
+
+\begin{proposition}\label{Prp.XY-tilde-RE-eq}
     For each $\mu, \eta \in \mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$,
     \begin{equation}
         H(\widetilde{\mu} \| \widetilde{\eta}) = H(\mu \| \eta)
@@ -2674,11 +2695,9 @@ a product measure.
 \end{proposition}
 
 \begin{proof}
-    Applying definitions,
+    Using the same change of variables $\tau = T\widetilde{\tau}$,
     \begin{align*}
         H(\widetilde{\mu} \| \widetilde{\eta}) & = \int_{\mathcal{X}\times\mathcal{X}^\kappa} \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde{\tau})\log \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde{\tau})\widetilde{\eta}(d\widetilde{\tau}) \\
-                                               & = \int_{\mathcal{X}\times\mathcal{X}^\kappa} \frac{d{\mu}}{d{\eta}}(T\widetilde{\tau})\log \frac{d{\mu}}{d{\eta}}(T\widetilde{\tau})\widetilde{\eta}(d\widetilde{\tau})                                       \\
-        \intertext{Making the substitution $\tau = T\widetilde{\tau}$}
                                                & = \int_{\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]} \frac{d{\mu}}{d{\eta}}(\tau)\log \frac{d{\mu}}{d{\eta}}(\tau)\eta(d\tau) = H(\mu \| \eta).
     \end{align*}
 \end{proof}
@@ -2693,17 +2712,19 @@ a product measure.
 \end{definition}
 
 Note that $\pi_{\widetilde{\mu}}$ is a probability measure on $\mathcal{X}^2$. We denote as $\mathcal{P}(\mathcal{X}^2)$.
+For some $\pi_{\widetilde{\mu}}\in\mathcal{P}(\mathcal{X}^2)$ we denote its $0$-marginal (root marginal) as $\pi_{\widetilde{\mu}}^0$,
+and its $1$-marginal (leaf marginal) as $\pi_{\widetilde{\mu}}^1$. Its root marginal $\pi_{\widetilde{\mu}}^0 = \widetilde{\mu}^0$.
 
-\begin{proposition}
-    Given symmetric probability measure $\widetilde{\mu}$ on $\mathcal{X}\times\mathcal{X}^\kappa$,
-    \begin{equation*}
-        \pi_{\widetilde{\mu}} = \widetilde{\mu}^{0, 1}
-    \end{equation*}
-\end{proposition}
+% \begin{proposition}
+%     Given symmetric probability measure $\widetilde{\mu}$ on $\mathcal{X}\times\mathcal{X}^\kappa$,
+%     \begin{equation*}
+%         \pi_{\widetilde{\mu}} = \widetilde{\mu}^{0, 1}
+%     \end{equation*}
+% \end{proposition}
 
-\begin{proof}
-    Should be apparent. Not proving because we may not need this result.
-\end{proof}
+% \begin{proof}
+%     Should be apparent. Not proving because we may not need this result.
+% \end{proof}
 
 \begin{proposition}
     Given $\mu$ probability measure on $\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$,
@@ -2716,47 +2737,117 @@ Note that $\pi_{\widetilde{\mu}}$ is a probability measure on $\mathcal{X}^2$. W
     TODO.
 \end{proof}
 
-We can therefore define admissibility on $\mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$.
+\begin{definition}
+    A probability measure $\pi\in \mathcal{P}(\mathcal{X}^2)$ is symmetric if for all $B\subseteq \mathcal{X}^2$ measurable:\footnote{And flipping $\{(y, x)\ |\ (x,y)\in B\}$ is also measurable}
+    \begin{equation*}
+        \pi(\{(y, x)\ |\ (x,y)\in B\}) = \pi(B).
+    \end{equation*}
+    We denote the set of such probability measures as $\mathcal{P}_s(\mathcal{X}^2)$
+\end{definition}
 
-\begin{proposition}
-    For each $\mu\in\mathcal{P}_u\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]$, there exists a unique
-    $\widetilde{\mu}$ such that $\pi_{\widetilde{\mu}}$ is symmetric.
+\begin{proposition}\label{Prp.XY-tilde-PI-eq}
+    The function from unimodular measures on marked $\kappa$-trees to symmetric and admissible probability measures on labelled marked $\kappa$-trees
+    \begin{align*}
+        \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}]) & \mapsto \mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa) \\
+        \mu                                                   & \mapsto\widetilde{\mu}
+    \end{align*}
+    is bijective, and
+    \begin{equation*}
+        \pi_\mu = \pi_{\widetilde{\mu}}.
+    \end{equation*}
 \end{proposition}
 
-Denote the set of symmetric probability measures on $\mathcal{X}^2$, $\mathcal{P}_s(\mathcal{X}^2)$, and the set
-of symmetric measures on $\mathcal{X}\times\mathcal{X}^\kappa$ that has a symmetric $\pi_{\widetilde{\mu}}$ distribution
-as $\mathcal{P}_{u, s}(\mathcal{X}\times\mathcal{X}^\kappa)$.
+\begin{proof}
+    We know that this is a bijection between $\mathcal{P}(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ and $\mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$. We can therefore guarantee injectivity. To see surjectivity, we notice that for each admissible
+    $\widetilde{\mu}\in \mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa)$, we know that
+    $\mu\in \mathcal{P}_u(\mathcal{T}^\kappa_{*, 1}[\mathcal{X}])$ satisfies $\pi_\mu = \pi_{\widetilde{\mu}}$ by Prop. \ref{Prp.XY-tilde-PI-eq}.
+\end{proof}
+
+\begin{proposition}
+    An optimizer $\widetilde{\mu}^*$ of
+    \begin{equation*}
+        \sup_{\widetilde{\mu}\in\mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa)}\left\{\mathbb{E}_{\widetilde{\mu}}\left[B\cos x_0 + \frac\beta2\sum_{v\sim 0}\cos(x_0-x_v)\right] - H(\widetilde{\mu}\|\widetilde{\eta}) + \frac\kappa2 H(\pi_{\widetilde\mu}\|\pi_{\widetilde\eta})\right\}
+    \end{equation*}
+    corresponds to the optimizer $\mu^*$ of
+    \begin{equation*}
+        \sup_{\mu\in\mathcal{P}_u(\mathcal{T}^\kappa_{*,1}[\mathcal{X}])}\left\{\mathbb{E}_\mu\left[B\cos x_0 + \frac\beta2\sum_{v\sim 0}\cos(x_0-x_v)\right] - H(\mu\|\eta) + \frac\kappa2 H(\pi_\mu\|\pi_\eta)\right\}
+    \end{equation*}
+    under the inverse $\widetilde{\circ}$ transformation. They have the same target value.
+\end{proposition}
+
+\begin{proof}
+    First, we prove that they have the same value. Fix $\widetilde{\mu}\in\mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa)$ and the
+    corresponding $\mu\in\mathcal{P}_u(\mathcal{T}^\kappa_{*,1}[\mathcal{X}])$. The first terms are equal by Prop. \ref{Prp.XY-tilde-EXP-eq}. The
+    second terms are equal by Prop. \ref{Prp.XY-tilde-RE-eq}. The third terms are equal by Prop. \ref{Prp.XY-tilde-PI-eq}. Therefore, the value
+    function is equivalent under such pairs. Hence, the optimizer of one is also an optimizer of the other.\footnote{I am not sure how to make this
+        less hand-wavy}
+\end{proof}
+
+\subsection{Conditional Independence}
+
+\begin{proposition}
+    $\widetilde{\mu}$ is an optimizer of
+    \begin{equation}\label{Eq.XY-target-no-pi}
+        \sup_{\widetilde{\mu}\in\mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa)}\left\{\mathbb{E}_\mu\left[B\cos x_0 + \frac\beta2\sum_{v\sim 0}\cos(x_0-x_v)\right] - H(\widetilde{\mu}\|\widetilde{\eta}) + \frac\kappa2 H(\pi_{\widetilde\mu}\|\pi_{\widetilde\eta})\right\}
+    \end{equation}
+    if and only if $(\pi_{\widetilde{\mu}}, \widetilde{\mu})$ is an optimizer of
+    \begin{equation}\label{Eq.XY-target-with-pi}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)\right\}
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    For symmetric probability measure $\widetilde\mu$
+    \begin{align*}
+          & \mathbb{E}_{\widetilde\mu}\left[B\cos x_0 + \frac\beta2\sum_{v\sim 0}\cos(x_0-x_v)\right]                                                                                                                                                                                                                  \\
+        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa} \left[B\cos x_0 + \frac\beta2\sum_{v=1}^\kappa\cos(x_0-x_v)\right] \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde\tau) \eta(d\widetilde\tau)                                                                                                             \\
+        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa} B\cos x_0\frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde\tau) \eta(d\widetilde\tau) + \frac\beta2\sum_{v=1}^\kappa\int_{\mathcal{X}\times\mathcal{X}^\kappa}\cos(x_0-x_v)\frac{d\widetilde{\mu}}{d\widetilde{\eta}}(\widetilde\tau) \eta(d\widetilde\tau) \\
+        = & \mathbb{E}_{\pi_{\widetilde{\mu}}^0}\left[B\cos x_0\right] + \frac{\beta}2\sum_{v=1}^\kappa \mathbb{E}_{\mu^{0, v}}\left[\cos(x_0- x_v)\right]
+        \intertext{Since the probability distribution is symmetric, $\widetilde\mu^{0, v} = \widetilde\mu^{0, 1} = \pi_{\widetilde{\mu}}$}
+        = & \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right]
+    \end{align*}
+    Now notice that the first and third term are only dependent on $\pi_{\widetilde{\mu}}$. We can thus factor out\footnote{I feel like this needs more justification} optimizing over
+    $\pi_{\widetilde{\mu}}$:
+    \begin{equation*}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)\right\}
+    \end{equation*}
+    And since $\pi_{\widetilde{\mu}}$ being symmetric already guarantees that $\widetilde{\mu}$ is admissible,
+    \begin{equation*}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)\right\}
+    \end{equation*}
+\end{proof}
 
 \begin{proposition}\label{Prp.optimizer-given-pi}
-    Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, there exists a stationary point of the functional
+    Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, stationary points of the optimization problem
     \begin{equation*}
-        V(\widetilde{\mu}) = \mathbb{E}_{\widetilde{\mu}}\left[B\cos x_0+\frac\beta2\sum_{v\sim0}\cos(x_0-x_v)\right]-\frac12[H(\mu\|\widehat{\mu})+H(\mu\|\widecheck{\mu})]
+        \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)
     \end{equation*}
-    on $\mathcal{P}^\pi(\mathcal{X}^{\kappa+1})$, and it is in the form
+    are in the form
     \begin{equation*}
-        d\widetilde{\mu}(x_0, \sigma(\mathbf{x}))=d\pi^0(x_0) \prod_{v=1}^\kappa d\pi^{v|0}(x_v|x_0).
+        \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(x_0, x)=\frac{d\pi^0}{d\pi_{\widetilde{\eta}}^0}(x_0) \prod_{v=1}^\kappa \frac{d\pi^0}{d\pi_{\widetilde{\eta}}^{1|0}}(x_v|x_0),
+    \end{equation*}
+    where $\pi^{1|0}$ is the conditional probability measure: for all $X_0, X_1\subseteq\mathcal{X}$
+    \begin{equation*}
+        \pi^{1|0} (X_1 | X_0) = \frac{\pi(X_0\times X_1)}{\pi^0(X_0)}.
     \end{equation*}
 \end{proposition}
 
 It helps to prove some lemmas first.
 
-\begin{definition}
-    A signed measure $\eta$ on $\mathcal{X}^{\kappa+1}$ is called $\pi$-null if $\pi_\eta = 0$.
-\end{definition}
-
 \begin{proposition}\label{Prp.eta-orthogonal-form}
-    For a continuous function $F: \mathcal{X}^{\kappa+1}\mapsto\mathbb{R}$
+    For a function $F: \mathcal{X}\times\mathcal{X}^\kappa\mapsto\mathbb{R}$
     \begin{equation*}
-        \langle F, \eta \rangle = \int_{\mathcal{X}^{\kappa+1}} F(x_0, \mathbf{x}) \eta(dx_0d^\kappa\mathbf{x}) = 0
+        \langle F, \widetilde{\xi} \rangle = \int_{\mathcal{X}\times\mathcal{X}^\kappa} F(\widetilde{\tau}) \widetilde{\xi}(d\widetilde{\tau}) = 0
     \end{equation*}
-    for all ``continuous'' symmetric and $\pi$-null measures $\eta$ on $\mathcal{X}^{\kappa+1}$
+    for all signed symmetric measures $\widetilde{\xi}$ on $\mathcal{X}^{\kappa+1}$ such that $\pi_{\widetilde{\xi}} = 0$
     if and only if
     \begin{equation*}
         F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
     \end{equation*}
-    For some continuous $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta: \mathcal{X}^{\kappa+1} \mapsto \mathbb{R}$ such that for all $x_0, x_1, \cdots, x_v\in\mathcal{X}$, $\sigma\in S_\kappa$,
+    For some $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta: \mathcal{X}\times\mathcal{X}^\kappa \mapsto \mathbb{R}$ such that for all
+    $\widetilde{\tau}\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sigma\in S_\kappa$,
     \begin{equation*}
-        \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) = 0.
+        \sum_{\sigma\in S_\kappa}\beta(\sigma\widetilde{\tau}) = 0.
     \end{equation*}
 \end{proposition}
 
@@ -2764,132 +2855,77 @@ It helps to prove some lemmas first.
     For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$
     satisfiying the above constraints.
 
-    Consider, using $\eta(x_0, \mathbf{x}) = \eta(x_0, \sigma(\mathbf{x}))$
+    Consider, using $\widetilde{\xi}(\widetilde{\tau}) = \widetilde{\xi}(\sigma\widetilde{\tau})$
     \begin{align*}
-        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \sigma(\mathbf{x}))\eta(x_0, \sigma(\mathbf{x}))d^\kappa\mathbf{x}dx_0
-        = & \int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right]\eta(x_0, \mathbf{x})d^\kappa\mathbf{x}dx_0 = 0
-        \intertext{On the other hand, taking $\mathbf{x'}=\sigma(\mathbf{x})$}
-        = & \kappa!\int_{\mathcal{X}}\int_{\mathcal{X}^\kappa}\beta(x_0, \mathbf{x}')\eta(x_0, \mathbf{x}')d^\kappa\mathbf{x}'dx_0 = \kappa!\langle\beta, \eta\rangle.
+        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\sigma\widetilde{\tau})\widetilde{\xi}(\sigma d\widetilde{\tau})
+        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa} \beta(\sigma\widetilde{\tau})\right]\widetilde{\xi}(\sigma d\widetilde{\tau}) = 0
+        \intertext{On the other hand, taking $\widetilde{\tau}'=\sigma\widetilde{\tau}$}
+        = & \kappa!\int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\widetilde{\tau}')\widetilde{\xi}(d\widetilde{\tau}') = \kappa!\langle\beta, \widetilde{\xi}\rangle.
     \end{align*}
-    Thus, we can deduce that $\langle\beta, \eta\rangle=0$.
+    Thus, we can deduce that $\langle\beta, \widetilde{\xi}\rangle=0$.
 
     For $\gamma$,
     \begin{align*}
-          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \eta(x_0, \mathbf{x}) d\mathbf{x}dx_0                                      \\
-        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}dx_vdx_0
+          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \widetilde{\xi}(dx_0d\mathbf{x}) \\
+        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\widetilde{\xi}^{0, v}(dx_0dx_v)
         \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}} \eta(x_0, \mathbf{x}) d^{\kappa-1}_v\mathbf{x}\right]dx_vdx_0 \\
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_\eta(x_0, x_v)dx_vdx_0 = 0
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\widetilde{\xi}(dx_0dx_v)\right]                  \\
+        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_{\widetilde{\xi}}(dx_0dx_v)= 0
     \end{align*}
 
     For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
-        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta$ is continuous and $\beta(x, y, \cdots, y) = 0$.
-    We prove $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) = 0$ by contradiction.
+        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta(x, y, \cdots, y) = 0$.
+    We prove $\sum_{\sigma}\beta(x_0, \sigma\mathbf{x}) = 0$ by contradiction.
 
-    First, let $\Phi_r(x_0, \mathbf{x})$ be a continuous function positively supported on
-    $\mathbf{B}_r(\mathbf{0})\subseteq\mathcal{X}^{\kappa+1}$ with
-    spherical symmetry, i.e. for all $x_0, x_0'$, $\mathbf{x}, \mathbf{x}'\in\mathcal{X}^\kappa$,
-    if $\|(x_0, \mathbf{x})\| = \|x_0', \mathbf{x}'\|$, then $\Phi_r(x_0, \mathbf{x}) = \Phi_r(x_0', \mathbf{x}')$. Notably,
-    $\Phi_r(x_0, \mathbf{x}) = \Phi_r(x_0, \sigma(\mathbf{x}))$.
-
-    Fix $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$ and $r>0$ such that $\mathbf{B}_r(x_0, \mathbf{x}) \subseteq \mathcal{X}^{\kappa+1}$
-    and $\mathbf{B}_r(x_0, (x_v, \cdots, x_v)) \subseteq \mathcal{X}^{\kappa+1}$ for all $v=1,\cdots, \kappa$. Consider
+    First, consider, for all $E\subseteq \mathcal{X}\times\mathcal{X}^\kappa$ measurable,
     \begin{equation*}
-        \eta_{r, x_0, \mathbf{x}}(x_0', \mathbf{x}') := \Phi_r(x_0' - x_0, \mathbf{x}' - \mathbf{x})
-        - \frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)),
+        \widetilde{\xi}_{(x_0, \mathbf{x})}(E) := \mathbf{1}_{\{(x_0, \mathbf{x})\in E\}} - \frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}
     \end{equation*}
     and
     \begin{equation*}
-        \eta_r(x_0', \mathbf{x}') := \sum_{\sigma\in S_\kappa}\eta_{r, x_0, \sigma(\mathbf{x})}(x_0', \mathbf{x}').
+        \widetilde\xi(E) := \sum_{\sigma\in S_\kappa}\widetilde{\xi}_{\sigma\widetilde{\tau}}(E).
     \end{equation*}
     Notice that we can simplify $\eta$:
     \begin{align*}
-        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
-        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (\sigma(\mathbf{x})_v, \cdots, \sigma(\mathbf{x})_v))
+        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma(x_v, \cdots, x_v))\in E\}}
         \intertext{Take $v' = \sigma^{-1}(v)$, }
-                                & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
-        - \sum_{\sigma\in S_\kappa}\frac1\kappa\sum_{v'=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)) \\
-                                & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)).
+                                & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+        - \kappa!\frac1\kappa\sum_{v'=1}^\kappa \mathbf{1}_{\{(x_0, (x_{v'}, \cdots, x_{v'}))\in E\}}      \\
+                                & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}.
     \end{align*}
 
-    We first check that $\eta$ is symmetric:
+    We first check that $\eta$ is symmetric: for some $\sigma'\in S_\kappa$, $E\subseteq\mathcal{X}\times\mathcal{X}^\kappa$ measurable,
     \begin{align*}
-        \eta_r(x_0', \sigma'(\mathbf{x}')) & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}') - \sigma(\mathbf{x}))
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}') - (x_v, \cdots, x_v))
-        \intertext{Subsititute $\sigma'' = \sigma'^{-1} \circ \sigma$, by $\sigma(\mathbf{x}') - \sigma(\mathbf{x}') = \sigma(\mathbf{x}' - \mathbf{x}),$}
-                                           & = \sum_{\sigma''\in S_\kappa}\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}' - \sigma''(\mathbf{x})))
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \sigma'(\mathbf{x}' - (x_v, \cdots, x_v)))                               \\
-                                           & = \sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma''(\mathbf{x}))
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v)) = \eta_r(x_0', \mathbf{x}')
+        \widetilde{\xi}(\sigma' E) & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in \sigma'E\}}
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in \sigma'E\}}
+        \intertext{Subsititute $\sigma'' = \sigma'^{-1} \circ \sigma$, noting that $\widetilde{\tau}\in \sigma'E$ if and only if
+        $\sigma'^{-1}\widetilde{\tau}\in E$,}
+                                   & = \sum_{\sigma''\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma''\mathbf{x})\in E\}}
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma'^{-1}(x_v, \cdots, x_v))\in E\}}            \\
+                                   & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}  = \widetilde{\xi}(E)
     \end{align*}
-    On the other hand, to prove that $\pi_\eta=0$,
+    On the other hand, to prove that $\pi_{\widetilde{\xi}}=0$, fix $E\subseteq \mathcal{X}^2$ measurable
     \begin{align*}
-          & \pi_{\eta_{r, x_0, \mathbf{x}}} (x, y)                                                                                                                                              \\
-        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, \mathbf{x}'_{v\mapsto y} - \mathbf{x})d^{\kappa-1}_w\mathbf{x}'
-        \\
-          & - \frac1\kappa\sum_{w=1}^\kappa\frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x_0' - x_0, \mathbf{x}'_{w\mapsto y} - (x_v, \cdots, x_v))d^{\kappa-1}_w\mathbf{x}' \\
-        \intertext{For simplicity, rearrange so that $y$ is at the $x_1$ position}
-        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2' - x_2, \cdots, x_\kappa' - x_\kappa)dx_2'\cdots dx_\kappa'
-        \\
-          & - \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2' - x_v, \cdots, x_\kappa' - x_v)dx_2'\cdots dx_\kappa'                                     \\
-        \intertext{Given that each $\Phi_r$ is supported on a ball completely inside $\mathcal{X}^\kappa$, we can perform change of variables with the same domain}
-        = & \frac1\kappa\sum_{w=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2', \cdots, x_\kappa')dx_2'\cdots dx_\kappa'
-        \\
-          & - \frac1\kappa\sum_{v=1}^\kappa\int_{\mathcal{X}^{\kappa-1}}\Phi_r(x - x_0, y - x_1, x_2', \cdots, x_\kappa')dx_2'\cdots dx_\kappa' =0.
+        \pi_{\widetilde{\xi}_{(x_0, \mathbf{x})}}(E) = \frac1\kappa\sum_{v=1}^\kappa
+        \widetilde{\xi}^{0, v}_{(x_0, \mathbf{x})}(E) & = \frac1\kappa\sum_{v=1}^\kappa \left[\mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}}\right] \\
+                                                      & = \frac1\kappa\sum_{v=1}^\kappa \mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}} = 0
     \end{align*}
-    Hence, $\pi_{\eta_r}(x, y) = \sum_{\sigma\in S_\kappa}\pi_{\eta_{r, x_0, \sigma(\mathbf{x})}}(x, y) = 0$.
+    Hence, $\pi_{\widetilde{\xi}}(E) = \sum_{\sigma\in S_\kappa}\pi_{\widetilde{\xi}_{\sigma\widetilde\tau}}(E) = 0$.
 
-    Assume that for some $x_0, x_1, \cdots, x_\kappa\in\mathcal{X}$, $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) \neq 0$, we will show that
-    $\langle\beta, \eta\rangle\neq 0$.
-
-    Select $\epsilon = \left|\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x}))\right|$. Note that $\epsilon > 0$. By the continuity of $\beta$,
-    choose $r > 0$ such that for all $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$ and $(x_0, (x_v, \cdots, x_v))$, we have $|\beta(x_0', \mathbf{x}') - \beta(x_0, \sigma(\mathbf{x}))| < \epsilon / (4\kappa!)$ and $|\beta(x_0', \mathbf{x}') - \beta(x_0, (x_v, \cdots, x_v))| < \epsilon / (4\kappa!)$ respectively. Additionally, the abovementioned balls are contained in $\mathcal{X}^{\kappa+1}$.
-
-    We want to show that
-    \begin{equation*}
-        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\left[\sum_{\sigma\in S_\kappa}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))
-            - \kappa!\frac1\kappa\sum_{v=1}^\kappa\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))\right]dx_0'd^\kappa\mathbf{x}' = 0.
-    \end{equation*}
-
-    First, consider the case that $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) > 0$.
-    Then we can say that for $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$, $\beta(x_0', \mathbf{x}') > \beta(x_0, \sigma(\mathbf{x})) - \epsilon / (4\kappa!)$, and around $(x_0, (x_v, \cdots, x_v))$, $\beta(x_0', \mathbf{x}') < \beta(x_0, (x_v, \cdots, x_v)) + \epsilon / (4\kappa!)$
-
-    Hence,
+    Assume that for some $\widetilde\tau = (x_0, \mathbf{x})\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sum_{\sigma}\beta(\sigma\widetilde{\tau}) \neq 0$, we
+    will show that $\langle\beta, \widetilde{\xi}\rangle\neq 0$. Then,
     \begin{align*}
-             & \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}   '                                                                      \\
-        \geq & \left[\inf_{\|(x_0', \mathbf{x}') - (x_0, \sigma(\mathbf{x}))\|<r}\beta(x_0', \mathbf{x}')\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}' \\
-        \geq & \left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{4\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                                                      \\
-        >    & \left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{2\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}',
-        \intertext{and similarly, using a supremum argument}
-             & \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))dx_0'd^\kappa\mathbf{x}'                                                                         \\
-        \leq & \left[\sup_{\|(x_0', \mathbf{x}') - (x_0, (x_v, \cdots, x_v))\|<r}\beta(x_0', \mathbf{x}')\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                            \\
-        <    & \left[\beta(x_0, (x_v, \cdots, x_v)) + \frac{\epsilon}{2\kappa!}\right] \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'                                                     \\
-        \intertext{and since $\beta(x_0, (x_v, \cdots, x_v)) = 0$}
-        =    & \frac{\epsilon}{2\kappa!} \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'
-    \end{align*}
-    Thus,
-    \begin{align*}
-        \langle\beta, \eta\rangle & > \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left\{\sum_{\sigma\in S_\kappa}\left[\beta(x_0, \sigma(\mathbf{x})) - \frac{\epsilon}{2\kappa!}\right] - \kappa!\frac{\epsilon}{2\kappa!}\right\} \\
-                                  & = \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) - \epsilon \right]                                                                   \\
-                                  & = \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) - \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x}))\right] = 0
+          \int_{\mathcal{X}^{\kappa+1}} \beta(x_0, \mathbf{x})\widetilde{\xi}(dx_0'd\mathbf{x}')                                     
+        = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) - \kappa!\frac1\kappa\sum_{v=1}^\kappa\beta(x_0, (x_v, \cdots, x_v)) 
+        = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) \neq 0
     \end{align*}
 
-    Similarly, for $\sum_{\sigma}\beta(x_0, \sigma(\mathbf{x})) < 0$, we conclude that
-    for $(x_0', \mathbf{x}')$ in balls of radius $r$ around $(x_0, \sigma(\mathbf{x}))$, $\beta(x_0', \mathbf{x}') < \beta(x_0, \sigma(\mathbf{x})) + \epsilon / (4\kappa!)$, and around $(x_0, (x_v, \cdots, x_v))$, $\beta(x_0', \mathbf{x}') > - \epsilon / (4\kappa!)$. Then,
-    \begin{align*}
-        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - \sigma(\mathbf{x}))dx_0'd^\kappa\mathbf{x}'
-         & < \left[\beta(x_0, \sigma(\mathbf{x})) + \frac{\epsilon}{2\kappa!}\right]\int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}') \\
-        \int_{\mathcal{X}^{\kappa+1}} \beta(x_0', \mathbf{x}')\Phi_r(x_0' - x_0, \mathbf{x}' - (x_v, \cdots, x_v))dx_0'd^\kappa\mathbf{x}'
-         & > \frac{\epsilon}{2\kappa!} \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}',
-    \end{align*}
-    and
-    \begin{equation*}
-        \langle\beta, \eta\rangle < \int_{\mathcal{X}^{\kappa+1}}\Phi_r(x_0', \mathbf{x}')dx_0'd^\kappa\mathbf{x}'\left[\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma(\mathbf{x})) + \epsilon \right] = 0
-    \end{equation*}
-
-    $\langle\beta, \eta\rangle \neq 0$, combined with $\langle\frac1\kappa\sum \gamma(\cdot), \eta \rangle = 0$, by linearity, we can get
-    $\langle F, \eta\rangle\neq 0$, which is a contradiction. This means that $\beta$ has to satisfy $\sum_\sigma \beta(x_0, \sigma(\mathbf{x})) = 0$. This means that $F$ has to come in the form
+    $\langle\beta, \widetilde{\xi}\rangle \neq 0$, combined with $\langle\frac1\kappa\sum \gamma(\cdot), \widetilde{\xi}\rangle = 0$, by
+    linearity, we can get $\langle F, \eta\rangle\neq 0$, which is a contradiction. This means that $\beta$ has to satisfy $\sum_\sigma
+        \beta(x_0, \sigma(\mathbf{x})) = 0$. This means that $F$ has to come in the form
     \begin{equation*}
         F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v),
     \end{equation*}
