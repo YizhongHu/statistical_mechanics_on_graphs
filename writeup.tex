@@ -2790,9 +2790,10 @@ and its $1$-marginal (leaf marginal) as $\pi_{\widetilde{\mu}}^1$. Its root marg
     \begin{equation}\label{Eq.XY-target-no-pi}
         \sup_{\widetilde{\mu}\in\mathcal{P}_{s, u}(\mathcal{X}\times\mathcal{X}^\kappa)}\left\{\mathbb{E}_\mu\left[B\cos x_0 + \frac\beta2\sum_{v\sim 0}\cos(x_0-x_v)\right] - H(\widetilde{\mu}\|\widetilde{\eta}) + \frac\kappa2 H(\pi_{\widetilde\mu}\|\pi_{\widetilde\eta})\right\}
     \end{equation}
-    if and only if $(\pi_{\widetilde{\mu}}, \widetilde{\mu})$ is an optimizer of
+    if and only if $(\pi, \widetilde{\mu})$ is an optimizer of
     \begin{equation}\label{Eq.XY-target-with-pi}
-        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\mu\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\mu}=\pi}} H(\mu\|\eta)\right\}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2
+        H(\pi\|\pi_\eta) - \inf_{\substack{\widetilde\mu\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde\mu}=\pi}} H(\widetilde\mu\|\widetilde\eta)\right\}
     \end{equation}
 \end{proposition}
 
@@ -2858,8 +2859,8 @@ It helps to prove a lemma first. This one, based on the non-negativity of relati
     \end{align*}
 \end{proof}
 
-A crucial insight to the proof of Prop.\ref{Prp.optimizer-given-pi} is that, for all 
-$\widetilde\mu\in \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$, the cross entropy 
+A crucial insight to the proof of Prop.\ref{Prp.optimizer-given-pi} is that, for all
+$\widetilde\mu\in \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$, the cross entropy
 $\int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde{\mu}(d\widetilde{\tau})\log\frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(\widetilde\tau)$
 is only dependent on $\pi$.
 
@@ -3166,5 +3167,95 @@ is only dependent on $\pi$.
 %     \end{equation*}
 %     The result can be obtained through linearity of differentiation.
 % \end{proof}
+
+To solve for the optimal $\pi$ distribution, we can perform the same trick, but now we constrain on the root distribution.
+
+\begin{proposition}
+    The optimization problem
+    \begin{equation*}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2
+        H(\pi\|\pi_\eta) - \inf_{\substack{\widetilde\mu\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde\mu}=\pi}} H(\widetilde\mu\|\widetilde\eta)\right\}
+    \end{equation*}
+    is equivalent to
+    \begin{equation*}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] - \frac\kappa2
+        H(\pi\|\pi_\eta) + (\kappa-1)H(\pi^0 \| \nu)\right\},
+    \end{equation*}
+    which is equivalent to
+    \begin{equation*}
+        \sup_{\pi^0_*\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
+        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Should be apparent. Skipped.
+\end{proof}
+
+\begin{proposition}
+    The unique optimizer of the problem
+    \begin{equation*}
+        \sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)
+    \end{equation*}
+    is in the form
+    \begin{equation*}
+        \frac{d\pi^*}{d\eta}(x, y) = \frac{1}{Z^\pi(h)}\exp[\beta \cos(x - y)]\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y),
+    \end{equation*}
+    with some\footnote{Still need to prove that such an $h$ exists. I think we have uniqueness given $\pi^0_*$} $h\in\mathcal{P}(\mathcal{X})$ absolutely continuous with respect to $\nu$ that satisfies, for all $A$ measurable
+    \begin{equation}\label{Eq.XY-h-pi0}
+        \pi^0_*(A) = \frac{1}{Z^\pi(h)}\int_A\int_\mathcal{X}\exp[\beta \cos(x - y)]h(dx)h(dy),
+    \end{equation}
+    and
+    \begin{equation*}
+        Z^\pi(h) = \int_{\mathcal{X}^2}\exp[\beta \cos(x - y)]h(dx)h(dy).
+    \end{equation*}
+    The optimal value is
+    \begin{equation*}
+        \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right].
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Since $H(\pi\|\pi_\eta)$ is strictly convex and $\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)]$ is linear, the target function is linear.
+    Since the set $\{\pi\in\mathcal{P}_s(\mathcal{X}^2)\ |\ \pi^0=\pi^0_*\}$ is compact and simply connected, we know that an optimizer exist and is
+    unique.
+
+    With the same strategy, for some $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\pi^0_*$ we consider the cross entropy
+    \begin{align*}
+          & \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y)                                                                                 \\
+        = & \int_{\mathcal{X}^2}\pi(dxdy) \log \left\{\frac{1}{Z^\pi(h)}\exp[\beta \cos(x - y)]\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y)\right\}               \\
+        = & -\log Z^\pi(h) + \mathbb{E}_\pi\left\{\exp[\beta \cos(x - y)]\right\} + \int_{\mathcal{X}^2}\pi(dxdy)\log\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y)
+        \intertext{By $\pi$ symmetric, we know that $\pi^0=\pi^1=\pi^0_*$}
+        = & -\log Z^\pi(h) + \mathbb{E}_\pi\left\{\exp[\beta \cos(x - y)]\right\} + 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+    \end{align*}
+    Thus,
+    \begin{equation*}
+        \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y) = \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+    \end{equation*}
+    When $\pi=\pi^*$, we have
+    \begin{equation*}
+        \mathbb{E}_{\pi^*}[\beta\cos(x_0-x_1)] - H(\pi^*\|\pi_\eta) = \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+    \end{equation*}
+    Similarly, we invoke Lemma \ref{Prp.XY-RE-GE-CE}, and get that for all $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\pi^0_*$,
+    \begin{align*}
+        \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta) & \leq \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y) \\
+                                                                & = \mathbb{E}_{\pi^*}[\beta\cos(x_0-x_1)] - H(\pi^*\|\pi_\eta)
+    \end{align*}
+\end{proof}
+
+Although $\pi^*$ is unique, the same thing cannot be said for $h$\footnote{I think it is likely unique given $\pi^0$}. However, whether unique or not, we can still frame the optimization problem in terms of $h$.
+
+\begin{proposition}
+    The optimization problem
+    \begin{equation*}
+        \sup_{\pi^0_*\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
+        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
+    \end{equation*}
+    is equivalent to
+    \begin{equation*}
+        \sup_{h\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
+        \frac\kappa2\log Z^\pi(h) - \kappa\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]\right\}
+    \end{equation*}
+\end{proposition}
 
 \end{document}
