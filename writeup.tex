@@ -2792,7 +2792,7 @@ and its $1$-marginal (leaf marginal) as $\pi_{\widetilde{\mu}}^1$. Its root marg
     \end{equation}
     if and only if $(\pi_{\widetilde{\mu}}, \widetilde{\mu})$ is an optimizer of
     \begin{equation}\label{Eq.XY-target-with-pi}
-        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)\right\}
+        \sup_{\pi\in\mathcal{P}_s(\mathcal{X}^2)}\left\{\mathbb{E}_\pi\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0-x_1)\right] + \frac\kappa2 H(\pi_\mu\|\pi_\eta) - \inf_{\substack{\mu\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\mu}=\pi}} H(\mu\|\eta)\right\}
     \end{equation}
 \end{proposition}
 
@@ -2818,297 +2818,353 @@ and its $1$-marginal (leaf marginal) as $\pi_{\widetilde{\mu}}^1$. Its root marg
 \end{proof}
 
 \begin{proposition}\label{Prp.optimizer-given-pi}
-    Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, stationary points of the optimization problem
+    Given an admissible probability measure $\pi$ on $\mathcal{X}^2$, $\widetilde{\mu}^*$ defined as follows
     \begin{equation*}
-        \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\mu\|\eta)
-    \end{equation*}
-    are in the form
-    \begin{equation*}
-        \frac{d\widetilde{\mu}}{d\widetilde{\eta}}(x_0, x)=\frac{d\pi^0}{d\pi_{\widetilde{\eta}}^0}(x_0) \prod_{v=1}^\kappa \frac{d\pi^0}{d\pi_{\widetilde{\eta}}^{1|0}}(x_v|x_0),
+        \frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(x_0, \mathbf{x})=\frac{d\pi^0}{d\nu}(x_0) \prod_{v=1}^\kappa \frac{d\pi^{1|0}}{d\pi_{\widetilde{\eta}}^{1|0}}(x_v|x_0),
     \end{equation*}
     where $\pi^{1|0}$ is the conditional probability measure: for all $X_0, X_1\subseteq\mathcal{X}$
     \begin{equation*}
-        \pi^{1|0} (X_1 | X_0) = \frac{\pi(X_0\times X_1)}{\pi^0(X_0)}.
+        \pi^{1|0} (X_1 | X_0) = \frac{\pi(X_0\times X_1)}{\pi^0(X_0)}
     \end{equation*}
-\end{proposition}
-
-It helps to prove some lemmas first.
-
-\begin{proposition}\label{Prp.eta-orthogonal-form}
-    For a function $F: \mathcal{X}\times\mathcal{X}^\kappa\mapsto\mathbb{R}$
+    is a minimizer of
     \begin{equation*}
-        \langle F, \widetilde{\xi} \rangle = \int_{\mathcal{X}\times\mathcal{X}^\kappa} F(\widetilde{\tau}) \widetilde{\xi}(d\widetilde{\tau}) = 0
+        \inf_{\substack{\widetilde{\mu}\in\mathcal{P}_{s}(\mathcal{X}\times\mathcal{X}^\kappa) \\ \pi_{\widetilde{\mu}}=\pi}} H(\widetilde\mu\|\widetilde\eta).
     \end{equation*}
-    for all signed symmetric measures $\widetilde{\xi}$ on $\mathcal{X}^{\kappa+1}$ such that $\pi_{\widetilde{\xi}} = 0$
-    if and only if
-    \begin{equation*}
-        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
-    \end{equation*}
-    For some $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta: \mathcal{X}\times\mathcal{X}^\kappa \mapsto \mathbb{R}$ such that for all
-    $\widetilde{\tau}\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sigma\in S_\kappa$,
-    \begin{equation*}
-        \sum_{\sigma\in S_\kappa}\beta(\sigma\widetilde{\tau}) = 0.
-    \end{equation*}
-\end{proposition}
-
-\begin{proof}[Proof of Prop. \ref{Prp.eta-orthogonal-form}]
-    For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$
-    satisfiying the above constraints.
-
-    Consider, using $\widetilde{\xi}(\widetilde{\tau}) = \widetilde{\xi}(\sigma\widetilde{\tau})$
-    \begin{align*}
-        \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\sigma\widetilde{\tau})\widetilde{\xi}(\sigma d\widetilde{\tau})
-        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa} \beta(\sigma\widetilde{\tau})\right]\widetilde{\xi}(\sigma d\widetilde{\tau}) = 0
-        \intertext{On the other hand, taking $\widetilde{\tau}'=\sigma\widetilde{\tau}$}
-        = & \kappa!\int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\widetilde{\tau}')\widetilde{\xi}(d\widetilde{\tau}') = \kappa!\langle\beta, \widetilde{\xi}\rangle.
-    \end{align*}
-    Thus, we can deduce that $\langle\beta, \widetilde{\xi}\rangle=0$.
-
-    For $\gamma$,
-    \begin{align*}
-          & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \widetilde{\xi}(dx_0d\mathbf{x}) \\
-        = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\widetilde{\xi}^{0, v}(dx_0dx_v)
-        \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\widetilde{\xi}(dx_0dx_v)\right]                  \\
-        = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_{\widetilde{\xi}}(dx_0dx_v)= 0
-    \end{align*}
-
-    For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
-        \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta(x, y, \cdots, y) = 0$.
-    We prove $\sum_{\sigma}\beta(x_0, \sigma\mathbf{x}) = 0$ by contradiction.
-
-    First, consider, for all $E\subseteq \mathcal{X}\times\mathcal{X}^\kappa$ measurable,
-    \begin{equation*}
-        \widetilde{\xi}_{(x_0, \mathbf{x})}(E) := \mathbf{1}_{\{(x_0, \mathbf{x})\in E\}} - \frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}
-    \end{equation*}
-    and
-    \begin{equation*}
-        \widetilde\xi(E) := \sum_{\sigma\in S_\kappa}\widetilde{\xi}_{\sigma\widetilde{\tau}}(E).
-    \end{equation*}
-    Notice that we can simplify $\eta$:
-    \begin{align*}
-        \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma(x_v, \cdots, x_v))\in E\}}
-        \intertext{Take $v' = \sigma^{-1}(v)$, }
-                                & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
-        - \kappa!\frac1\kappa\sum_{v'=1}^\kappa \mathbf{1}_{\{(x_0, (x_{v'}, \cdots, x_{v'}))\in E\}}      \\
-                                & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}.
-    \end{align*}
-
-    We first check that $\eta$ is symmetric: for some $\sigma'\in S_\kappa$, $E\subseteq\mathcal{X}\times\mathcal{X}^\kappa$ measurable,
-    \begin{align*}
-        \widetilde{\xi}(\sigma' E) & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in \sigma'E\}}
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in \sigma'E\}}
-        \intertext{Subsititute $\sigma'' = \sigma'^{-1} \circ \sigma$, noting that $\widetilde{\tau}\in \sigma'E$ if and only if
-        $\sigma'^{-1}\widetilde{\tau}\in E$,}
-                                   & = \sum_{\sigma''\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma''\mathbf{x})\in E\}}
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma'^{-1}(x_v, \cdots, x_v))\in E\}}            \\
-                                   & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
-        - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}  = \widetilde{\xi}(E)
-    \end{align*}
-    On the other hand, to prove that $\pi_{\widetilde{\xi}}=0$, fix $E\subseteq \mathcal{X}^2$ measurable
-    \begin{align*}
-        \pi_{\widetilde{\xi}_{(x_0, \mathbf{x})}}(E) = \frac1\kappa\sum_{v=1}^\kappa
-        \widetilde{\xi}^{0, v}_{(x_0, \mathbf{x})}(E) & = \frac1\kappa\sum_{v=1}^\kappa \left[\mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}}\right] \\
-                                                      & = \frac1\kappa\sum_{v=1}^\kappa \mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}} = 0
-    \end{align*}
-    Hence, $\pi_{\widetilde{\xi}}(E) = \sum_{\sigma\in S_\kappa}\pi_{\widetilde{\xi}_{\sigma\widetilde\tau}}(E) = 0$.
-
-    Assume that for some $\widetilde\tau = (x_0, \mathbf{x})\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sum_{\sigma}\beta(\sigma\widetilde{\tau}) \neq 0$, we
-    will show that $\langle\beta, \widetilde{\xi}\rangle\neq 0$. Then,
-    \begin{align*}
-          \int_{\mathcal{X}^{\kappa+1}} \beta(x_0, \mathbf{x})\widetilde{\xi}(dx_0'd\mathbf{x}')                                     
-        = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) - \kappa!\frac1\kappa\sum_{v=1}^\kappa\beta(x_0, (x_v, \cdots, x_v)) 
-        = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) \neq 0
-    \end{align*}
-
-    $\langle\beta, \widetilde{\xi}\rangle \neq 0$, combined with $\langle\frac1\kappa\sum \gamma(\cdot), \widetilde{\xi}\rangle = 0$, by
-    linearity, we can get $\langle F, \eta\rangle\neq 0$, which is a contradiction. This means that $\beta$ has to satisfy $\sum_\sigma
-        \beta(x_0, \sigma(\mathbf{x})) = 0$. This means that $F$ has to come in the form
-    \begin{equation*}
-        F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v),
-    \end{equation*}
-    thus proving the forward direction.
-\end{proof}
-
-\begin{proposition}\label{Prp.target-in-more-pi}
-    The target function $V$ can be equivalently written as
-    \begin{equation*}
-        V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_{\mu} \| \pi_{\eta}).
-    \end{equation*}
-\end{proposition}
-
-\begin{proposition}\label{Prp.nu-makes-mu-stay-in}
-    For all $\widetilde{\mu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ and $\epsilon > 0$, the set
-    \begin{equation*}
-        \{\nu | \widetilde{\mu} + \epsilon \nu \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})\}
-    \end{equation*}
-    is the set of symmetric, $\pi$-null measures on $[-\pi, \pi)^{\kappa+1}$.
-\end{proposition}
-
-
-\begin{proof}[Proof of Prop.\ref{Prp.optimizer-given-pi}]
-    From Prop.\ref{Prp.target-in-more-pi}, we know that
-    \begin{equation*}
-        V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_\mu \| \pi_\eta).
-    \end{equation*}
-    Consider some $\widetilde{\mu} + \epsilon \widetilde{\nu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ for some $\epsilon > 0$. From Prop.\ref{Prp.nu-makes-mu-stay-in}, we know that $\widetilde{\nu}$ must be a symmetric, $\pi$-null measure.
-
-    Now fix symmetric and $\pi$-null measure $\nu$ on $\mathcal{X}^{\kappa+1}$. We can calculate the directional derivative
-    \begin{align*}
-        \frac{\partial V(\widetilde{\mu} + \epsilon \widetilde{\nu})}{\partial \epsilon}
-        = & \int_{\mathcal{X}^2}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right]d\pi_{\widetilde{\nu}}(x_0, x_v) + \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x}) \\
-          & - \frac\kappa2 \int_{\mathcal{X}^2}\left[\log\frac{\pi_\mu}{\pi_\eta} + 1\right]d\pi_{\nu}(x_0, x_v)
-        \intertext{Since $\pi_\nu = \pi_{\widetilde{\nu}} = 0$,}
-        = & \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x})
-        \intertext{Since $\nu$ has total measure of $0$ by $\pi_\nu=0$,}
-        = & \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\nu(x_0, \mathbf{x}).
-    \end{align*}
-    This means that the derivative is well-defined at all $\widetilde{\mu}\in\mathcal{P}^\pi(\mathcal{X}^{\kappa+1})$,
-    and it is
-    \begin{equation}\label{Eq.XY-V-deriv-mu}
-        \frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}} = \log\frac{\mu}{\eta} + 1,
+    Additionally,
+    \begin{equation}
+        H(\widetilde\mu^*\|\widetilde\eta) = \kappa H(\pi\| \pi_{\widetilde{\eta}}) - (\kappa - 1) H(\pi^0\| \nu).
     \end{equation}
-    which, notice, is continuous on the interior when there does not exist some $\mu(x_0, \mathbf{x})=0$
+\end{proposition}
 
-    A stationary point necessarily means that $\int_{\mathcal{X}^{\kappa+1}}\frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}}(x_0, \mathbf{x})d\nu(x_0, \mathbf{x}) = 0$. This is equivalent to for all symmetric and $\pi$-null measures,
-    \begin{equation*}
-        \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\widetilde{\nu}(x_0, \mathbf{x}) = 0.
-    \end{equation*}
+It helps to prove a lemma first. This one, based on the non-negativity of relative entropy, is widely known, but we provide a proof here.
 
-    By Prop.\ref{Prp.eta-orthogonal-form}, we can write
+\begin{lemma}\label{Prp.XY-RE-GE-CE}
+    Given $\mu$, $\xi$ probability measures on $\mathcal{Y}$ that are absolutely continuous with respect to $\eta$, and $\mu$ absolutely continuous
+    on $\xi$, we have
     \begin{equation*}
-        \log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})} = \beta(x_0, \mathbf{x}) + \frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v),
+        H(\mu\|\eta) \geq \int_\mathcal{Y} \mu(dy) \log \frac{d\xi}{d\eta}(y)
     \end{equation*}
-    where $\beta$ satisfies $\sum_{\sigma\in S_\kappa} \beta(x_0, \sigma(\mathbf{x})) = 0$.
+\end{lemma}
 
-    To determine $\beta$, we notice that $\mu$ is defined on the equivalence class $(x_0, \mathbf{x})$ such that all permutations of
-    $\mathbf{x}$ are considered to be of the same equivalence class. Therefore, for $\mu$ to be well-defined, it needs to be symmetric.
-    This holds for $\log(\mu/\eta)$ as well. $\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)$ is already symmetric, but for $\beta$,
-    $\beta(x_0, \mathbf{x}) = \beta{x_0, \sigma\mathbf{x}}$ for all $\sigma\in S_\kappa$, combined with
-    $\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) = 0$ means that $\beta(x_0, \mathbf{x}) = 0$.
-
-    We can then write
-    \begin{equation*}
-        \mu(x_0, \mathbf{x}) = \eta(x_0, \mathbf{x})\exp\left[\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)\right].
-    \end{equation*}
-    For this to satisfy $\pi_\mu = \pi$, we first convert to the $\widetilde{\Box}$ form, let $q(x_0, x_v) = \exp\left[\frac1\kappa\gamma(x_0, x_v)\right]$:
-    \begin{equation*}
-        \widetilde{\mu}(x_0, \mathbf{x}) = \widetilde{\eta}(x_0, \mathbf{x})\prod_{v=1}^\kappa q(x_0, x_v).
-    \end{equation*}
-    And notice that since $\eta$ is a uniform distribution,
-    \begin{equation*}
-        \widetilde{\eta}(x_0, \mathbf{x}) = \widetilde{\eta}^0(x_0)\prod_{v=1}^\kappa \widetilde{\eta}^0(x_v).
-    \end{equation*}
-    In the $\widetilde{\Box}$ form, the $\pi$ distribution can be more easily evaluated.
-    \begin{align*}
-        \pi_{\widetilde{\mu}}(x, y) & = \widetilde{\eta}^0(x)\widetilde{\eta}^0(y)\left[\int\widetilde{\eta}^0(y')q(x, y')dy'\right]^{\kappa-1} \\
-        \pi_{\widetilde{\mu}}^0(x)  & = \widetilde{\eta}^0(x)\left[\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy\right]^\kappa.
-    \end{align*}
+\begin{proof}
+    By $\mu$ absolutely continuous with respect to $\xi$\footnote{Do we need anything else?}, $H(\mu \| \xi)\geq 0$.
     Thus,
-    \begin{equation*}
-        \pi_{\widetilde{\mu}}^{1|0}(y | x) := \frac{\pi_{\widetilde{\mu}}(x, y)}{\pi_{\widetilde{\mu}}^0(x)} = \frac{\widetilde{\eta}^0(y)q(x, y)}{\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy},
-    \end{equation*}
-    and set $\pi_{\widetilde{\mu}}= \pi$ we have
-    \begin{equation*}
-        \widetilde{\mu}(x_0, \mathbf{x}) = \pi^0(x_0)\prod_{v=1}^\kappa\pi^{1|0}(x_v|x_0).
-    \end{equation*}
+    \begin{align*}
+        \int_\mathcal{Y} \mu(dy) \log \frac{d\mu}{d\xi}(y)                    & \geq 0                                              \\
+        \intertext{which means \footnote{Can I do this?} }
+        \int_\mathcal{Y} \mu(dy) \log \frac{d\mu/d\eta (y)}{d\xi/d\eta(y)}(y) & \geq 0                                              \\
+        \int_\mathcal{Y} \mu(dy) \log \frac{d\mu}{d\eta} (y)                  & \geq \int_\mathcal{Y} \mu(dy)\frac{d\xi}{d\eta}(y)  \\
+        H(\mu\|\eta)                                                          & \geq \int_\mathcal{Y} \mu(dy)\frac{d\xi}{d\eta}(y).
+    \end{align*}
 \end{proof}
 
+A crucial insight to the proof of Prop.\ref{Prp.optimizer-given-pi} is that, for all 
+$\widetilde\mu\in \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$, the cross entropy 
+$\int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde{\mu}(d\widetilde{\tau})\log\frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(\widetilde\tau)$
+is only dependent on $\pi$.
 
-\begin{proposition}
-    Given continuous function $F:\mathcal{X}^2\mapsto\mathbb{R}$. If for all $\eta: \mathcal{X}^2\mapsto\mathbb{R}$ symmetric and
-    zero-total-measure, we have $\left\langle F, \eta \right\rangle=0$, then such an $F$ can be written as
-    \begin{equation*}
-        F(x, y)=\alpha + G(x, y)
-    \end{equation*}
-    where $\alpha \in \mathbb{R}$ and $G:\mathcal{X}^2\mapsto\mathbb{R}$ antisymmetric, i.e. $G(x, y) = -G(y, x), \forall x, y\in\mathcal{X}$.
-\end{proposition}
-
-\begin{proof}
-    $\alpha = F(0, 0)$ and $G = F - \alpha$ satisfy the conditions. Note that $G$ continuous and $G(0, 0) = 0$.
-
-    We show that $G$ is antisymmetric by contradiction.
-    Say, without loss of generality, that for some $x_0, y_0\in\mathcal{X}$, $G(x_0, y_0) > -G(y_0, x_0) \geq 0$.
-    Let $G_1 = G(x_0, y_0)$, $G_2 = -G(y_0, x_0)$.
-
-    By continuity of $G$, we have $r_1>0$ such that for all $(x, y)\in \mathbf{B}_{r_1}(x_0, y_0)$, $|G(x,y)-G_1|<\frac14(G_1-G_2)$, i.e. $G(x, y) > \frac34G_1 + \frac14G_2$.
-    Similarly, we have $r_2>0$ such that for all $(x, y)\in\mathbf{B}_{r_2}(y_0, x_0)$, $G(x, y) > -\frac14G_1 - \frac34G_2$,
-    and $r_0>0$ such that for all $(x, y)\in\mathbf{B}_{r_0}(0)$, $G(x, y) < \frac14G_1 - \frac14G_2$. (Need to use $G(0, 0) = 0$)
-
-    Let $r=\min(r_0, r_1, r_2)$. Define
-    \begin{equation*}
-        \eta = \mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}
-        + \mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}
-        - 2\cdot\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}.
-    \end{equation*}
-    Check that this $\eta$ is symmetric and has zero total measure. We will show that $\left\langle G, \eta \right\rangle \neq 0$:
+\begin{proof}[Proof of Prop. \ref{Prp.optimizer-given-pi}]
+    For all $\widetilde\mu\in \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$ such that $\pi_{\widetilde{\mu}}=\pi$, have
     \begin{align*}
-          & \int_{\mathcal{X}^2} G(x, y)\eta(x, y)dxdy                                                                                                            \\
-        = & \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}dxdy
-        + \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}dxdy
-        - 2\int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}dxdy                                                                            \\
-        > & |\mathbf{B}_{r}|\left[\left(\frac34G_1 + \frac14G_2\right) + \left(-\frac14G_1 - \frac34G_2\right) - \left(\frac12G_1 - \frac12G_2\right)\right] = 0.
+          & \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde{\mu}(d\widetilde{\tau})\log\frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(\widetilde\tau) \\
+        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde\mu(d\widetilde\tau)
+        \log \frac{d\pi^0}{d\nu}(x_0) \prod_{v=1}^\kappa \frac{d\pi^0}{d\pi_{\widetilde{\eta}}^{1|0}}(x_v|x_0)                                            \\
+        = & \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde\mu(d\widetilde\tau) \log \frac{d\pi^0}{d\nu}(x_0) +
+        \sum_{v=1}^\kappa \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde\mu(d\widetilde\tau)
+        \log \frac{d\pi}{d\pi_{\widetilde{\eta}}}(x_0, x_v)
+        - \kappa\int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde\mu(d\widetilde\tau) \log \frac{d\pi^0}{d\nu}(x_0),
+        \intertext{which, by symmetry of $\widetilde{\mu}$}
+        = & \kappa\mathbb{E}_{\pi_{\widetilde{\mu}}}\left[\log \frac{d\pi}{d\pi_{\widetilde{\eta}}}(x_0, x_1)\right] -
+        (\kappa-1)\mathbb{E}_{\pi_{\widetilde{\mu}}^0}\left[\log \frac{d\pi^0}{d\nu}(x_0)\right].
+        \intertext{By $\pi_{\widetilde{\mu}}=\pi$}
+        = & \kappa H(\pi\| \pi_{\widetilde{\eta}}) - (\kappa - 1) H(\pi^0\| \nu).
     \end{align*}
-    Hence, $\left\langle F, \eta \right\rangle = \left\langle G + \alpha, \eta \right\rangle = \left\langle G , \eta \right\rangle + \left\langle \alpha, \eta \right\rangle = \left\langle G, \eta \right\rangle \neq 0$ for some $\eta$. This contradicts our assumption.
-    Thus, $F$ must be the sum of a constant and an antisymmetric function.
+    Additionally,
+    \begin{equation*}
+        H(\mu^*\|\eta) = \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde{\mu}^*(d\widetilde{\tau})\log\frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(\widetilde\tau) = \kappa H(\pi\| \pi_{\widetilde{\eta}}) - (\kappa - 1) H(\pi^0\| \nu).
+    \end{equation*}
+    Next, fix $\widetilde{\mu}\in \mathcal{P}_s(\mathcal{X}\times\mathcal{X}^\kappa)$. Invoke Lemma \ref{Prp.XY-RE-GE-CE} on $\widetilde{\mu}^*$
+    \begin{align*}
+        H(\widetilde\mu\|\widetilde\eta) \geq \int_{\mathcal{X}\times\mathcal{X}^\kappa} \widetilde{\mu}(d\widetilde{\tau})\log\frac{d\widetilde{\mu}^*}{d\widetilde{\eta}}(\widetilde{\tau}) = H(\widetilde{\mu}^*\|\eta)
+    \end{align*}
+    Therefore, $\widetilde{\mu}^*$ is a minimizer of this function.
 \end{proof}
 
-\begin{proposition}
-    For the functional target function
-    \begin{equation*}
-        \widetilde{V}(\pi_\mu; \beta, B, \kappa) = \mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]
-        - (\kappa-1)H(\pi_\mu^0) + \frac\kappa2 H(\pi_\mu)
-    \end{equation*}
-    The functional derivative
-    \begin{equation*}
-        \frac{\delta\widetilde{V}(\pi_\mu)}{\delta\pi_\mu}(x_0, x_v) = B\cos x_0 + \frac\beta2 \cos(x_0 - x_v) +
-        (\kappa-1)(\log\pi_\mu^0(x_0) + 1)  - \frac\kappa2(\log\pi_\mu(x_0, x_v) + 1)
-    \end{equation*}
-\end{proposition}
+% \begin{proposition}\label{Prp.eta-orthogonal-form}
+%     For a function $F: \mathcal{X}\times\mathcal{X}^\kappa\mapsto\mathbb{R}$
+%     \begin{equation*}
+%         \langle F, \widetilde{\xi} \rangle = \int_{\mathcal{X}\times\mathcal{X}^\kappa} F(\widetilde{\tau}) \widetilde{\xi}(d\widetilde{\tau}) = 0
+%     \end{equation*}
+%     for all signed symmetric measures $\widetilde{\xi}$ on $\mathcal{X}^{\kappa+1}$ such that $\pi_{\widetilde{\xi}} = 0$
+%     if and only if
+%     \begin{equation*}
+%         F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)
+%     \end{equation*}
+%     For some $\gamma: \mathcal{X}^2\mapsto \mathbb{R}$ and $\beta: \mathcal{X}\times\mathcal{X}^\kappa \mapsto \mathbb{R}$ such that for all
+%     $\widetilde{\tau}\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sigma\in S_\kappa$,
+%     \begin{equation*}
+%         \sum_{\sigma\in S_\kappa}\beta(\sigma\widetilde{\tau}) = 0.
+%     \end{equation*}
+% \end{proposition}
 
-\begin{proof}
-    By definition of the derivative,
-    \begin{align*}
-          & \left.\frac{\delta}{\delta\pi_\mu}\mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]\right|_{(x_0, x_v)}                                    \\
-        = & \left.\frac{\delta}{\delta\pi_\mu}\int_{\mathcal{X}^2} \left[B\cos x_0' + \frac{\beta\kappa}{2}\cos(x_0'-x_v')\right]\pi_\mu(x_0', x_v') dx_0'dx_v' \right|_{(x_0, x_v)} \\
-        = & B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v).
-    \end{align*}
-    By chain rule, we know that for any probability measure $p : S \mapsto [0, \infty)$, the derivative of the differential entropy
-    \begin{equation*}
-        \frac{\delta H(p)}{\delta p}(x) = -\log p(x) - 1,\qquad \forall x\in S
-    \end{equation*}
-    This gives
-    \begin{equation*}
-        \frac{\delta H(\pi_\mu)}{\delta \pi_\mu}(x_0, x_v) = -\log \pi_\mu(x_0, x_v) - 1.
-    \end{equation*}
-    To calculate the derivative of $H(\pi_\mu^0)$, we define
-    \begin{equation*}
-        \pi_\mu^0(x_0) := M(\pi_\mu)(x_0) = \int_{\mathcal{X}} \pi_\mu(x_0, x_v) dx_v,
-    \end{equation*}
-    so that we can apply functional chain rule
-    \begin{equation*}
-        \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} =
-        \int_\mathcal{X} \left.\frac{\delta H(\pi_\mu^0)}{\delta\pi_\mu^0}\right|_{x_0'} \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} dx_0' .
-    \end{equation*}
-    First, write
-    \begin{equation*}
-        M(\pi_\mu)(x_0') = \int_{\mathcal{X}^2} \delta(x_0 - x_0') \pi_\mu(x_0, x_v) dx_0dx_v
-    \end{equation*}
-    Thus, for a function $\eta : \mathcal{X}^2 \mapsto \mathbb{R}$,
-    \begin{align*}
-        M(\pi_\mu + \eta)(x_0') = M(\pi_\mu)(x_0') + \int_{\mathcal{X}^2} \delta(x_0 - x_0') \eta(x_0, x_v) dx_0dx_v.
-    \end{align*}
-    We therefore have
-    \begin{equation*}
-        \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} = \delta(x_0 - x_0').
-    \end{equation*}
-    Hence,
-    \begin{equation*}
-        \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} = -\log \pi_\mu^0(x_0) - 1.
-    \end{equation*}
-    The result can be obtained through linearity of differentiation.
-\end{proof}
+% \begin{proof}[Proof of Prop. \ref{Prp.eta-orthogonal-form}]
+%     For the backward direction, we know that $\beta$ and $\frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v)$ are always orthogonal to $\eta$
+%     satisfiying the above constraints.
+
+%     Consider, using $\widetilde{\xi}(\widetilde{\tau}) = \widetilde{\xi}(\sigma\widetilde{\tau})$
+%     \begin{align*}
+%         \sum_{\sigma\in S_\kappa} \int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\sigma\widetilde{\tau})\widetilde{\xi}(\sigma d\widetilde{\tau})
+%         = & \int_{\mathcal{X}\times\mathcal{X}^\kappa}\left[\sum_{\sigma\in S_\kappa} \beta(\sigma\widetilde{\tau})\right]\widetilde{\xi}(\sigma d\widetilde{\tau}) = 0
+%         \intertext{On the other hand, taking $\widetilde{\tau}'=\sigma\widetilde{\tau}$}
+%         = & \kappa!\int_{\mathcal{X}\times\mathcal{X}^\kappa}\beta(\widetilde{\tau}')\widetilde{\xi}(d\widetilde{\tau}') = \kappa!\langle\beta, \widetilde{\xi}\rangle.
+%     \end{align*}
+%     Thus, we can deduce that $\langle\beta, \widetilde{\xi}\rangle=0$.
+
+%     For $\gamma$,
+%     \begin{align*}
+%           & \int_\mathcal{X}\int_{\mathcal{X}^\kappa} \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v) \widetilde{\xi}(dx_0d\mathbf{x}) \\
+%         = & \int_\mathcal{X}\frac1\kappa\sum_{v=1}^\kappa\int_\mathcal{X}\gamma(x_0, x_v)\widetilde{\xi}^{0, v}(dx_0dx_v)
+%         \intertext{Note that the $\gamma(x_0, x_v)$ term is not dependent on $v$}
+%         = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\left[\frac1\kappa\sum_{v=1}^\kappa\widetilde{\xi}(dx_0dx_v)\right]                  \\
+%         = & \int_{\mathcal{X}^2}\gamma(x_0, x_v)\pi_{\widetilde{\xi}}(dx_0dx_v)= 0
+%     \end{align*}
+
+%     For the forward direction, we will show that $\gamma(x, y) = F(x, y, \cdots, y)$, and $\beta(x_0, \mathbf{x})=F(x_0, \mathbf{x}) -
+%         \frac1\kappa\sum_{v=1}^\kappa\gamma(x_0, x_v)$. Note that $\beta(x, y, \cdots, y) = 0$.
+%     We prove $\sum_{\sigma}\beta(x_0, \sigma\mathbf{x}) = 0$ by contradiction.
+
+%     First, consider, for all $E\subseteq \mathcal{X}\times\mathcal{X}^\kappa$ measurable,
+%     \begin{equation*}
+%         \widetilde{\xi}_{(x_0, \mathbf{x})}(E) := \mathbf{1}_{\{(x_0, \mathbf{x})\in E\}} - \frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}
+%     \end{equation*}
+%     and
+%     \begin{equation*}
+%         \widetilde\xi(E) := \sum_{\sigma\in S_\kappa}\widetilde{\xi}_{\sigma\widetilde{\tau}}(E).
+%     \end{equation*}
+%     Notice that we can simplify $\eta$:
+%     \begin{align*}
+%         \eta(x_0', \mathbf{x}') & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+%         - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma(x_v, \cdots, x_v))\in E\}}
+%         \intertext{Take $v' = \sigma^{-1}(v)$, }
+%                                 & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+%         - \kappa!\frac1\kappa\sum_{v'=1}^\kappa \mathbf{1}_{\{(x_0, (x_{v'}, \cdots, x_{v'}))\in E\}}      \\
+%                                 & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+%         - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}.
+%     \end{align*}
+
+%     We first check that $\eta$ is symmetric: for some $\sigma'\in S_\kappa$, $E\subseteq\mathcal{X}\times\mathcal{X}^\kappa$ measurable,
+%     \begin{align*}
+%         \widetilde{\xi}(\sigma' E) & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in \sigma'E\}}
+%         - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in \sigma'E\}}
+%         \intertext{Subsititute $\sigma'' = \sigma'^{-1} \circ \sigma$, noting that $\widetilde{\tau}\in \sigma'E$ if and only if
+%         $\sigma'^{-1}\widetilde{\tau}\in E$,}
+%                                    & = \sum_{\sigma''\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma''\mathbf{x})\in E\}}
+%         - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, \sigma'^{-1}(x_v, \cdots, x_v))\in E\}}            \\
+%                                    & = \sum_{\sigma\in S_\kappa}\mathbf{1}_{\{(x_0, \sigma\mathbf{x})\in E\}}
+%         - \kappa!\frac1\kappa\sum_{v=1}^\kappa\mathbf{1}_{\{(x_0, (x_v, \cdots, x_v))\in E\}}  = \widetilde{\xi}(E)
+%     \end{align*}
+%     On the other hand, to prove that $\pi_{\widetilde{\xi}}=0$, fix $E\subseteq \mathcal{X}^2$ measurable
+%     \begin{align*}
+%         \pi_{\widetilde{\xi}_{(x_0, \mathbf{x})}}(E) = \frac1\kappa\sum_{v=1}^\kappa
+%         \widetilde{\xi}^{0, v}_{(x_0, \mathbf{x})}(E) & = \frac1\kappa\sum_{v=1}^\kappa \left[\mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}}\right] \\
+%                                                       & = \frac1\kappa\sum_{v=1}^\kappa \mathbf{1}_{\{(x_0, x_v)\in E\}} - \frac1\kappa\sum_{u=1}^\kappa\mathbf{1}_{\{(x_0, x_u)\in E\}} = 0
+%     \end{align*}
+%     Hence, $\pi_{\widetilde{\xi}}(E) = \sum_{\sigma\in S_\kappa}\pi_{\widetilde{\xi}_{\sigma\widetilde\tau}}(E) = 0$.
+
+%     Assume that for some $\widetilde\tau = (x_0, \mathbf{x})\in\mathcal{X}\times\mathcal{X}^\kappa$, $\sum_{\sigma}\beta(\sigma\widetilde{\tau}) \neq 0$, we
+%     will show that $\langle\beta, \widetilde{\xi}\rangle\neq 0$. Then,
+%     \begin{align*}
+%           \int_{\mathcal{X}^{\kappa+1}} \beta(x_0, \mathbf{x})\widetilde{\xi}(dx_0'd\mathbf{x}')                                     
+%         = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) - \kappa!\frac1\kappa\sum_{v=1}^\kappa\beta(x_0, (x_v, \cdots, x_v)) 
+%         = \sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) \neq 0
+%     \end{align*}
+
+%     $\langle\beta, \widetilde{\xi}\rangle \neq 0$, combined with $\langle\frac1\kappa\sum \gamma(\cdot), \widetilde{\xi}\rangle = 0$, by
+%     linearity, we can get $\langle F, \eta\rangle\neq 0$, which is a contradiction. This means that $\beta$ has to satisfy $\sum_\sigma
+%         \beta(x_0, \sigma(\mathbf{x})) = 0$. This means that $F$ has to come in the form
+%     \begin{equation*}
+%         F(x_0, x_1, \cdots, x_\kappa) = \beta(x_0, x_1, \cdots, x_\kappa) + \frac1\kappa\sum_{v=0}^\kappa\gamma(x_0, x_v),
+%     \end{equation*}
+%     thus proving the forward direction.
+% \end{proof}
+
+% \begin{proposition}\label{Prp.target-in-more-pi}
+%     The target function $V$ can be equivalently written as
+%     \begin{equation*}
+%         V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_{\mu} \| \pi_{\eta}).
+%     \end{equation*}
+% \end{proposition}
+
+% \begin{proposition}\label{Prp.nu-makes-mu-stay-in}
+%     For all $\widetilde{\mu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ and $\epsilon > 0$, the set
+%     \begin{equation*}
+%         \{\nu | \widetilde{\mu} + \epsilon \nu \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})\}
+%     \end{equation*}
+%     is the set of symmetric, $\pi$-null measures on $[-\pi, \pi)^{\kappa+1}$.
+% \end{proposition}
+
+
+% \begin{proof}[Proof of Prop.\ref{Prp.optimizer-given-pi}]
+%     From Prop.\ref{Prp.target-in-more-pi}, we know that
+%     \begin{equation*}
+%         V(\widetilde{\mu}) = \mathbb{E}_{\pi_{\widetilde{\mu}}}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right] - H(\mu\|\eta) + \frac\kappa2H(\pi_\mu \| \pi_\eta).
+%     \end{equation*}
+%     Consider some $\widetilde{\mu} + \epsilon \widetilde{\nu} \in \mathcal{P}^\pi([-\pi, \pi)^{\kappa+1})$ for some $\epsilon > 0$. From Prop.\ref{Prp.nu-makes-mu-stay-in}, we know that $\widetilde{\nu}$ must be a symmetric, $\pi$-null measure.
+
+%     Now fix symmetric and $\pi$-null measure $\nu$ on $\mathcal{X}^{\kappa+1}$. We can calculate the directional derivative
+%     \begin{align*}
+%         \frac{\partial V(\widetilde{\mu} + \epsilon \widetilde{\nu})}{\partial \epsilon}
+%         = & \int_{\mathcal{X}^2}\left[B\cos x_0 + \frac{\beta\kappa}2\cos(x_0 - x_v)\right]d\pi_{\widetilde{\nu}}(x_0, x_v) + \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x}) \\
+%           & - \frac\kappa2 \int_{\mathcal{X}^2}\left[\log\frac{\pi_\mu}{\pi_\eta} + 1\right]d\pi_{\nu}(x_0, x_v)
+%         \intertext{Since $\pi_\nu = \pi_{\widetilde{\nu}} = 0$,}
+%         = & \int_{\mathcal{X}^{\kappa+1}}\left[\log\frac{\mu}{\eta} + 1\right]d\nu(x_0, \mathbf{x})
+%         \intertext{Since $\nu$ has total measure of $0$ by $\pi_\nu=0$,}
+%         = & \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\nu(x_0, \mathbf{x}).
+%     \end{align*}
+%     This means that the derivative is well-defined at all $\widetilde{\mu}\in\mathcal{P}^\pi(\mathcal{X}^{\kappa+1})$,
+%     and it is
+%     \begin{equation}\label{Eq.XY-V-deriv-mu}
+%         \frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}} = \log\frac{\mu}{\eta} + 1,
+%     \end{equation}
+%     which, notice, is continuous on the interior when there does not exist some $\mu(x_0, \mathbf{x})=0$
+
+%     A stationary point necessarily means that $\int_{\mathcal{X}^{\kappa+1}}\frac{\delta V(\widetilde{\mu})}{\delta \widetilde{\mu}}(x_0, \mathbf{x})d\nu(x_0, \mathbf{x}) = 0$. This is equivalent to for all symmetric and $\pi$-null measures,
+%     \begin{equation*}
+%         \int_{\mathcal{X}^{\kappa+1}}\log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})}d\widetilde{\nu}(x_0, \mathbf{x}) = 0.
+%     \end{equation*}
+
+%     By Prop.\ref{Prp.eta-orthogonal-form}, we can write
+%     \begin{equation*}
+%         \log\frac{\mu(x_0, \mathbf{x})}{\eta(x_0, \mathbf{x})} = \beta(x_0, \mathbf{x}) + \frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v),
+%     \end{equation*}
+%     where $\beta$ satisfies $\sum_{\sigma\in S_\kappa} \beta(x_0, \sigma(\mathbf{x})) = 0$.
+
+%     To determine $\beta$, we notice that $\mu$ is defined on the equivalence class $(x_0, \mathbf{x})$ such that all permutations of
+%     $\mathbf{x}$ are considered to be of the same equivalence class. Therefore, for $\mu$ to be well-defined, it needs to be symmetric.
+%     This holds for $\log(\mu/\eta)$ as well. $\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)$ is already symmetric, but for $\beta$,
+%     $\beta(x_0, \mathbf{x}) = \beta{x_0, \sigma\mathbf{x}}$ for all $\sigma\in S_\kappa$, combined with
+%     $\sum_{\sigma\in S_\kappa}\beta(x_0, \sigma\mathbf{x}) = 0$ means that $\beta(x_0, \mathbf{x}) = 0$.
+
+%     We can then write
+%     \begin{equation*}
+%         \mu(x_0, \mathbf{x}) = \eta(x_0, \mathbf{x})\exp\left[\frac1\kappa\sum_{v=1}^\kappa \gamma(x_0, x_v)\right].
+%     \end{equation*}
+%     For this to satisfy $\pi_\mu = \pi$, we first convert to the $\widetilde{\Box}$ form, let $q(x_0, x_v) = \exp\left[\frac1\kappa\gamma(x_0, x_v)\right]$:
+%     \begin{equation*}
+%         \widetilde{\mu}(x_0, \mathbf{x}) = \widetilde{\eta}(x_0, \mathbf{x})\prod_{v=1}^\kappa q(x_0, x_v).
+%     \end{equation*}
+%     And notice that since $\eta$ is a uniform distribution,
+%     \begin{equation*}
+%         \widetilde{\eta}(x_0, \mathbf{x}) = \widetilde{\eta}^0(x_0)\prod_{v=1}^\kappa \widetilde{\eta}^0(x_v).
+%     \end{equation*}
+%     In the $\widetilde{\Box}$ form, the $\pi$ distribution can be more easily evaluated.
+%     \begin{align*}
+%         \pi_{\widetilde{\mu}}(x, y) & = \widetilde{\eta}^0(x)\widetilde{\eta}^0(y)\left[\int\widetilde{\eta}^0(y')q(x, y')dy'\right]^{\kappa-1} \\
+%         \pi_{\widetilde{\mu}}^0(x)  & = \widetilde{\eta}^0(x)\left[\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy\right]^\kappa.
+%     \end{align*}
+%     Thus,
+%     \begin{equation*}
+%         \pi_{\widetilde{\mu}}^{1|0}(y | x) := \frac{\pi_{\widetilde{\mu}}(x, y)}{\pi_{\widetilde{\mu}}^0(x)} = \frac{\widetilde{\eta}^0(y)q(x, y)}{\int_{\mathcal{X}}\widetilde{\eta}^0(y)q(x, y)dy},
+%     \end{equation*}
+%     and set $\pi_{\widetilde{\mu}}= \pi$ we have
+%     \begin{equation*}
+%         \widetilde{\mu}(x_0, \mathbf{x}) = \pi^0(x_0)\prod_{v=1}^\kappa\pi^{1|0}(x_v|x_0).
+%     \end{equation*}
+% \end{proof}
+
+
+% \begin{proposition}
+%     Given continuous function $F:\mathcal{X}^2\mapsto\mathbb{R}$. If for all $\eta: \mathcal{X}^2\mapsto\mathbb{R}$ symmetric and
+%     zero-total-measure, we have $\left\langle F, \eta \right\rangle=0$, then such an $F$ can be written as
+%     \begin{equation*}
+%         F(x, y)=\alpha + G(x, y)
+%     \end{equation*}
+%     where $\alpha \in \mathbb{R}$ and $G:\mathcal{X}^2\mapsto\mathbb{R}$ antisymmetric, i.e. $G(x, y) = -G(y, x), \forall x, y\in\mathcal{X}$.
+% \end{proposition}
+
+% \begin{proof}
+%     $\alpha = F(0, 0)$ and $G = F - \alpha$ satisfy the conditions. Note that $G$ continuous and $G(0, 0) = 0$.
+
+%     We show that $G$ is antisymmetric by contradiction.
+%     Say, without loss of generality, that for some $x_0, y_0\in\mathcal{X}$, $G(x_0, y_0) > -G(y_0, x_0) \geq 0$.
+%     Let $G_1 = G(x_0, y_0)$, $G_2 = -G(y_0, x_0)$.
+
+%     By continuity of $G$, we have $r_1>0$ such that for all $(x, y)\in \mathbf{B}_{r_1}(x_0, y_0)$, $|G(x,y)-G_1|<\frac14(G_1-G_2)$, i.e. $G(x, y) > \frac34G_1 + \frac14G_2$.
+%     Similarly, we have $r_2>0$ such that for all $(x, y)\in\mathbf{B}_{r_2}(y_0, x_0)$, $G(x, y) > -\frac14G_1 - \frac34G_2$,
+%     and $r_0>0$ such that for all $(x, y)\in\mathbf{B}_{r_0}(0)$, $G(x, y) < \frac14G_1 - \frac14G_2$. (Need to use $G(0, 0) = 0$)
+
+%     Let $r=\min(r_0, r_1, r_2)$. Define
+%     \begin{equation*}
+%         \eta = \mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}
+%         + \mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}
+%         - 2\cdot\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}.
+%     \end{equation*}
+%     Check that this $\eta$ is symmetric and has zero total measure. We will show that $\left\langle G, \eta \right\rangle \neq 0$:
+%     \begin{align*}
+%           & \int_{\mathcal{X}^2} G(x, y)\eta(x, y)dxdy                                                                                                            \\
+%         = & \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_r(x_0, y_0)\}}dxdy
+%         + \int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(y, x)\in\mathbf{B}_r(y_0, x_0)\}}dxdy
+%         - 2\int_{\mathcal{X}^2} G(x, y)\mathbf{1}_{\{(x, y)\in\mathbf{B}_{r}(0)\}}dxdy                                                                            \\
+%         > & |\mathbf{B}_{r}|\left[\left(\frac34G_1 + \frac14G_2\right) + \left(-\frac14G_1 - \frac34G_2\right) - \left(\frac12G_1 - \frac12G_2\right)\right] = 0.
+%     \end{align*}
+%     Hence, $\left\langle F, \eta \right\rangle = \left\langle G + \alpha, \eta \right\rangle = \left\langle G , \eta \right\rangle + \left\langle \alpha, \eta \right\rangle = \left\langle G, \eta \right\rangle \neq 0$ for some $\eta$. This contradicts our assumption.
+%     Thus, $F$ must be the sum of a constant and an antisymmetric function.
+% \end{proof}
+
+% \begin{proposition}
+%     For the functional target function
+%     \begin{equation*}
+%         \widetilde{V}(\pi_\mu; \beta, B, \kappa) = \mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]
+%         - (\kappa-1)H(\pi_\mu^0) + \frac\kappa2 H(\pi_\mu)
+%     \end{equation*}
+%     The functional derivative
+%     \begin{equation*}
+%         \frac{\delta\widetilde{V}(\pi_\mu)}{\delta\pi_\mu}(x_0, x_v) = B\cos x_0 + \frac\beta2 \cos(x_0 - x_v) +
+%         (\kappa-1)(\log\pi_\mu^0(x_0) + 1)  - \frac\kappa2(\log\pi_\mu(x_0, x_v) + 1)
+%     \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+%     By definition of the derivative,
+%     \begin{align*}
+%           & \left.\frac{\delta}{\delta\pi_\mu}\mathbb{E}_{\pi_\mu}\left[B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v)\right]\right|_{(x_0, x_v)}                                    \\
+%         = & \left.\frac{\delta}{\delta\pi_\mu}\int_{\mathcal{X}^2} \left[B\cos x_0' + \frac{\beta\kappa}{2}\cos(x_0'-x_v')\right]\pi_\mu(x_0', x_v') dx_0'dx_v' \right|_{(x_0, x_v)} \\
+%         = & B\cos x_0 + \frac{\beta\kappa}{2}\cos(x_0-x_v).
+%     \end{align*}
+%     By chain rule, we know that for any probability measure $p : S \mapsto [0, \infty)$, the derivative of the differential entropy
+%     \begin{equation*}
+%         \frac{\delta H(p)}{\delta p}(x) = -\log p(x) - 1,\qquad \forall x\in S
+%     \end{equation*}
+%     This gives
+%     \begin{equation*}
+%         \frac{\delta H(\pi_\mu)}{\delta \pi_\mu}(x_0, x_v) = -\log \pi_\mu(x_0, x_v) - 1.
+%     \end{equation*}
+%     To calculate the derivative of $H(\pi_\mu^0)$, we define
+%     \begin{equation*}
+%         \pi_\mu^0(x_0) := M(\pi_\mu)(x_0) = \int_{\mathcal{X}} \pi_\mu(x_0, x_v) dx_v,
+%     \end{equation*}
+%     so that we can apply functional chain rule
+%     \begin{equation*}
+%         \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} =
+%         \int_\mathcal{X} \left.\frac{\delta H(\pi_\mu^0)}{\delta\pi_\mu^0}\right|_{x_0'} \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} dx_0' .
+%     \end{equation*}
+%     First, write
+%     \begin{equation*}
+%         M(\pi_\mu)(x_0') = \int_{\mathcal{X}^2} \delta(x_0 - x_0') \pi_\mu(x_0, x_v) dx_0dx_v
+%     \end{equation*}
+%     Thus, for a function $\eta : \mathcal{X}^2 \mapsto \mathbb{R}$,
+%     \begin{align*}
+%         M(\pi_\mu + \eta)(x_0') = M(\pi_\mu)(x_0') + \int_{\mathcal{X}^2} \delta(x_0 - x_0') \eta(x_0, x_v) dx_0dx_v.
+%     \end{align*}
+%     We therefore have
+%     \begin{equation*}
+%         \left.\frac{\delta{M(\pi_\mu)(x_0')}}{\delta\pi_\mu}\right|_{(x_0, x_v)} = \delta(x_0 - x_0').
+%     \end{equation*}
+%     Hence,
+%     \begin{equation*}
+%         \left.\frac{\delta H(M(\pi_\mu))}{\delta\pi_\mu}\right|_{(x_0, x_v)} = -\log \pi_\mu^0(x_0) - 1.
+%     \end{equation*}
+%     The result can be obtained through linearity of differentiation.
+% \end{proof}
 
 \end{document}
