@@ -15,6 +15,7 @@
 \usepackage[american]{babel}
 \usepackage{csquotes}
 \usepackage[inline]{showlabels}
+\usepackage{tikz}
 % \usepackage{stix} % for a dotted square
 
 
@@ -27,6 +28,12 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
+
+
+\newcommand{\one}[1]{\mathbf{1}\{#1\}}
+\newcommand{\tree}[2]{\mathcal{T}_{*, #1}^{#2}[\mathcal{X}]}
+\newcommand{\measure}[2]{\mathcal{P}_u(\mathcal{T}_{*, #1}^{#2}[\mathcal{X}])}
+\newcommand{\TB}{{ \boldsymbol{\scalebox{1.2}[1.2]{$\tau$}}}}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -3183,8 +3190,8 @@ To solve for the optimal $\pi$ distribution, we can perform the same trick, but 
     \end{equation*}
     which is equivalent to
     \begin{equation*}
-        \sup_{\pi^0_*\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
-        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
+        \sup_{\iota\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\iota}\left[B\cos x_0\right] + (\kappa-1)H(\iota \| \nu) +
+        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\iota}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
     \end{equation*}
 \end{proposition}
 
@@ -3195,15 +3202,15 @@ To solve for the optimal $\pi$ distribution, we can perform the same trick, but 
 \begin{proposition}
     The unique optimizer of the problem
     \begin{equation*}
-        \sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)
+        \sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\iota}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)
     \end{equation*}
     is in the form
     \begin{equation*}
         \frac{d\pi^*}{d\eta}(x, y) = \frac{1}{Z^\pi(h)}\exp[\beta \cos(x - y)]\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y),
     \end{equation*}
-    with some\footnote{Still need to prove that such an $h$ exists. I think we have uniqueness given $\pi^0_*$} $h\in\mathcal{P}(\mathcal{X})$ absolutely continuous with respect to $\nu$ that satisfies, for all $A$ measurable
+    with some\footnote{Still need to prove that such an $h$ exists. I think we have uniqueness given $\iota$} $h\in\mathcal{P}(\mathcal{X})$ absolutely continuous with respect to $\nu$ that satisfies, for all $A$ measurable
     \begin{equation}\label{Eq.XY-h-pi0}
-        \pi^0_*(A) = \frac{1}{Z^\pi(h)}\int_A\int_\mathcal{X}\exp[\beta \cos(x - y)]h(dx)h(dy),
+        \iota(A) = \frac{1}{Z^\pi(h)}\int_A\int_\mathcal{X}\exp[\beta \cos(x - y)]h(dx)h(dy),
     \end{equation}
     and
     \begin{equation*}
@@ -3211,32 +3218,32 @@ To solve for the optimal $\pi$ distribution, we can perform the same trick, but 
     \end{equation*}
     The optimal value is
     \begin{equation*}
-        \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right].
+        \log Z^\pi(h) - 2\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right].
     \end{equation*}
 \end{proposition}
 
 \begin{proof}
     Since $H(\pi\|\pi_\eta)$ is strictly convex and $\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)]$ is linear, the target function is linear.
-    Since the set $\{\pi\in\mathcal{P}_s(\mathcal{X}^2)\ |\ \pi^0=\pi^0_*\}$ is compact and simply connected, we know that an optimizer exist and is
+    Since the set $\{\pi\in\mathcal{P}_s(\mathcal{X}^2)\ |\ \pi^0=\iota\}$ is compact and simply connected, we know that an optimizer exist and is
     unique.
 
-    With the same strategy, for some $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\pi^0_*$ we consider the cross entropy
+    With the same strategy, for some $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\iota$ we consider the cross entropy
     \begin{align*}
           & \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y)                                                                                 \\
         = & \int_{\mathcal{X}^2}\pi(dxdy) \log \left\{\frac{1}{Z^\pi(h)}\exp[\beta \cos(x - y)]\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y)\right\}               \\
         = & -\log Z^\pi(h) + \mathbb{E}_\pi\left\{\exp[\beta \cos(x - y)]\right\} + \int_{\mathcal{X}^2}\pi(dxdy)\log\frac{dh}{d\nu}(x)\frac{dh}{d\nu}(y)
-        \intertext{By $\pi$ symmetric, we know that $\pi^0=\pi^1=\pi^0_*$}
-        = & -\log Z^\pi(h) + \mathbb{E}_\pi\left\{\exp[\beta \cos(x - y)]\right\} + 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+        \intertext{By $\pi$ symmetric, we know that $\pi^0=\pi^1=\iota$}
+        = & -\log Z^\pi(h) + \mathbb{E}_\pi\left\{\exp[\beta \cos(x - y)]\right\} + 2\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right]
     \end{align*}
     Thus,
     \begin{equation*}
-        \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y) = \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+        \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y) = \log Z^\pi(h) - 2\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right]
     \end{equation*}
     When $\pi=\pi^*$, we have
     \begin{equation*}
-        \mathbb{E}_{\pi^*}[\beta\cos(x_0-x_1)] - H(\pi^*\|\pi_\eta) = \log Z^\pi(h) - 2\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]
+        \mathbb{E}_{\pi^*}[\beta\cos(x_0-x_1)] - H(\pi^*\|\pi_\eta) = \log Z^\pi(h) - 2\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right]
     \end{equation*}
-    Similarly, we invoke Lemma \ref{Prp.XY-RE-GE-CE}, and get that for all $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\pi^0_*$,
+    Similarly, we invoke Lemma \ref{Prp.XY-RE-GE-CE}, and get that for all $\pi\in\mathcal{P}_s(\mathcal{X}^2)$ such that $\pi^0=\iota$,
     \begin{align*}
         \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta) & \leq \mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - \int_{\mathcal{X}^2}\pi(dxdy) \log \frac{d\pi^*}{d\eta}(x, y) \\
                                                                 & = \mathbb{E}_{\pi^*}[\beta\cos(x_0-x_1)] - H(\pi^*\|\pi_\eta)
@@ -3248,14 +3255,187 @@ Although $\pi^*$ is unique, the same thing cannot be said for $h$\footnote{I thi
 \begin{proposition}
     The optimization problem
     \begin{equation*}
-        \sup_{\pi^0_*\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
-        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\pi^0_*}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
+        \sup_{\iota\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\iota}\left[B\cos x_0\right] + (\kappa-1)H(\iota \| \nu) +
+        \frac\kappa2\sup_{\substack{\pi\in\mathcal{P}_s(\mathcal{X}^2)\\ \pi^0=\iota}}\mathbb{E}_{\pi}[\beta\cos(x_0-x_1)] - H(\pi\|\pi_\eta)\right\}
     \end{equation*}
     is equivalent to
     \begin{equation*}
-        \sup_{h\in\mathcal{P}(\mathcal{X})}\left\{\mathbb{E}_{\pi^0_*}\left[B\cos x_0\right] + (\kappa-1)H(\pi^0_* \| \nu) +
-        \frac\kappa2\log Z^\pi(h) - \kappa\mathbb{E}_{\pi^0_*}\left[\log\frac{dh}{d\nu}(x)\right]\right\}
+        \sup_{h\in\mathcal{P}(\mathcal{X})}\left\{\frac\kappa2\log Z^\pi(h) + \mathbb{E}_{\iota}\left[B\cos x_0\right] + (\kappa-1)H(\iota \| \nu)
+        - \kappa\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right]\right\}
+    \end{equation*}
+    where
+    \begin{equation*}
+        \iota(A) = \frac{1}{Z^\pi(h)}\int_A\int_\mathcal{X}\exp[\beta \cos(x - y)]h(dx)h(dy),
     \end{equation*}
 \end{proposition}
+
+\begin{proof}
+    This should be apparent. Skipped
+\end{proof}
+
+\begin{proposition}
+    The optimization problem
+    \begin{equation*}
+        \sup_{h\in\mathcal{P}(\mathcal{X})}\left\{\frac\kappa2\log Z^\pi(h) + \mathbb{E}_{\iota}\left[B\cos x_0\right] + (\kappa-1)H(\iota \| \nu)
+        - \kappa\mathbb{E}_{\iota}\left[\log\frac{dh}{d\nu}(x)\right]\right\}
+    \end{equation*}
+    is equivalent to
+    \begin{equation*}
+        \sup_{h\in H} Z(h) + \frac\kappa2Z^\pi(h),
+    \end{equation*}
+    where
+    \begin{equation*}
+        H := \{h\in \mathcal{P}(\mathcal{X})\ |\ h=\text{BP}h\},
+    \end{equation*}
+    \begin{equation}
+        \text{BP}h(A) := \frac{1}{Z^h(h)}\int_A \nu(dx)\exp\{B\cos x\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x-y)\}h(dy)\right)^{\kappa-1},
+    \end{equation}
+    and
+    \begin{equation}
+        \begin{aligned}
+            Z (h)    & = \int_{\mathcal{X}} \nu(dx) \exp\{B\cos x\} \left(\int_\mathcal{X}\exp\{\beta\cos(x-y)\}h(dy)\right)^\kappa       \\
+            Z^\pi(h) & = \int_{\mathcal{X}^2} \exp\left[\beta\cos(x- y)\right]h(dx)h(dy)                                                  \\
+            Z^h(h)   & = \int_{\mathcal{X}} \nu(dx) \exp\{B\cos x\}\left(\int_{\mathcal{X}}\exp\{\beta\cos(x-y)\}h(dy)\right)^{\kappa-1}.
+        \end{aligned}
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+
+\end{proof}
+
+
+\newpage
+
+\section{Next Nearest Neighbor Ising (NNNI) Model}
+
+From the problem statement, we have the following definitions:
+\begin{definition}
+    For all $\tau_2\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]$, $\tau_1, \tau_1'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$,
+    \begin{equation*}
+        E(\tau_1, \tau_1')(\tau_2) = |v\in N_o(\tau_2)\ :\ \tau_2(o\backslash v)_1 = \tau_1, \tau_2(v\backslash o)_1 = \tau_1'|
+    \end{equation*}
+    or,
+    \begin{equation*}
+        E(\tau_1, \tau_1')(\tau_2) = \sum_{v\in N_o(\tau_2)}\mathbf{1}\{\tau_2(o\backslash v)_1 = \tau_1, \tau_2(v\backslash o)_1 = \tau_1'\}
+    \end{equation*}
+\end{definition}
+and the $\pi$ distribution
+\begin{definition}
+    For all $\tau_1, \tau_1'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$, $\rho_h\in \mathcal{P}_u(\mathcal{T}_{*, h}^\kappa[\mathcal{X}])$,
+    \begin{equation*}
+        \pi_{\rho_h}(\tau_1, \tau_1') = \frac1\kappa \sum_{\tau_2\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]} \rho_2(\tau_2) E(\tau_1, \tau_1')(\tau_2)
+    \end{equation*}
+\end{definition}
+
+\begin{definition}
+    For all $\rho_h\in \mathcal{P}_u(\mathcal{T}_{*, h}^\kappa[\mathcal{X}])$, and $m\leq h$, we have
+    $\rho_m\in \mathcal{P}_u(\mathcal{T}_{*, m}^\kappa[\mathcal{X}])$ defined for all $\tau_m \in \mathcal{T}_{*, m}^\kappa[\mathcal{X}]$:
+    \begin{equation*}
+        \rho_m(\tau_m) = \sum_{\tau_h\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]} \rho_h(\tau_h)\mathbf{1}\{(\tau_h)_m = \tau_m\}
+    \end{equation*}
+\end{definition}
+
+We see that we can define $\rho_1$ in terms of $\pi_{\rho_2}$:
+\begin{proposition}
+    Given $\rho_2\in \mathcal{P}_u(\mathcal{T}_{*, 2}^\kappa[\mathcal{X}])$, we have that for all $\tau_1\in \mathcal{T}_{*, 1}^\kappa[\mathcal{X}]$
+    \begin{equation*}
+        \rho_1(\tau_1) = \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1(o\backslash v), \tau_1')\one{(\tau_1')_0=\tau_1(v\backslash o)_0}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    \begin{align*}
+          & \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1(o\backslash v), \tau_1')\one{(\tau_1')_0=\tau_1(v\backslash o)_0} \\
+        = & \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}
+        \frac1\kappa\sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
+        \tau_1(o\backslash v), \tau_2(v'\backslash o)_1=\tau_1'}\one{(\tau_1')_0=\tau_1(v\backslash o)_0}                                                               \\
+        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
+        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
+        \tau_1(o\backslash v)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\one{\tau_2(v'\backslash o)_1=\tau_1'}\one{(\tau_1')_0=\tau_1(v\backslash o)_0}                        \\
+        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
+        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
+            \tau_1(o\backslash v)}\one{\tau_2(v'\backslash o)_0=\tau_1(v\backslash o)_0}
+        \intertext{Note that $\tau_2(o\backslash v')_1 = \tau_1(o\backslash v)$ and $\tau_2(v'\backslash o)_0=\tau_1(v\backslash o)_0$
+            is equivalent to $(\tau_2)_1 = \tau_1$}
+        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
+        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{(\tau_2)_1 = \tau_1} = \rho_1(\tau_1)
+    \end{align*}
+
+    % \begin{figure}
+    %     \begin{center}
+    %         \begin{tikzpicture}[scale=0.9]
+    %             \filldraw[black] (0, 0) circle(3pt);
+    %             \filldraw[black] (0, -1) circle(3pt);
+    %             \filldraw[black] (2, -1) circle(3pt);
+    %             \filldraw[black] (-2, -1) circle(3pt);
+    %             \filldraw[black] (-2.5, -3) circle(3pt);
+    %             \filldraw[black] (-1.5, -3) circle(3pt);
+    %             \filldraw[black] (-0.5, -3) circle(3pt);
+    %             \filldraw[black] (0.5, -3) circle(3pt);
+    %             \filldraw[black] (1.5, -3) circle(3pt);
+    %             \filldraw[black] (2.5, -3) circle(3pt);
+
+    %             \draw [black, thick] (0,0)--(0,-1);
+    %             \draw [black, thick] (0,0)--(2,-1);
+    %             \draw [black, thick] (0,0)--(-2,-1);
+    %             \draw [black, thick] (-2,-1)--(-2.5,-3);
+    %             \draw [black, thick] (-2,-1)--(-1.5,-3);
+    %             \draw [black, thick] (0,-1)--(-0.5,-3);
+    %             \draw [black, thick] (0,-1)--(0.5,-3);
+    %             \draw [black, thick] (2,-1)--(1.5,-3)
+    %             \draw [black, thick] (2,-1)--(2.5,-3);
+
+    %             \draw [black, thick, dashed] (-0.25, 0.5)--(-0.25,-1.25)--(3,-1.25)--(-0.25, 0.5);
+    %             \node
+    %             \draw [black, thick, dashed] (-2, -0.25)--(-3, -3.25)--(-1,-3.25)--(-2, -0.25);
+    %         \end{tikzpicture}
+    %     \end{center}
+    % \end{figure}
+\end{proof}
+
+Additionally, we have
+\begin{proposition}
+    Given measure $\rho_2\in\measure{2}{\kappa}$, we have that
+    \begin{equation*}
+        \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v\right] = \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] = \mathbb{E}_{\pi_{\rho_2}}\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]
+    \end{equation*}
+    and
+    \begin{equation*}
+        \mathbb{E}_{\rho_2}\left[\frac12\sum_{\{v:d_\tau(o, v)=2\}} x_o x_v\right] = \mathbb{E}_{\pi_{\rho_2}}\left[\frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right]
+    \end{equation*}
+    so
+    \begin{equation*}
+        \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v - \frac12\sum_{\{v:d_\tau(o, v)=2\}}\right] =\mathbb{E}_{\pi_{\rho_2}}
+        \left\{\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] -
+        \frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right\}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    On one hand,
+    \begin{align*}
+        \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]
+        = & \sum_{\tau_1\in \tree{1}{\kappa}}\rho_1(\tau_1)\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                                  \\
+        = & \sum_{\tau_1\in \tree{1}{\kappa}}\sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\one{\TB_1=\tau_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] \\
+        = & \sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\frac\lambda2\sum_{v\in N_o(\tau)}\sum_{\tau_1\in \tree{1}{\kappa}}\one{\TB_1=\tau_1} \tau_0\tau(v\backslash o)_0              \\
+        = & \sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\frac\lambda2\sum_{v\in N_o(\tau)}\TB_0\TB(v\backslash o)_0                                                                    \\
+        = & \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v\right].
+    \end{align*}
+    On the other hand,
+    \begin{align*}
+          & \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                                                                                                                                                                                                \\
+        = & \sum_{\tau_1\in \tree{1}{\kappa}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau(o\backslash v')_1, \tau_1')\one{\tau_0'=\tau_1(v'\backslash o)_0}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                        \\
+        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa}}\pi_{\rho_2}(\tau(o\backslash v')_1, \tau_1')\one{\tau_0'=\tau_1(v'\backslash o)_0}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                     \\
+        \intertext{Changing variables, we have}
+        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{x\in\mathcal{X}}\pi_{\rho_2}((\tau_1\bigoplus x)(o\backslash v')_1, \tau_1')\one{\tau_0'=(\tau_1\bigoplus x)(v'\backslash o)_0}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0 \\
+        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{x\in\mathcal{X}}\pi_{\rho_2}(\tau_1, \tau_1')\one{\tau_0'=x}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                    \\
+        = & \sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\pi_{\rho_2}(\tau_1, \tau_1')\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                    \\
+        = & \sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1, \tau_1')\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                    \\
+        = & \mathbb{E}_{\pi_{\rho_2}}\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]
+    \end{align*}
+\end{proof}
+
+
 
 \end{document}
