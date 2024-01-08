@@ -3311,22 +3311,24 @@ Although $\pi^*$ is unique, the same thing cannot be said for $h$\footnote{I thi
 
 From the problem statement, we have the following definitions:
 \begin{definition}
-    For all $\tau_2\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]$, $\tau_1, \tau_1'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$,
+    For all $\TB\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]$, $\tau, \tau'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$,
     \begin{equation*}
-        E(\tau_1, \tau_1')(\tau_2) = |v\in N_o(\tau_2)\ :\ \tau_2(o\backslash v)_1 = \tau_1, \tau_2(v\backslash o)_1 = \tau_1'|
+        E_h(\tau, \tau')(\TB) = |v\in N_o(\TB)\ :\ \TB(o\backslash v)_1 = \tau, \TB(v\backslash o)_1 = \tau'|
     \end{equation*}
     or,
     \begin{equation*}
-        E(\tau_1, \tau_1')(\tau_2) = \sum_{v\in N_o(\tau_2)}\mathbf{1}\{\tau_2(o\backslash v)_1 = \tau_1, \tau_2(v\backslash o)_1 = \tau_1'\}
+        E_h(\tau, \tau')(\TB) = \sum_{v\in N_o(\TB)}\mathbf{1}\{\TB(o\backslash v)_1 = \tau, \TB(v\backslash o)_1 = \tau'\}
     \end{equation*}
 \end{definition}
-and the $\pi$ distribution
+For convenience, we will denote $n_x(\tau) = E_h(x, \tau_0)(\tau)$, the number of first-generation vertices with mark $x$.
+
 \begin{definition}
-    For all $\tau_1, \tau_1'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$, $\rho_h\in \mathcal{P}_u(\mathcal{T}_{*, h}^\kappa[\mathcal{X}])$,
+    For all $\tau, \tau'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$, $\rho_h\in \mathcal{P}_u(\mathcal{T}_{*, h}^\kappa[\mathcal{X}])$,
     \begin{equation*}
-        \pi_{\rho_h}(\tau_1, \tau_1') = \frac1\kappa \sum_{\tau_2\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]} \rho_2(\tau_2) E(\tau_1, \tau_1')(\tau_2)
+        \pi_{\rho_h}(\tau, \tau') = \frac1\kappa \sum_{\TB\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]} \rho_2(\TB) E_h(\tau, \tau')(\TB)
     \end{equation*}
 \end{definition}
+
 
 \begin{definition}
     For all $\rho_h\in \mathcal{P}_u(\mathcal{T}_{*, h}^\kappa[\mathcal{X}])$, and $m\leq h$, we have
@@ -3338,67 +3340,39 @@ and the $\pi$ distribution
 
 We see that we can define $\rho_1$ in terms of $\pi_{\rho_2}$:
 \begin{proposition}
-    Given $\rho_2\in \mathcal{P}_u(\mathcal{T}_{*, 2}^\kappa[\mathcal{X}])$, we have that for all $\tau_1\in \mathcal{T}_{*, 1}^\kappa[\mathcal{X}]$
+    Given $\rho_2\in \mathcal{P}_u(\mathcal{T}_{*, 2}^\kappa[\mathcal{X}])$, for all $\tau\in \mathcal{T}_{*, 1}^{\kappa-1}[\mathcal{X}]$, $x\in \mathcal{X}$,
     \begin{equation*}
-        \rho_1(\tau_1) = \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1(o\backslash v), \tau_1')\one{(\tau_1')_0=\tau_1(v\backslash o)_0}
+        \sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau',\tau)\one{\tau_0'=x} = \frac1\kappa E_1(x, \tau_0)(\tau\oplus x) \rho_1(\tau\oplus x)
+    \end{equation*}
+    and for all $\tau\in \mathcal{T}_{*, 1}^{\kappa}[\mathcal{X}]$,
+    \begin{equation*}
+        \rho_1(\tau) = \sum_{v\in N_o(\tau)}\frac1{n_{\tau(v\backslash o)_0}(\tau)}\sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau(o\backslash v), \tau')\one{(\tau')_0=\tau(v\backslash o)_0}
     \end{equation*}
 \end{proposition}
 
 \begin{proof}
+    First,
     \begin{align*}
-          & \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1(o\backslash v), \tau_1')\one{(\tau_1')_0=\tau_1(v\backslash o)_0} \\
-        = & \frac1\kappa\sum_{v\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}
-        \frac1\kappa\sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
-        \tau_1(o\backslash v), \tau_2(v'\backslash o)_1=\tau_1'}\one{(\tau_1')_0=\tau_1(v\backslash o)_0}                                                               \\
-        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
-        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
-        \tau_1(o\backslash v)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\one{\tau_2(v'\backslash o)_1=\tau_1'}\one{(\tau_1')_0=\tau_1(v\backslash o)_0}                        \\
-        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
-        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{\tau_2(o\backslash v')_1 =
-            \tau_1(o\backslash v)}\one{\tau_2(v'\backslash o)_0=\tau_1(v\backslash o)_0}
-        \intertext{Note that $\tau_2(o\backslash v')_1 = \tau_1(o\backslash v)$ and $\tau_2(v'\backslash o)_0=\tau_1(v\backslash o)_0$
-            is equivalent to $(\tau_2)_1 = \tau_1$}
-        = & \sum_{\tau_2\in\tree{2}{\kappa}}\rho_2(\tau_2)\frac1\kappa\sum_{v\in N_o(\tau_1)}
-        \frac1\kappa\sum_{v'\in N_o(\tau_2)}\one{(\tau_2)_1 = \tau_1} = \rho_1(\tau_1)
+        \sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau')\one{\tau_0'=x}
+        = & \sum_{\TB\in\tree{2}{\kappa}}\rho_2(\TB)\frac1\kappa \sum_{v\in N_o(\TB)}\one{\TB(o\backslash v)_1 = \tau, \TB(v\backslash o)_0=x} \\
+        \intertext{using $\TB(o\backslash v)_1 = \tau$ and $\TB(v\backslash o)_0=x$ if and only if $\one{\TB_1 = \tau\oplus x}
+            $ and $\TB(v\backslash o)_o=x$}
+        = & \sum_{\TB\in\tree{2}{\kappa}}\rho_2(\TB)\one{\TB_1 = \tau\oplus x} \frac1\kappa \sum_{v\in N_o(\TB)}\one{\TB(v\backslash o)_o=x}   \\
+        = & \frac1\kappa n_x(\tau\oplus x)\rho_1(\tau\oplus x)
     \end{align*}
-
-    % \begin{figure}
-    %     \begin{center}
-    %         \begin{tikzpicture}[scale=0.9]
-    %             \filldraw[black] (0, 0) circle(3pt);
-    %             \filldraw[black] (0, -1) circle(3pt);
-    %             \filldraw[black] (2, -1) circle(3pt);
-    %             \filldraw[black] (-2, -1) circle(3pt);
-    %             \filldraw[black] (-2.5, -3) circle(3pt);
-    %             \filldraw[black] (-1.5, -3) circle(3pt);
-    %             \filldraw[black] (-0.5, -3) circle(3pt);
-    %             \filldraw[black] (0.5, -3) circle(3pt);
-    %             \filldraw[black] (1.5, -3) circle(3pt);
-    %             \filldraw[black] (2.5, -3) circle(3pt);
-
-    %             \draw [black, thick] (0,0)--(0,-1);
-    %             \draw [black, thick] (0,0)--(2,-1);
-    %             \draw [black, thick] (0,0)--(-2,-1);
-    %             \draw [black, thick] (-2,-1)--(-2.5,-3);
-    %             \draw [black, thick] (-2,-1)--(-1.5,-3);
-    %             \draw [black, thick] (0,-1)--(-0.5,-3);
-    %             \draw [black, thick] (0,-1)--(0.5,-3);
-    %             \draw [black, thick] (2,-1)--(1.5,-3)
-    %             \draw [black, thick] (2,-1)--(2.5,-3);
-
-    %             \draw [black, thick, dashed] (-0.25, 0.5)--(-0.25,-1.25)--(3,-1.25)--(-0.25, 0.5);
-    %             \node
-    %             \draw [black, thick, dashed] (-2, -0.25)--(-3, -3.25)--(-1,-3.25)--(-2, -0.25);
-    %         \end{tikzpicture}
-    %     \end{center}
-    % \end{figure}
+    It follows that
+    \begin{align*}
+        \rho_1(\tau) & = \frac1\kappa\sum_{v\in N_o(\tau)}\rho_1(\tau(o\backslash v)_1\oplus \tau(v\backslash o)_0)                                                                                               \\
+                     & = \frac1\kappa\sum_{v\in N_o(\tau)}\sum_{\tau'\in\tree{1}{\kappa-1}}\frac{\kappa}{ n_{\tau(v\backslash o)_0}(\tau)}\pi_{\rho_2}(\tau(o\backslash v)_1)\one{\tau_0'= \tau(v\backslash o)_0} \\
+                     & = \sum_{v\in N_o(\tau)}\sum_{\tau'\in\tree{1}{\kappa-1}}\frac{1}{n_{\tau(v\backslash o)_0}(\tau)}\pi_{\rho_2}(\tau(o\backslash v)_1)\one{\tau_0'= \tau(v\backslash o)_0}
+    \end{align*}
 \end{proof}
 
-Additionally, we have
+Additionally,
 \begin{proposition}
     Given measure $\rho_2\in\measure{2}{\kappa}$, we have that
     \begin{equation*}
-        \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v\right] = \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] = \mathbb{E}_{\pi_{\rho_2}}\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]
+        \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v\right] = \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] = \mathbb{E}_{\pi_{\rho_2}}\left[\frac{\lambda\kappa}2\tau_0'\tau'_0\right]
     \end{equation*}
     and
     \begin{equation*}
@@ -3407,47 +3381,115 @@ Additionally, we have
     so
     \begin{equation*}
         \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v - \frac12\sum_{\{v:d_\tau(o, v)=2\}}\right] =\mathbb{E}_{\pi_{\rho_2}}
-        \left\{\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] -
-        \frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right\}
+        \left\{\frac{\lambda\kappa}2\tau_0'\tau_0 - \frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right\}
     \end{equation*}
 \end{proposition}
 
-\begin{proof}
-    On one hand,
-    \begin{align*}
-        \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]
-        = & \sum_{\tau_1\in \tree{1}{\kappa}}\rho_1(\tau_1)\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                                  \\
-        = & \sum_{\tau_1\in \tree{1}{\kappa}}\sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\one{\TB_1=\tau_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right] \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\frac\lambda2\sum_{v\in N_o(\tau)}\sum_{\tau_1\in \tree{1}{\kappa}}\one{\TB_1=\tau_1} \tau_0\tau(v\backslash o)_0              \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}}\rho_2(\TB_2)\frac\lambda2\sum_{v\in N_o(\tau)}\TB_0\TB(v\backslash o)_0                                                                    \\
-        = & \mathbb{E}_{\rho_2}\left[\frac\lambda2\sum_{v\sim o} x_o x_v\right].
-    \end{align*}
-    On the other hand,
-    \begin{align*}
-          & \mathbb{E}_{\rho_1}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                                                                                                                                                                                                \\
-        = & \sum_{\tau_1\in \tree{1}{\kappa}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau(o\backslash v')_1, \tau_1')\one{\tau_0'=\tau_1(v'\backslash o)_0}\left[\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right]                                        \\
-        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa}}\pi_{\rho_2}(\tau(o\backslash v')_1, \tau_1')\one{\tau_0'=\tau_1(v'\backslash o)_0}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                     \\
-        \intertext{Changing variables, we have\footnotemark}
-        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{x\in\mathcal{X}}\pi_{\rho_2}((\tau_1\bigoplus x)(o\backslash v')_1, \tau_1')\one{\tau_0'=(\tau_1\bigoplus x)(v'\backslash o)_0}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0 \\
-        = & \sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{x\in\mathcal{X}}\pi_{\rho_2}(\tau_1, \tau_1')\one{\tau_0'=x}\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                    \\
-        = & \sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\frac1\kappa\sum_{v'\in N_o(\tau_1)}\pi_{\rho_2}(\tau_1, \tau_1')\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                                                         \\
-        = & \sum_{\tau_1\in \tree{1}{\kappa-1}}\sum_{\tau_1'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau_1, \tau_1')\frac\lambda2\sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0                                                                                                                                             \\
-        = & \mathbb{E}_{\pi_{\rho_2}}\frac\lambda2\left[\tau_0\tau'_0 + \sum_{v\in N_o(\tau)} \tau_0\tau(v\backslash o)_0\right].
-    \end{align*}
-    \footnotetext{This step is problematic...}
+\begin{definition}
+    Given $\rho_1 \in \mathcal{P}_u(\tree{1}{\kappa})$, we have, for all $x, x' \in \mathcal{X}$ $\tau_1 \in \tree{1}{\kappa-1}$,
+    \begin{equation*}
+        \widehat{P}(x, x')(\tau_1) = \frac{\one{\tau_0 = x}}{\kappa \pi_{\rho_1}(x, x')} E_1(x', x)(\tau_1\oplus x) \rho_1(\tau_1\oplus x)
+    \end{equation*}
+\end{definition}
 
-    Additionally,
+\begin{proposition}
+    Given $\rho_1 \in \mathcal{P}_u(\tree{1}{\kappa})$, we have, for all $\tau_1, \tau_1' \in \tree{1}{\kappa-1}$
+    \begin{equation}
+        \pi_{\rho_2^*}(\tau_1, \tau_1') = \pi_{\rho_1}(\tau_0, \tau_0')\widehat{P}_{1, \rho_1}(\tau_0', \tau)(\tau_1')\widehat{P}_{1, \rho_1}(\tau_0, \tau_0')(\tau_1)
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
     \begin{align*}
-          & \mathbb{E}_{\pi_{\rho_2}}\left[\frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right]                                                                                                                                                                                                   \\
-        = & \sum_{\tau_1, \tau_1'\in\tree{1}{\kappa-1}} \sum_{\TB\in \tree{2}{\kappa}} \rho_2(\TB_2)\frac1\kappa\sum_{v'\in N_o(\TB)}\one{\TB(o\backslash v') = \tau_1, \TB(v'\backslash o) = \tau_1'}\left[\frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right]                                  \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_2(\TB_2) \frac1\kappa\sum_{v'\in N_o(\TB)}\sum_{\tau_1\in\tree{1}{\kappa-1}} \one{\TB(o\backslash v') = \tau_1} \sum_{\tau_1'\in\tree{1}{\kappa-1}} \one{\TB(v'\backslash o) = \tau_1'}\left[\frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\tau'(v\backslash o)_0\right] \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_2(\TB_2) \frac1\kappa\sum_{v'\in N_o(\TB)}\sum_{\tau_1\in\tree{1}{\kappa-1}} \one{\TB(o\backslash v') = \tau_1}\frac\kappa 2\sum_{v\in N_o(\tau')} \tau_0\TB(v'\backslash o)(v\backslash o)_0                                                                        \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_2(\TB_2) \frac1\kappa\sum_{v'\in N_o(\TB)} \frac\kappa 2\sum_{v\in N_o(\tau')} \TB_0\TB(v'\backslash o)(v\backslash o)_0                                                                                                                                             \\
-        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_2(\TB_2)\frac12\sum_{v'\in N_o(\TB)} \sum_{v\in N_o(\tau')} \TB_0\TB(v'\backslash o)(v\backslash o)_0
-        = \mathbb{E}_{\rho_2}\left[\frac12\sum_{\{v:d_\tau(o, v)=2\}} x_o x_v\right].
+          & \pi_{\rho_2^*}(\tau_1, \tau_1')                                                                                                                                                                                                                                                                                                          \\
+        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_2^*(\TB_2) \frac1\kappa E_2(\tau_1, \tau_1')(\TB_2)                                                                                                                                                                                                                                                \\
+        = & \sum_{\TB_2\in \tree{2}{\kappa}} \rho_1^*(\TB_1) \left[\prod_{v\in N_o(\TB)}\widehat{P}_{1, \rho_1}(\TB(v\backslash o)_0, \TB(o\backslash v)_0)(\TB(v\backslash o)_1)\right] \frac1\kappa \sum_{v'\in N_o(\TB)}\one{\TB(v\backslash o)_1 = \tau_1, \TB(o\backslash v)_1 = \tau_1'}
+        \intertext{With a change of variables, we can decompose the sum over $\tree{2}{}$ as several sums over $\TB_2\in \tree{1}{}$. For any $\TB_2 \in \tree{2}{\kappa}$, we represent it as $(\sigma_1^o, [\sigma_1^1, \cdots, \sigma_1^\kappa])$, where $\sigma_1^o \in \tree{1}{\kappa}$, $\sigma_1^v\in\tree{1}{\kappa-1}$.}
+        = & \sum_{\sigma_1^o\in \tree{1}{\kappa}} \rho_1(\sigma^o_1) \sum_{\sigma_1^1\in \tree{1}{\kappa-1}}\hdots\sum_{\sigma_1^\kappa\in \tree{1}{\kappa-1}}\left[\prod_{v\in N_o(\sigma^0)}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\right]
+        \left[\prod_{v\in N_o(\sigma^o)}\widehat{P}_{1, \rho_1}(\sigma^v_0, \sigma^o_0)(\sigma^v_1)\right]                                                                                                                                                                                                                                           \\
+          & \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^{v'}_1 = \tau_1, \sigma^o(o\backslash v')_1 = \tau_1'}                                                                                                                                                                                                                                \\
+        = & \sum_{\sigma_1^o\in \tree{1}{\kappa}} \rho_1(\sigma^o_1)  \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\sum_{\sigma_1^1\in \tree{1}{\kappa-1}}\hdots\sum_{\sigma_1^\kappa\in \tree{1}{\kappa-1}}\left[\prod_{v\in N_o(\sigma^0)}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\widehat{P}_{1, \rho_1}(\sigma^v_0, \sigma^o_0)(\sigma^v_1)\right] \\
+          & \one{\sigma^{v'}_1 = \tau_1, \sigma^o(o\backslash v')_1 = \tau_1'}                                                                                                                                                                                                                                                                       \\
+        \intertext{Using distribu)tive law}
+        = & \sum_{\sigma_1^o\in \tree{1}{\kappa}} \rho_1(\sigma^o_1)  \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\left[\prod_{v\in N_o(\sigma^0)}\sum_{\sigma_1^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\widehat{P}_{1, \rho_1}(\sigma^v_0, \sigma^o_0)(\sigma^v_1)\right]                                                   \\
+          & \one{\sigma^{v'}_1 = \tau_1, \sigma^o(o\backslash v')_1 = \tau_1'}                                                                                                                                                                                                                                                                       \\
+        \intertext{Extracting the $v=v'$ term from the product, replace $\sigma^{v'}_1$ with $\tau_1$ by reducing the sum on the indicator function:}
+        = & \sum_{\sigma_1^o\in \tree{1}{\kappa}} \rho_1(\sigma^o_1)\widehat{P}_{1, \rho_1}(\tau_0, \sigma^o_0)(\tau_1) \left[\frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^o(o\backslash v')_1 = \tau_1'}\one{\sigma^o(v'\backslash o)_0 = \tau_0}\right]                                                                                      \\
+          & \left[\prod_{v \neq v'}\sum_{\sigma_1^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\widehat{P}_{1, \rho_1}(\sigma^o(v\backslash o)_0, \sigma^o_0)(\sigma^v_1)\right]                                                                                                                                              \\
     \end{align*}
+    Now, notice that
+    \begin{equation*}
+        \sum_{\sigma_1^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\widehat{P}_{1, \rho_1}(\sigma^o(v\backslash o)_0, \sigma^o_0)(\sigma^v_1)
+        = \sum_{\sigma_1^v\in \tree{1}{\kappa-1}}\widehat{P}_{1, \rho_1}(\sigma^o(v\backslash o)_0, \sigma^o_0)(\sigma^v_1) = 1
+    \end{equation*}
+    This is because by definition $\widehat{P}_{1, \rho_1}(x, x')(\tau)$ is already zero if $\tau_0 \neq x$, and the distribution is normalized.
+
+    We then have
+    \begin{equation*}
+        \one{\sigma^o(o\backslash v')_1 = \tau_1'}\one{\sigma^o(v'\backslash o)_0 = \tau_0} = \one{\sigma^o_1 = \tau_1' \oplus \tau_0}\one{\sigma^o(v'\backslash o)_0 = \tau_0}
+    \end{equation*}
+    Since the indicator function is non-zero if and only if $\sigma^o_1 = \tau_1' \oplus \tau_0$ and vertex $v'$ has mark $\tau_0$.
+    This means
+    \begin{equation*}
+        \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^o(o\backslash v')_1 = \tau_1'}\one{\sigma^o(v'\backslash o)_0 = \tau_0} = \one{\sigma^o_1 = \tau_1' \oplus \tau_0}\frac1\kappa E_1(\tau_0, \tau_0')(\sigma^0_1)
+    \end{equation*}
+    This gives
+    \begin{align*}
+        \pi_{\rho_2^*}(\tau_1, \tau'_1) & = \rho_1(\tau_1' \oplus \tau_0)\widehat{P}_{1, \rho_1}(\tau_0, \tau_0')(\tau_1)\frac1\kappa E_1(\tau_0, \tau_0')(\tau_1' \oplus \tau_0) \\
+                                        & = \pi_{\rho_1}(\tau_0, \tau_0')\widehat{P}_{1, \rho_1}(\tau_0', \tau)(\tau_1')\widehat{P}_{1, \rho_1}(\tau_0, \tau_0')(\tau_1)
+    \end{align*}
+
 \end{proof}
 
+With a similar method, we can simplify $\pi_{\widehat{\rho}_2}$ as well.
+\begin{proposition}
+    Given $\rho_2\in\mathcal{P}_u(\tree{2}{\kappa})$, we have
+    \begin{enumerate}
+        \item For all $\tau\in\tree{2}{\kappa}$
+              \begin{equation}
+                  \widehat{\rho}_2(\tau) = \rho_1(\tau_1)\prod_{v\in N_o(\tau)}\frac{\pi_{\rho_2}(\tau(v\backslash o)_1, \tau(o\backslash v)_1)}{\pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)},
+              \end{equation}
+        \item and
+              \begin{equation}
+                  \pi_{\widehat{\rho}_2} = \pi_{\rho_2}
+              \end{equation}
+    \end{enumerate}
+\end{proposition}
 
+\begin{proof}
+    The first result can be obtained by
+    \begin{equation*}
+        \pi_{\rho_2^*}(\tau(v\backslash o)_1, \tau(o\backslash v)_1) = \pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)
+        \widehat{P}_{1,\rho_1}(\tau(v\backslash o)_0, \tau_0)(\tau(v\backslash o)_1)
+        \widehat{P}_{1,\rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)
+    \end{equation*}
+
+    Fix $\tau, \tau'\in\tree{1}{\kappa-1}$,
+    \begin{align*}
+          & \pi_{\widehat{\rho}_2}(\tau, \tau')                                                                                                                                                                                                                                               \\
+        = & \sum_{\sigma^0\in\tree{1}{\kappa}}\frac1\kappa\sum_{v\in N_o(\sigma^0)}\rho_1(\sigma^0)\sum_{\sigma^1, \cdots, \sigma^\kappa\in \tree{1}{\kappa-1}}\one{\sigma^v=\tau, \sigma^0(o\backslash v)_1=\tau'} \prod_{v'\in N_o(\sigma^0)}\one{\sigma^{v'}_0=\sigma^0(v'\backslash o)_o} \\
+          & \frac{\pi_{\rho_2}(\sigma^{v'}, \sigma^0(o\backslash v')_1)}{\pi_{\rho_1}(\sigma^0(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\sigma^0_0, \sigma^{v'}_0)(\sigma^{v'})},
+        \intertext{Extract the $v'=v$ term in the product and simplifying,}
+          & = \pi_{\rho_2}(\tau, \tau')\frac{E_1(\tau_0, \tau_0')(\tau'\oplus \tau_0)\rho_1(\tau'\oplus\tau_0)}{\kappa\pi_{\rho_1}(\tau_0, \tau_0'
+        )\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)(\tau_0')}                                                                                                                                                                                                                                   \\
+          & \frac1\kappa\sum_{v'\in N_o(\tau'\oplus \tau_0)}
+        \prod_{v\neq v'}\left[\frac{\sum_{\sigma^v}\one{\sigma^v_0=\sigma^0(v\backslash o)_0}\pi_{\rho_2}(\sigma^{v}_0, (\tau'\oplus \tau_0)(o\backslash v)_1)}{\pi_{\rho_1}((\tau'\oplus \tau_0)(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)((\tau'\oplus \tau_0)(v'\backslash o)_1)}\right]
+    \end{align*}
+    Since
+    \begin{equation*}
+        \widehat{P}_{1, \rho_1}(\tau_0', \tau_0)(\tau_0') =
+        \frac{E_1(\tau_0, \tau_0')(\tau'\oplus \tau_0)\rho_1(\tau'\oplus\tau_0)}{\kappa\pi_{\rho_1}(\tau_0, \tau_0')}
+    \end{equation*}
+    and
+    \begin{align*}
+        \sum_{\sigma^v}\one{\sigma^v_0=\sigma^0(v\backslash o)_0}\pi_{\rho_2}(\sigma^{v}, (\tau'\oplus \tau_0)(o\backslash v)_1)
+        = & \frac1\kappa n_{(\tau'\oplus \tau_0)(v\backslash o)_0}(\tau'\oplus \tau_0)\rho_1(\tau'\oplus \tau_0)                                          \\
+        = & \pi_{\rho_1}((\tau'\oplus \tau_0)(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)((\tau'\oplus \tau_0)(v'\backslash o)_1),
+    \end{align*}
+    everything cancels, and
+    \begin{equation*}
+        \pi_{\widehat{\rho}_2}(\tau, \tau') = \pi_{\rho_2}(\tau, \tau').
+    \end{equation*}
+\end{proof}
 
 \end{document}
