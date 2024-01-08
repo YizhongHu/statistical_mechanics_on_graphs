@@ -33,7 +33,10 @@
 \newcommand{\one}[1]{\mathbf{1}\{#1\}}
 \newcommand{\tree}[2]{\mathcal{T}_{*, #1}^{#2}[\mathcal{X}]}
 \newcommand{\measure}[2]{\mathcal{P}_u(\mathcal{T}_{*, #1}^{#2}[\mathcal{X}])}
-\newcommand{\TB}{{ \boldsymbol{\scalebox{1.2}[1.2]{$\tau$}}}}
+\newcommand{\TB}{{ \boldsymbol\tau}}
+\newcommand{\BS}{\backslash}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wc}[1]{\widecheck{#1}}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -3341,13 +3344,13 @@ For convenience, we will denote $n_x(\tau) = E_h(x, \tau_0)(\tau)$, the number o
 We see that we can define $\rho_1$ in terms of $\pi_{\rho_2}$:
 \begin{proposition}
     Given $\rho_2\in \mathcal{P}_u(\mathcal{T}_{*, 2}^\kappa[\mathcal{X}])$, for all $\tau\in \mathcal{T}_{*, 1}^{\kappa-1}[\mathcal{X}]$, $x\in \mathcal{X}$,
-    \begin{equation*}
+    \begin{equation}\label{Eq.NNNI-rho1-in-pi-rho2}
         \sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau',\tau)\one{\tau_0'=x} = \frac1\kappa E_1(x, \tau_0)(\tau\oplus x) \rho_1(\tau\oplus x)
-    \end{equation*}
+    \end{equation}
     and for all $\tau\in \mathcal{T}_{*, 1}^{\kappa}[\mathcal{X}]$,
-    \begin{equation*}
+    \begin{equation}\label{Eq.NNNI-rho1-in-pi-rho2-2}
         \rho_1(\tau) = \sum_{v\in N_o(\tau)}\frac1{n_{\tau(v\backslash o)_0}(\tau)}\sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau(o\backslash v), \tau')\one{(\tau')_0=\tau(v\backslash o)_0}
-    \end{equation*}
+    \end{equation}
 \end{proposition}
 
 \begin{proof}
@@ -3394,7 +3397,7 @@ Additionally,
 
 \begin{proposition}
     Given $\rho_1 \in \mathcal{P}_u(\tree{1}{\kappa})$, we have, for all $\tau_1, \tau_1' \in \tree{1}{\kappa-1}$
-    \begin{equation}
+    \begin{equation}\label{Eq.NNNI-pi-rho2-star}
         \pi_{\rho_2^*}(\tau_1, \tau_1') = \pi_{\rho_1}(\tau_0, \tau_0')\widehat{P}_{1, \rho_1}(\tau_0', \tau)(\tau_1')\widehat{P}_{1, \rho_1}(\tau_0, \tau_0')(\tau_1)
     \end{equation}
 \end{proposition}
@@ -3443,26 +3446,26 @@ Additionally,
 
 With a similar method, we can simplify $\pi_{\widehat{\rho}_2}$ as well.
 \begin{proposition}
-    Given $\rho_2\in\mathcal{P}_u(\tree{2}{\kappa})$, we have
-    \begin{enumerate}
-        \item For all $\tau\in\tree{2}{\kappa}$
-              \begin{equation}
-                  \widehat{\rho}_2(\tau) = \rho_1(\tau_1)\prod_{v\in N_o(\tau)}\frac{\pi_{\rho_2}(\tau(v\backslash o)_1, \tau(o\backslash v)_1)}{\pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)},
-              \end{equation}
-        \item and
-              \begin{equation}
-                  \pi_{\widehat{\rho}_2} = \pi_{\rho_2}
-              \end{equation}
-    \end{enumerate}
+    Given $\rho_2\in\mathcal{P}_u(\tree{2}{\kappa})$, we have $\pi_{\widehat{\rho}_2} = \pi_{\rho_2}$
+    % \begin{enumerate}
+    %     \item For all $\tau\in\tree{2}{\kappa}$
+    %           \begin{equation}
+    %               \widehat{\rho}_2(\tau) = \rho_1(\tau_1)\prod_{v\in N_o(\tau)}\frac{\pi_{\rho_2}(\tau(v\backslash o)_1, \tau(o\backslash v)_1)}{\pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)},
+    %           \end{equation}
+    %     \item and
+    %           \begin{equation}
+    %               \pi_{\widehat{\rho}_2} = \pi_{\rho_2}
+    %           \end{equation}
+    % \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-    The first result can be obtained by
-    \begin{equation*}
-        \pi_{\rho_2^*}(\tau(v\backslash o)_1, \tau(o\backslash v)_1) = \pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)
-        \widehat{P}_{1,\rho_1}(\tau(v\backslash o)_0, \tau_0)(\tau(v\backslash o)_1)
-        \widehat{P}_{1,\rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)
-    \end{equation*}
+    % The first result can be obtained by
+    % \begin{equation*}
+    %     \pi_{\rho_2^*}(\tau(v\backslash o)_1, \tau(o\backslash v)_1) = \pi_{\rho_1}(\tau(v\backslash o)_0, \tau_0)
+    %     \widehat{P}_{1,\rho_1}(\tau(v\backslash o)_0, \tau_0)(\tau(v\backslash o)_1)
+    %     \widehat{P}_{1,\rho_1}(\tau_0, \tau(v\backslash o)_0)(\tau(o\backslash v)_1)
+    % \end{equation*}
 
     Fix $\tau, \tau'\in\tree{1}{\kappa-1}$,
     \begin{align*}
@@ -3490,6 +3493,33 @@ With a similar method, we can simplify $\pi_{\widehat{\rho}_2}$ as well.
     \begin{equation*}
         \pi_{\widehat{\rho}_2}(\tau, \tau') = \pi_{\rho_2}(\tau, \tau').
     \end{equation*}
+\end{proof}
+
+\begin{lemma}
+    Given some $\pi_2 \in \mathcal{P}_s(\tree{1}{\kappa-1}, \tree{1}{\kappa-1})$, derive $\rho_1$ (\ref{Eq.NNNI-rho1-in-pi-rho2-2}) and thus $\pi_{\rho_2^*}$ (\ref{Eq.NNNI-pi-rho2-star}), we have
+    \begin{equation}
+        \inf_{\substack{\rho_2\in\measure{2}{\kappa} \\ \pi_{\rho_2} = \pi_2}} H(\rho_2 \| \rho_2^*) = \kappa H(\pi_2\| \pi_{\rho_2^*}),
+    \end{equation}
+    and the optimizer is $\wh{\rho_2}$.
+\end{lemma}
+
+\begin{proof}
+    Similar to the XY-model, we consider the following quantity for some admissible $\rho_2$ on $\tree{2}{\kappa}$:
+    \begin{align*}
+        \sum_{\TB \in \tree{2}{\kappa}}\rho_2(\TB)\log \frac{d\wh{\rho_2}}{d\rho_2^*}(\TB)
+        = & \sum_{\TB \in \tree{2}{\kappa}}\rho_2(\TB)\sum_{v\in N_o(\TB)}\log \frac{d\pi_{\rho_2}}{d\pi_{\rho_2^*}}(\TB(v\BS o)_1, \TB(o\BS v)_1)
+        \intertext{Congregating all the vertices $v$ such that $\TB(v\BS o)_1$ and $\TB(o\BS v)_1$ are identical, we simply count the number of pairs of trees that match each side of the cut:}
+        = & \sum_{\TB \in \tree{2}{\kappa}}\rho_2(\TB)\sum_{\tau, \tau'\in\tree{1}{\kappa-1}}E_2(\tau,\tau')(\TB)\log \frac{d\pi_2}{d\pi_{\rho_2^*}}(\tau, \tau') \\
+        = & \sum_{\tau, \tau'\in\tree{1}{\kappa-1}}\kappa\pi_{\rho_2}(\tau, \tau')\log \frac{d\pi_2}{d\pi_{\rho_2^*}}(\tau, \tau')                                \\
+        = & \kappa H(\pi_{\rho_2} \| \pi_{\rho_2^*})
+    \end{align*}
+    On the other hand,
+    \begin{equation*}
+        H(\wh{\rho_2}\| \rho_2^*) = \sum_{\TB \in \tree{2}{\kappa}}\wh{\rho_2}(\TB)\log \frac{d\wh{\rho_2}}{d\rho_2^*}(\TB) = \kappa H(\pi_{\rho_2} \| \pi_{\rho_2^*})
+    \end{equation*}
+    By $H(\rho_2\|\rho_2^*) \leq \sum_{\TB}\rho_2(\TB)\log \frac{d\wh{\rho_2}}{d\rho_2^*}(\TB)$, we can hence conclude that $H(\rho_2\|\rho_2^*) \leq H(\wh{\rho_2}\| \rho_2^*)$ for all admissible measures $\rho_2$ on $\tree{2}{\kappa}$.
+
+    To show that this is the infimum, notice that $\pi_{\wh{\rho_2}} = \pi_{\rho_2}$, and, thus belongs to the set of measures the infimum is taken over.
 \end{proof}
 
 \end{document}
