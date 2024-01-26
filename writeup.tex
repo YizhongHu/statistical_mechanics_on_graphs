@@ -37,6 +37,15 @@
 \newcommand{\BS}{\backslash}
 \newcommand{\wh}[1]{\widehat{#1}}
 \newcommand{\wc}[1]{\widecheck{#1}}
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\UBX}{\underbar{\textbf{\normalfont x}}}
+\newcommand{\BI}{\bar{i}}
+\newcommand{\BJ}{\bar{j}}
+\newcommand{\PI}{\partial i}
+\newcommand{\PIN}{\partial^2 i}
+\newcommand{\PJ}{\partial j}
+\newcommand{\BIJ}{\overline{ij}}
+\newcommand{\RA}{\rightarrow}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -3312,6 +3321,7 @@ Although $\pi^*$ is unique, the same thing cannot be said for $h$\footnote{I thi
 
 \section{Next Nearest Neighbor Ising (NNNI) Model}
 
+\subsection{Conditional Independence}
 From the problem statement, we have the following definitions:
 \begin{definition}
     For all $\TB\in \mathcal{T}_{*, h}^\kappa[\mathcal{X}]$, $\tau, \tau'\in \mathcal{T}_{*, h-1}^{\kappa-1}[\mathcal{X}]$,
@@ -3521,5 +3531,92 @@ With a similar method, we can simplify $\pi_{\widehat{\rho}_2}$ as well.
 
     To show that this is the infimum, notice that $\pi_{\wh{\rho_2}} = \pi_{\rho_2}$, and, thus belongs to the set of measures the infimum is taken over.
 \end{proof}
+
+\newpage
+
+\subsection{Bethe prediction}
+
+To give more insight into the structure of the solution, we need to first obtain the Bethe prediction.
+
+Consider a forest $G = (V, E)$ with vertex marks $\UBX\equiv (x_i\in\XX\ |\ i\in V)$, and a specification \(\underbar{$\psi$}\equiv(\psi^1, \psi^2)\). $\psi^1_{ij}$ describes the interaction between neighbors $i$ and $j$ and $\psi^2_{ik}$ describes interaction between next nearest neighbors $i$ and $k$. In NNNI, we have, for all $\UBX\in \XX^{|V|}$ and $(i, j)\in E$
+\begin{equation}\label{Eq.NNNI-BP-Psi1}
+    \psi^1_{ij}(x_i, x_j) = \lambda x_ix_j,
+\end{equation}
+and for all $(i, j), (j, k)\in E$, $i\neq k$
+\begin{equation}\label{Eq.NNNI-BP-Psi2}
+    \psi^2_{ik}(x_i, x_k) = - x_ix_k.
+\end{equation}
+$i\sim k$ denotes a path between $i$ and $k$, and $d_G(i\sim k)$ the distance of the path. Since we are only working with forrest, this path
+should be unique.
+
+With \(\underbar{$psi$}\), define the Gibb's measure (pmf):
+\begin{equation}\label{Eq.NNNI-BP-Gibbs}
+    \mu(\UBX) \equiv \frac{1}{z}\prod_{(i,j)\in E} \psi^1_{ij}(x_i, x_j)\prod_{\substack{i\sim k\in G\\d_G(i\sim k)=2}} \psi^2_{ik}(x_i, x_k),
+\end{equation}
+with $z$ normalizing factor guaranteeing that $\sum_{\UBX}\mu(\UBX) = 1$.
+
+Cavity measures can be defined by removing an edge or a vertex:
+\begin{align}
+    \mu^{(ij)}(\UBX)         & \equiv \frac{1}{z_{ij}}\prod_{(k,\ell)\in E\BS (i,j)} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G \\d_G(k\sim \ell)=2\\(i,j)\notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell) \label{Eq.NNNI-BP-CE}\\
+    \mu^{(i)}(\UBX_{V\BS i}) & \equiv \frac{1}{z_{i}}\prod_{\substack{(k,\ell)\in E\BS (i,j)                                                     \\i\notin (k, l)}} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G\\d_G(k\sim \ell)=2\\i \notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell), \label{Eq.NNNI-BP-CV}
+\end{align}
+with $z_{ij}$ and $z_i$ guaranteeing $\sum_{\UBX}\mu^{(ij)}(\UBX) = 1$ and $\sum_{\UBX_{V\BS i}}\mu^{(i)}(\UBX_{V\BS i}) = 1$ respectively.
+
+Additionally, for all $U\subseteq V$, we have the marginals $\mu_U(\UBX_U)$, $\mu^{(i)}_U(\UBX_U)$, and $\mu^{(ij)}_U(\UBX_U)$ of $\mu(\UBX)$, $\mu^{(i)}(\UBX)$, and $\mu^{(ij)}(\UBX)$ respectively.
+
+Some subsets that are important to us. For some $i, j\in V$, $\partial i = \{j\ |\ (i,j)\in E\}$ denotes the set of neighbors of $i$, and $\bar{i} = i\cup \partial i$ denotes a star around $i$. $\partial^2 i = \{k\ |\ d_G(i\sim k) = 2\}$ denotes the second neighbors of $i$. $\widebar{ij} = \bar i\cup \bar j$ denotes the union of stars at $i$ and $j$.
+
+\begin{proposition}
+    For a graph $G = (V, E)$, $i, j \in V$ such that $(i, j)\in E$,
+    \begin{equation}\label{Eq.NNNI-BP-factor}
+        \mu^{(ij)}_{\BIJ}(\UBX_{\BIJ}) \simeq \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{\PIN\BS \PJ}}\mu^{(i)}_{\PI\cup\PIN}(\UBX_{\pi\cup\PIN})\prod_{\ell\in\partial^2 i\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    \begin{align*}
+        \mu^{(ij)}_{\BIJ}(\UBX_{\BIJ}) & \simeq \sum_{\UBX_{V\BS\BIJ}} \prod_{(k,\ell)\in E\BS (i,j)} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G \\d_G(k\sim \ell)=2\\(i,j)\notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell)
+        \intertext{Factor out interactions on $\BI$, the remaining interactions is equivalent to that with $i$ removed}
+                                       & \simeq \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j                                    \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{V\BS\BIJ}} \mu^{(i)}(\UBX_{V\BS i})\prod_{\ell\in\PIN\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
+        \intertext{Collapse the marginals, and get}
+                                       & = \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j                                         \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{\PIN\BS \PJ}}\mu^{(i)}_{\PI\cup\PIN}(\UBX_{\pi\cup\PIN})\prod_{\ell\in\partial^2 i\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
+    \end{align*}
+\end{proof}
+
+Importantly, for an edge $(i, j)$, the message being passed from $i$ to $j$ is
+\begin{equation}\label{Eq.NNNI-BP-MSG}
+    \nu^*_{i\RA j}(\UBX_{\BI\BS j}) = \mu^{(ij)}_{\BI\BS j}(\UBX_{\BI\BS j})
+\end{equation}
+
+\begin{proposition}
+    For a forest $G = (V, E)$, $i, j \in V$ such that $(i, j)\in E$,
+    \begin{equation}\label{Eq.NNNI-BP-IE}
+        \mu^{(ij)}_{\BIJ}(\UBX_{\BIJ})              = \nu^*_{i\RA j}(\UBX_{\BI\BS j})\nu^*_{j\RA i}(\UBX_{\BJ\BS i}).
+    \end{equation}
+    For all $i\in V$,
+    \begin{equation}\label{Eq.NNNI-BP-IV}
+        \mu^{(i)}_{\PI\cup\PIN}(\UBX_{\PI\cup\PIN}) = \prod_{j\in\PI}\nu^*_{j\RA i}(\UBX_{\BJ\BS i}).
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    Denote the connected component containing $i$ as $\sim i \equiv \{j\ |\ i\sim j\subseteq G\}$. If $i$ and $j$ are disconnected, we have
+    $\mu_{\sim i\cup \sim j}(\UBX_{\sim i\cup \sim j}) = \mu_{\sim i}(\UBX_{\sim i})\mu_{\sim j}(\UBX_{\sim j})$. This immediately implies (\ref{Eq.NNNI-BP-IE}), which deals with the case where the only edge between $i$ and $j$ is removed ($G$ is a tree). Similar for (\ref{Eq.NNNI-BP-IV}).
+\end{proof}
+
+Combining (\ref{Eq.NNNI-BP-factor}), (\ref{Eq.NNNI-BP-IE}), and (\ref{Eq.NNNI-BP-IV}) gives the Bethe functional $\text{BP}: \mathcal{P}_u(\tree{1}{\kappa-1})\mapsto \mathcal{P}_u(\tree{1}{\kappa-1})$:
+\begin{equation}
+    (\text{BP}\nu)_{i\RA j}(\UBX_{\BI\BS j}) \equiv \frac{1}{z_{i\RA j}} \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell) \prod_{k\in\PI\BS j}\sum_{\UBX_{\partial k\BS i}}\nu_{k\RA i}(\UBX_{\partial k\BS i})\prod_{\ell\in\partial k\BS i} \psi^2_{i\ell}(x_i, x_\ell)
+\end{equation}
+with $\text{BP}\nu^* = \nu^*$ and $z_{i\RA j}$ guaranteeing that $\sum_{\UBX_{\PI\BS j}}\nu_{i\RA j}(\UBX_{\PI\BS j}) = 1$.
+
+To relate to the optimization problem, $\mu_{\BIJ}$ is hypothesized to be equivalent to $\pi_{\rho_2}$, and the expression is
+\begin{equation}
+    \mu_{\BIJ}(\UBX_{\BIJ}) = \psi^1_{ij}(x_i, x_j)\prod_{k\in\PJ\BS i} \psi^2_{ik}(x_i, x_k)\prod_{k\in\PI\BS j} \psi^2_{jk}(x_j, x_k) \nu^*_{i\RA j}(\UBX_{\BI\BS j})\nu^*_{j\RA i}(\UBX_{\BJ\BS i}).
+\end{equation}
+$\mu_{\BI\cup\PIN}$ is hypothesized to be equivalent to $\rho_2$, and the expression is
+\begin{equation}
+    \mu_{\BI\cup\PIN}(\UBX_{\BI\cup\PIN}) = \prod_{j\in\PI}\psi^1_{ij}(x_i, x_j)\prod_{\substack{k, \ell\in\BI\cup\PIN\\d_G(k\sim l)=2}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{j\in \PI}\nu^*_{j\RA i}(\UBX_{\PJ\BS i})
+\end{equation}
 
 \end{document}
