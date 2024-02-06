@@ -37,14 +37,14 @@
 \newcommand{\BS}{\backslash}
 \newcommand{\wh}[1]{\widehat{#1}}
 \newcommand{\wc}[1]{\widecheck{#1}}
-\newcommand{\XX}{\mathcal{X}}
+\newcommand{\XX}{{\mathcal{X}}}
 \newcommand{\UBX}{\underbar{\textbf{\normalfont x}}}
-\newcommand{\BI}{\bar{i}}
-\newcommand{\BJ}{\bar{j}}
-\newcommand{\PI}{\partial i}
-\newcommand{\PIN}{\partial^2 i}
-\newcommand{\PJ}{\partial j}
-\newcommand{\BIJ}{\overline{ij}}
+\newcommand{\BI}{{\bar{i}}}
+\newcommand{\BJ}{{\bar{j}}}
+\newcommand{\PI}{{\partial i}}
+\newcommand{\PIN}{{\partial^2 i}}
+\newcommand{\PJ}{{\partial j}}
+\newcommand{\BIJ}{{\overline{ij}}}
 \newcommand{\RA}{\rightarrow}
 
 \numberwithin{equation}{section}
@@ -3605,10 +3605,10 @@ Importantly, for an edge $(i, j)$, the message being passed from $i$ to $j$ is
 \end{proof}
 
 Combining (\ref{Eq.NNNI-BP-factor}), (\ref{Eq.NNNI-BP-IE}), and (\ref{Eq.NNNI-BP-IV}) gives the Bethe functional $\text{BP}: \mathcal{P}_u(\tree{1}{\kappa-1})\mapsto \mathcal{P}_u(\tree{1}{\kappa-1})$:
-\begin{equation}
+\begin{equation}\label{Eq.NNNI-BP-F1}
     (\text{BP}\nu)_{i\RA j}(\UBX_{\BI\BS j}) \equiv \frac{1}{z_{i\RA j}} \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell) \prod_{k\in\PI\BS j}\sum_{\UBX_{\partial k\BS i}}\nu_{k\RA i}(\UBX_{\partial k\BS i})\prod_{\ell\in\partial k\BS i} \psi^2_{i\ell}(x_i, x_\ell)
 \end{equation}
-with $\text{BP}\nu^* = \nu^*$ and $z_{i\RA j}$ guaranteeing that $\sum_{\UBX_{\PI\BS j}}\nu_{i\RA j}(\UBX_{\PI\BS j}) = 1$.
+with $\text{BP}\nu^* = \nu^*$ and $z_{i\RA j}$ guaranteeing that $\sum_{\UBX_{\PI\BS j}}\nu^*_{i\RA j}(\UBX_{\PI\BS j}) = 1$.
 
 To relate to the optimization problem, $\mu_{\BIJ}$ is hypothesized to be equivalent to $\pi_{\rho_2}$, and the expression is
 \begin{equation}
@@ -3618,5 +3618,70 @@ $\mu_{\BI\cup\PIN}$ is hypothesized to be equivalent to $\rho_2$, and the expres
 \begin{equation}
     \mu_{\BI\cup\PIN}(\UBX_{\BI\cup\PIN}) = \prod_{j\in\PI}\psi^1_{ij}(x_i, x_j)\prod_{\substack{k, \ell\in\BI\cup\PIN\\d_G(k\sim l)=2}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{j\in \PI}\nu^*_{j\RA i}(\UBX_{\PJ\BS i})
 \end{equation}
+
+The distribution $\nu^*_{j\RA i}$ is a distribution on a $(\kappa-1)$-star, which is believed to be not granular enough. It is known that the different
+leaves are equivalent in some sense, which means that we can describe $\nu^*_{j\RA i}$ by just the distribution on one of its edges. For this, however,
+we will introduce some new notation: for a tree $G=(V, E)$, and an edge $(i, j)\in E$, the tree with all neighbors of $j$ removed except $i$ is 
+notated $G(i\RA j)$. The corresponding Gibb's distribution of such a graph is notated
+\begin{equation*}
+    \mu^{G(i\RA j)}(\UBX_{G(i\RA j)})
+\end{equation*}
+
+Our new message, is defined as the following:
+\begin{equation}
+    \wh{\nu}^*_{i\RA j}(x_i, x_j) \equiv \mu^{G(i\RA j)}_{ij}(x_i, x_j).
+\end{equation}
+
+To obtain the more granular belief propagation, we use the following guesses for an iterative formula:
+\begin{align}
+    \nu^*_{i\RA j}(\UBX_{\BI\BS j}) & = \frac{1}{z'_{i\RA j}}\prod_{k\in\PI\BS j}\wh{\nu}^*_{k\RA i}(x_k, x_i)\prod_{\substack{k,\ell\in\PI                                                                  \\k\neq\ell}}\psi^2_{k,\ell}(x_k, x_\ell) \label{Eq.NNNI-BP-HD1}\\
+    \wh{\nu}^*_{i\RA j}(x_i, x_j)   & = \frac{1}{\wh{z}_{i\RA j}}\psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\nu^*_{i\RA j}(\UBX_{\BI\BS j})\prod_{k\in\PI\BS j}\psi^2_{jk}(x_j, x_k). \label{Eq.NNNI-BP-HD2}
+\end{align}
+The marginals can be proven to be
+\begin{equation}
+    \mu_{\BI}(\UBX_\BI)\simeq \prod_{j\in\PI}\wh{\nu}^*_{j\RA i}(x_j, x_i)\prod_{k,\ell\in\PI}\psi^2_{k\ell}(x_k, x_\ell).
+\end{equation}
+
+Solving for $\nu^*_{i\RA j}$, we can recover the same functional $\text{BP}$ as the above. If we instead solve for
+$\wh{\nu}^*_{i\RA j}(x_i, x_j)$, we can obtain a new iterative formula:
+\begin{equation}
+    \wh{\nu}^*_{i\RA j}(x_i, x_j) \simeq \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\wh{\nu}^*_{k\RA i}(x_k, x_i).
+\end{equation}
+
+\begin{theorem}
+    For a tree $G=(V, E)$ with edge $(i, j)\in E$, for any initial condition $\wh{\nu}^{(0)}_{i\RA j}$, the iterative formula
+    \begin{equation*}
+        \wh{\nu}^{(t+1)}_{i\RA j}(x_i, x_j) \simeq \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\wh{\nu}^{(t)}_{k\RA i}(x_k, x_i)
+    \end{equation*}
+    \begin{enumerate}
+        \item is stationary after $t^*$ steps, where $t^*$ is the depth of $G(i\RA j)$ rooted at $j$,
+        \item and the stationary point $\wh{\nu}^*_{i\RA j}\equiv\wh{\nu}^{(t^*)}_{i\RA j} = \mu^{G(i\RA j)}_{ij}(x_i, x_j)$.
+    \end{enumerate}
+\end{theorem}
+
+Note that for this to converge for all edges $(i, j)\in E$, the most number of steps taken is equal to the diameter of $G$, where the message is
+passed between the leaves furthest away from each other.
+
+\begin{proof}
+    An iterative formula calls for the use of induction. The base case is if $G$ only has one edge $(i, j)$. Indeed,
+    \begin{equation*}
+        \wh{\nu}^{(1)}_{i\RA j}(x_i, x_j) \simeq \psi^1_{ij}(x_i, x_j)
+    \end{equation*}
+    is stationary after $1$ step, since $\PI\BS j$ is empty.
+
+    For the inductive case, we factor out all interactions involving $i$ and $j$ on $G(i\RA j)$. Assume that $G(i\RA j)$ has step
+    \begin{align*}
+               & \wh{\nu}^*_{i\RA j}(x_i, x_j)                                                                                                                                                                                                                                           \\
+        \simeq & \sum_{\UBX_{G(i\RA j)\BS ij}}\prod_{k\in\PI}\psi^1_{ik}(x_i, x_k)\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^2_{jk}(x_j, x_k)\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell)                     \\
+        \intertext{Rearranging, separating the sum, }
+        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^1_{ik}(x_i, x_k)\sum_{\UBX_{G(k\BS i)\BS k}}\left[\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell) \right] \\
+        \intertext{Notice that things in the second sum is just $\wh{\nu}^*_{k\RA i}$,}
+        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\wh{\nu}^*_{k\RA i}(x_k, x_i)
+    \end{align*}
+    By the inductive hypothesis, for all $k\in\PI$, $\wh{\nu}^{(t)}_{k\RA i}$ is stationary after at most $t^*-1$ steps, since $G(k\RA i)$ is at most
+    $t^*-1$ deep. This implies that $\wh{\nu}^{(t)}_{i\RA j}$ is stationary for all $t\geq t^*$.
+\end{proof}
+
+The same theorem can be proven for $\nu_{i\RA j}$, perhaps more simply. Applying the same strategy yields (\ref{Eq.NNNI-BP-F1}).
 
 \end{document}
