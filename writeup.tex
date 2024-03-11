@@ -30,9 +30,6 @@
 \newtheorem{definition}[theorem]{Definition}
 
 
-\newcommand{\one}[1]{\mathbf{1}\{#1\}}
-\newcommand{\tree}[2]{\mathcal{T}_{*, #1}^{#2}[\mathcal{X}]}
-\newcommand{\measure}[2]{\mathcal{P}_u(\mathcal{T}_{*, #1}^{#2}[\mathcal{X}])}
 \newcommand{\TB}{{ \boldsymbol\tau}}
 \newcommand{\BS}{\backslash}
 \newcommand{\wh}[1]{\widehat{#1}}
@@ -46,6 +43,45 @@
 \newcommand{\PJ}{{\partial j}}
 \newcommand{\BIJ}{{\overline{ij}}}
 \newcommand{\RA}{\rightarrow}
+\newcommand{\X}{{\mathcal{X}}}
+\newcommand{\PP}{{\mathcal{P}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\EE}{{\mathbb{E}}}
+\newcommand{\PO}{{\overline{\psi}}}
+\newcommand{\PU}{{\underline{\psi}}}
+\newcommand{\CF}{{h}}
+\newcommand{\CFo}{{h^*}}
+\newcommand{\AP}{{\Psi}}
+\newcommand{\VAL}{{V_{\PO, \PU}}}
+\newcommand{\LM}{{\mathcal{L}}}
+
+\newcommand{\one}[1]{\mathbf{1}\{#1\}}
+\newcommand{\tree}[2]{\TT_{*, #1}^{#2}[\X]}
+\newcommand{\measure}[2]{\PP_u(\TT_{*, #1}^{#2}[\X])}
+\newcommand{\mSl}{\PP_u(\TT_{*, 2}^{\kappa}[\X])}
+\newcommand{\mEl}{\PP_s(\TT_{*, 1}^{\kappa-1}[\X]^2)}
+\newcommand{\mSs}{\PP_u(\TT_{*, 1}^{\kappa}[\X])}
+\newcommand{\mMs}{\PP_u(\TT_{*, 1}^{\kappa-1}[\X], \X)}
+\newcommand{\mEs}{\PP_s(\X^2)}
+\newcommand{\CNT}{{\mathbf{n}}}
+\newcommand{\cnt}[1]{{n_{#1}}}
+\newcommand{\BP}{{\text{BP}}}
+
+\newcommand{\Sl}{{\rho_2}}
+\newcommand{\Slo}{{\rho_2^*}}
+\newcommand{\Slh}{{\widehat{\rho_2}}}
+\newcommand{\Slc}{{\widecheck{\rho_2}}}
+\newcommand{\El}{{\pi_\Sl}}
+\newcommand{\Elo}{{\pi_\Slo}}
+\newcommand{\Ss}{{\rho_1}}
+\newcommand{\SUs}{{\eta_1}}
+\newcommand{\Sm}{{\nu_{\Ss}}}
+\newcommand{\SUm}{{\nu_{\SUs}}}
+\newcommand{\Es}{{\pi_\Ss}}
+\newcommand{\EUs}{{\pi_\SUs}}
+\newcommand{\UE}{\widehat{P}_{1, \Ss}}
+
+\newcommand{\NB}[1]{{\mathcal{N}_o(#1)}}
 
 \numberwithin{equation}{section}
 \begin{document}
@@ -3621,7 +3657,7 @@ $\mu_{\BI\cup\PIN}$ is hypothesized to be equivalent to $\rho_2$, and the expres
 
 The distribution $\nu^*_{j\RA i}$ is a distribution on a $(\kappa-1)$-star, which is believed to be not granular enough. It is known that the different
 leaves are equivalent in some sense, which means that we can describe $\nu^*_{j\RA i}$ by just the distribution on one of its edges. For this, however,
-we will introduce some new notation: for a tree $G=(V, E)$, and an edge $(i, j)\in E$, the tree with all neighbors of $j$ removed except $i$ is 
+we will introduce some new notation: for a tree $G=(V, E)$, and an edge $(i, j)\in E$, the tree with all neighbors of $j$ removed except $i$ is
 notated $G(i\RA j)$. The corresponding Gibb's distribution of such a graph is notated
 \begin{equation*}
     \mu^{G(i\RA j)}(\UBX_{G(i\RA j)})
@@ -3671,17 +3707,584 @@ passed between the leaves furthest away from each other.
 
     For the inductive case, we factor out all interactions involving $i$ and $j$ on $G(i\RA j)$. Assume that $G(i\RA j)$ has step
     \begin{align*}
-               & \wh{\nu}^*_{i\RA j}(x_i, x_j)                                                                                                                                                                                                                                           \\
-        \simeq & \sum_{\UBX_{G(i\RA j)\BS ij}}\prod_{k\in\PI}\psi^1_{ik}(x_i, x_k)\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^2_{jk}(x_j, x_k)\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell)                     \\
+               & \wh{\nu}^*_{i\RA j}(x_i, x_j)                                                                  \\
+        \simeq & \sum_{\UBX_{G(i\RA j)\BS ij}}\prod_{k\in\PI}\psi^1_{ik}(x_i, x_k)\prod_{\substack{k,\ell\in\PI \\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^2_{jk}(x_j, x_k)\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell)                     \\
         \intertext{Rearranging, separating the sum, }
-        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^1_{ik}(x_i, x_k)\sum_{\UBX_{G(k\BS i)\BS k}}\left[\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell) \right] \\
+        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI                       \\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\psi^1_{ik}(x_i, x_k)\sum_{\UBX_{G(k\BS i)\BS k}}\left[\mu^{G(k\RA i)}(\UBX_{G(k\RA i)})\prod_{\ell\in\partial k\BS i}\psi^2_{i\ell}(x_i, x_\ell) \right] \\
         \intertext{Notice that things in the second sum is just $\wh{\nu}^*_{k\RA i}$,}
-        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI\\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\wh{\nu}^*_{k\RA i}(x_k, x_i)
+        \simeq & \psi^1_{ij}(x_i, x_j)\sum_{\UBX_{\PI\BS j}}\prod_{\substack{k,\ell\in\PI                       \\k\neq\ell}}\psi^2_{k\ell}(x_k, x_\ell)\prod_{k\in\PI\BS j}\wh{\nu}^*_{k\RA i}(x_k, x_i)
     \end{align*}
     By the inductive hypothesis, for all $k\in\PI$, $\wh{\nu}^{(t)}_{k\RA i}$ is stationary after at most $t^*-1$ steps, since $G(k\RA i)$ is at most
     $t^*-1$ deep. This implies that $\wh{\nu}^{(t)}_{i\RA j}$ is stationary for all $t\geq t^*$.
 \end{proof}
 
 The same theorem can be proven for $\nu_{i\RA j}$, perhaps more simply. Applying the same strategy yields (\ref{Eq.NNNI-BP-F1}).
+
+\newpage
+
+\subsection{Overview}
+
+In this part, we will outline the key steps in the proof. Our goal is to solve this optimization problem:
+\begin{multline*}
+    \AP(\PO, \PU) = \sup_{\Sl\in\mSl} \left\{\EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\frac12\sum_{v\in\NB{\tau}}\sum_{u\in\NB{\tau(v\BS o)_1}}\log\PU(\tau_o, \tau(u\BS v)_0)\right] \right.\\
+    \left.- \left[H(\Ss\|\SUs) - \frac{\kappa}{2} H(\Es\|\EUs) + H(\Sl\|\Slo) - \frac\kappa2 H(\El\|\Elo)\right]\right\}
+\end{multline*}
+To simplify the problem, rewrite the expected values in terms of $\Ss$ \footnote{Actually, I think a more general statement should be needed. We
+    used some properties of expected values in the proof of Prop. \ref{Prp.NNNI-CF} as well}:
+\begin{lemma}\label{Prp.NNNI-EV}
+    \begin{equation}
+        \begin{aligned}
+              & \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0) + \frac12\sum_{v\in\NB{\tau}}\sum_{u\in\NB{\tau(v\BS o)_1}}\log\PU(\tau_o, \tau(u\BS v)_0)\right] \\
+            % = & \EE_\Sm\left[\frac12\log\PO(\tau_o, x)+\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(x, \tau(v\BS o)_0)\right]       \\
+            = & \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right]
+        \end{aligned}
+    \end{equation}
+\end{lemma}
+Consider $\Sl$ and $\Ss$ as two variables with constraint $\Ss(\tau) = \sum_{\TB}\Sl(\TB)\one{\TB_1=\tau}$ for all $\tau\in\tree{1}{\kappa}$. We can collect all terms relating to $\Ss$ and optimizer over $\Sl$ separately, giving the optimization problem \footnote{Rereading this... maybe I should
+    have explained it a little more?}
+\begin{multline*}
+    \AP(\PO, \PU) = \sup_{\Ss\in\mSs} \left\{\EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right] \right.\\
+    \left.- \left[H(\Ss\|\SUs) - \frac{\kappa}{2} H(\Es\|\EUs)\right] - \inf_{\substack{\Sl\in\mSl\\\forall\tau\in\tree{1}{\kappa}, \Ss(\tau) = \sum_{\TB}\Sl(\TB)\one{\TB_1=\tau}}}\left[H(\Sl\|\Slo) - \frac\kappa2 H(\El\|\Elo)\right]\right\}
+\end{multline*}
+
+\subsubsection*{Optimal over unimodular measures on trees of depth 2}
+We will solve the inner optimization first. Again, we will separate it into two parts by considering $\Sl$ and $\El$ as two different variables:
+\begin{equation*}
+    \inf_{\substack{\Sl\in\mSl,\ \El\in\mEl}}\left[H(\Sl\|\Slo) - \frac\kappa2 H(\El\|\Elo)\right]
+\end{equation*}
+with constraints
+\begin{align*}
+    \text{(1)} & \El(\tau, \tau') = \EE_\Sl[E_2(\tau,\tau')(\TB)] & \forall \tau, \tau'\in\tree{1}{\kappa-1} \\
+    \text{(2)} & \Ss(\tau) = \sum_{\TB}\Sl(\TB)\one{\TB_1=\tau}   & \forall\tau\in\tree{1}{\kappa}
+\end{align*}
+Now we want to optimize $\Sl$ fixing $\El$. However, this requires a rewrite of the constraint (2)
+to be on $\El$ instead. In oder to do that, define an alternate form of $\Ss$, call $\Sm$, a probability measure on a $(\kappa-1)$-tree $\tau$ and mark $x$:
+\begin{equation}
+    \Sm(\tau, x) = \frac1\kappa \cnt{x}(\tau\oplus x) \Ss(\tau\oplus x)
+\end{equation}
+by definition,
+\begin{equation}
+    \Sm(\tau, x) = \Es(x, \tau_o)\UE(\tau_o, x)(\tau)
+\end{equation}
+
+\begin{lemma}\label{Prp.NNNI-NU-RHO}
+    % \begin{enumerate}
+    % \item Relation to $\El$:
+    %       \begin{equation}
+    %           \Sm(\tau, x) = \sum_{\tau'\in\tree{1}{\kappa-1}} \El(\tau, \tau')\one{\tau'_o=x} = \Es(\tau_o, x)\UE(\tau_o, x)(\tau)
+    %       \end{equation}
+    % \item Relation to $\Es$:
+    %       \begin{equation}
+    %           \Es(x, x') = \sum_{\tau\in\tree{1}{\kappa-1}} \Sm(\tau, x)\one{\tau_o=x'} = \sum_{\tau,\tau'\in\tree{1}{\kappa-1}} \El(\tau, \tau')\one{\tau_o=x, \tau_o=x'}
+    %       \end{equation}
+    % \item Relation to $\Ss$:
+    %       \begin{equation}
+    %         \Ss(\tau) = \sum_{v\in\NB{\tau}}\frac{\Sm(\tau(o\BS v)_1, \tau(v\BS o)_0)}{n_{\tau(v\BS o)_0}(\tau)}
+    %       \end{equation}
+    % \item Relative Entropy:
+    %       \begin{equation}
+    %           H(\Ss\|\SUs) = H(\Sm\|\SUm)
+    %       \end{equation}
+    % \end{enumerate}
+    For $\Sl\in\mSl$ and $\Ss\in\mSs$, $\Sm(\tau, x) = \frac1\kappa \cnt{x}(\tau\oplus x) \Ss(\tau\oplus x)$, $\El(\tau, \tau) = \EE_\Sl\left[E_2(\tau,\tau')(\TB)\right]$,
+    \begin{align}
+        \Ss(\tau)    & = \sum_{\TB\in\tree{2}{\kappa}}\Sl(\TB)\one{\TB_1=\tau}            & \forall \tau\in\tree{1}{\kappa}
+        \intertext{if and only if}
+        \Sm(\tau, x) & = \sum_{\tau'\in\tree{1}{\kappa-1}}\El(\tau, \tau')\one{\tau'_0=x} & \forall \tau\in\tree{1}{\kappa-1}, x\in\X.
+    \end{align}
+    This also shows that $\Sm$ is a probability measure.
+\end{lemma}
+Rewriting constraint (2), we get the equivalent problem
+\begin{equation*}
+    \inf_{\substack{\El\in\mEl\\ \Sm(\tau, x) = \sum_{\tau'\in\tree{1}{\kappa-1}}\El(\tau, \tau')\one{\tau'_0=x}}}\left[- \frac\kappa2 H(\El\|\Elo)+\inf_{\substack{\Sl\in\mSl\\ \El(\tau, \tau') = \EE_\Sl[E_2(\tau,\tau')(\TB)]}} H(\Sl\|\Slo)\right]
+\end{equation*}
+We will show that the unique optimum of the inner optimization problem (over $\mSl$) is $\Slh$, where
+\begin{equation}
+    \frac{d\Slh}{d\Slo}(\TB) = \prod_{v\in\NB{\TB}}\frac{d\El}{d\Elo}(\TB(v\BS o)_1, \TB(o\BS v)_1).
+\end{equation}
+Indeed, $\Slh$ satisfies constraint (1), shown with assistance from Lemmma \ref{Prp.NNNI-PI-RHO-STAR}.
+\begin{lemma}\label{Prp.NNNI-PI-RHO-STAR}
+    For any $\Ss\in\mSs$, for $(\kappa-1)$-trees $\tau, \tau'$
+    \begin{equation}
+        \Elo(\tau,\tau') = \Es(\tau_o, \tau_o')\UE(\tau_o, \tau'_o)(\tau)\UE(\tau'_o, \tau_o)(\tau') = \frac{\Sm(\tau, \tau_o)\Sm(\tau', \tau_o)}{\Es(\tau_o, \tau'_o)}.
+    \end{equation}
+\end{lemma}
+\begin{lemma}\label{Prp.NNNI-RHO-HAT-CNSTR}
+    For $\Sl\in\mSl$,
+    \begin{equation}
+        \El(\tau, \tau') = \EE_\Slh[E_2(\tau, \tau')(\TB)].
+    \end{equation}
+\end{lemma}
+Knowing that $\Slh$ satisfies the constraint, we can then show that it is the optimum with a cross-entropy argument:
+\begin{proposition}\label{Prp.NNNI-RHO-HAT-OPT}
+    For $\El$, a symmetric probability distribution on $\tree{1}{\kappa-1}^2$,
+    \begin{equation*}
+        \inf_{\substack{\Sl\in\mSl\\ \EE_\Sl[E_2(\tau,\tau')(\TB)] = \El(\tau,\tau')}} H(\Sl\|\Slo) = \kappa H(\El\|\Elo),
+    \end{equation*}
+    and the unique minimum happens at $\Slh$.
+\end{proposition}
+This means that we need to solve
+\begin{equation*}
+    \inf_{\substack{\El\in\mEl\\ \Sm(\tau, x) = \sum_{\tau'}\El(\tau, \tau')\one{\tau'_0=x}}}\frac\kappa2 H(\El\|\Elo).
+\end{equation*}
+This is relatively straightforward. $\Elo$, the unique minimum of $H(\El\|\Elo)$ without constraints, satisfies the constraints. More specifically,
+\footnote{The second equality about $\UE$ has not been proven, but it should be apparent from the fact that it is normalized}
+\begin{equation}
+    \sum_{\tau'\in\tree{1}{\kappa-1}} \Elo(\tau, \tau')\one{\tau'_o=x}=\Sm(\tau, x)\sum_{\tau'\in\tree{1}{\kappa-1}} \one{\tau'_o=x}\UE(x, \tau_o)(\tau')=\Sm(\tau, x).
+\end{equation}
+Therefore, the unique minimum happens at $\El=\Elo$. Thus $\Sl=\Slo$, and the whole term is zero.
+
+\subsubsection*{Optimal over unimodular measures on stars}
+Turning our attention to the optimization on $\Ss$. Similarly, view $\Ss$ and $\Es$ different variables with constraint connecting them. Define
+\begin{multline}
+    \VAL(\Ss, \Es) = \left\{\EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right] \right. \\
+    \left.- \left[H(\Ss\|\SUs) - \frac{\kappa}{2} H(\Es\|\EUs)\right]\right\}.
+\end{multline}
+And thus
+\begin{equation*}
+    \AP(\PO, \PU) = \sup_{\substack{\Ss\in\mSs,\ \Es\in\mEs\\ \EE_\Ss[E_1(x,x')(\tau)]=\Es(x, x')}} \VAL(\Ss, \Es)
+\end{equation*}
+Use Lagrange multiplier to find the stationary points of $\VAL(\Ss, \Es)$ in the domain. We need the following constraints:
+\begin{align*}
+    \EE_\Ss\left[E_2(x, x')(\tau)\right] & = \Es(x, x') & \forall x, x'\in\X \\
+    \Es(x, x')                           & = \Es(x', x) & \forall x, x'\in\X \\
+    \sum_{x,x'\in\X}\Es(x, x')           & = 1
+\end{align*}
+This allows us to find a functional (call the ``cavity functional'') on probability measures on $\X^2$. For all $\CF\in\PP(\X^2)$, $x, x'\in\X^2$
+\begin{multline}
+    (\BP\CF)(x, x') = \frac{1}{z_\CF} \PO(x, x') \sum_{\tau\in\tree{1}{\kappa-1}} \one{\tau_o=x}{\kappa-1\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\\
+    \prod_{v\in\NB{\tau}} \PU(x', \tau(v\BS o)_0) \CF(\tau(v\BS o)_0, x),
+\end{multline}
+where $z_\CF$ normalizes the distribution:
+\begin{multline}
+    z_\CF = \sum_{x, x'\in\X}\PO(x, x') \sum_{\tau\in\tree{1}{\kappa-1}} \one{\tau_o=x}{\kappa-1\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\\
+    \prod_{v\in\NB{\tau}} \PU(x', \tau(v\BS o)_0) \CF(\tau(v\BS o)_0, x).
+\end{multline}
+We can show that $\CFo=\BP\CFo$ at stationary points, and taking the max over all stationary points gives the optimal value
+\begin{proposition}\label{Prp.NNNI-CF}
+    The annealed pressure
+    \begin{equation}
+        \AP(\PO, \PU) = \sup_{\substack{h^*\in\PP(\X^2)\\ \CFo = \BP\CFo}} \left(\log z_\Ss - \frac\kappa2 \log z_\Es\right),
+    \end{equation}
+    where
+    \begin{align}
+        z_\Ss = & \sum_{\tau\in\tree{1}{\kappa}}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\ \prod_{v\in\NB{\tau}}h(\tau(v\BS o)_0, \tau_o) \\
+        z_\Es=  & \sum_{x, x'\in\X}\frac{\CF(x, x')\CF(x', x)}{\PO(x, x')}.
+    \end{align}
+\end{proposition}
+Note that $z_\Ss$ and $z_\Es$ are the normalizing constants for the stationary points of $V_{\PO, \PU}(\Ss, \Es)$,
+\begin{align}
+    \Ss(\tau)  & = \frac{1}{z_\Ss}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\ \prod_{v\in\NB{\tau}}h(\tau(v\BS o)_0, \tau_o) \\
+    \Es(x, x') & = \frac{1}{z_\Es}\frac{\CF(x, x')\CF(x', x)}{\PO(x, x')},
+\end{align}
+This matches the belief propagation results outlined in the previous section.
+
+\newpage
+
+\subsection{Proofs}
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-EV})]
+    We will show the following separately
+    \begin{align}
+        \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)\right]
+         & = \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)\right] \label{Eq.NNNI-EV-1NB}         \\
+        \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\sum_{u\in\NB{\tau(v\BS o)_1}}\log\PU(\tau_o, \tau(u\BS v)_0)\right]
+         & = \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right] \label{Eq.NNNI-EV-2NB}
+    \end{align}
+    For (\ref{Eq.NNNI-EV-1NB}),
+    \begin{align*}
+          & \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)\right]                                                                             \\
+        = & \sum_{\tau\in\tree{1}{\kappa}}\sum_{\TB\in\tree{2}{\kappa}}\Sl(\TB)\one{\TB_1=\tau}\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)\right]
+        \intertext{since all values are in the first neighborhood of $o$,}
+        = & \sum_{\TB\in\tree{2}{\kappa}}\sum_{\tau\in\tree{1}{\kappa}}\Sl(\TB)\one{\TB_1=\tau}\left[\frac12\sum_{v\in\NB{\TB}}\log\PO(\TB_o, \TB(v\BS o)_0)\right]    \\
+        = & \sum_{\TB\in\tree{2}{\kappa}}\Sl(\TB)\left[\frac12\sum_{v\in\NB{\TB}}\log\PO(\TB_o, \TB(v\BS o)_0)\right]                                                  \\
+        = & \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)\right]
+    \end{align*}
+    To prove (\ref{Eq.NNNI-EV-1NB}), the unimodularity of $\Sl$ is required, so we add an intermediate step involving $\El$.
+    \begin{align*}
+        \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\sum_{u\in\NB{\tau(v\BS o)_1}}\log\PU(\tau_o, \tau(u\BS v)_0)\right]
+         & = \EE_\El\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]   \\
+         & = \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right]
+    \end{align*}
+    On one hand,
+    \begin{align*}
+          & \EE_\El\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                                                                                                            \\
+        = & \sum_{\tau,\tau'\in\tree{1}{\kappa-1}}\El(\tau, \tau')\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                                                             \\
+        = & \sum_{\TB}\Sl(\TB)\sum_{\tau,\tau'\in\tree{1}{\kappa-1}}\frac1\kappa E_2(\tau,\tau')(\TB)\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                          \\
+        = & \sum_{\TB}\Sl(\TB)\sum_{\tau,\tau'\in\tree{1}{\kappa-1}} E_2(\tau,\tau')(\TB)\left[\frac12\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                                           \\
+        = & \sum_{\TB}\Sl(\TB)\sum_{v\in\NB{\TB}}\sum_{\tau,\tau'\in\tree{1}{\kappa-1}} \one{\TB(v\BS o)_1=\tau, \TB(o\BS v)_1=\tau'}\left[\frac12\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]               \\
+        = & \sum_{\TB}\Sl(\TB)\sum_{v\in\NB{\TB}}\sum_{\tau,\tau'\in\tree{1}{\kappa-1}} \one{\TB(v\BS o)_1=\tau, \TB(o\BS v)_1=\tau'}\left[\frac12\sum_{u\in\NB{\TB(v\BS o)_1}}\log\PU(\TB_o, \TB(v\BS o)(u\BS o)_0)\right] \\
+        = & \sum_{\TB}\Sl(\TB)\sum_{v\in\NB{\TB}} \left[\frac12\sum_{u\in\NB{\TB(v\BS o)_1}}\log\PU(\TB_o, \TB(v\BS o)(u\BS o)_0)\right]                                                                                    \\
+        = & \sum_{\TB}\Sl(\TB) \left[\frac12\sum_{v\in\NB{\TB}}\sum_{u\in\NB{\TB(v\BS o)_1}}\log\PU(\TB_o, \TB(u\BS v)_0)\right]                                                                                            \\
+        = & \EE_\Sl\left[\frac12\sum_{v\in\NB{\tau}}\sum_{u\in\NB{\tau(v\BS o)_1}}\log\PU(\tau_o, \tau(u\BS v)_0)\right].
+    \end{align*}
+    On the other hand,
+    \allowdisplaybreaks{
+        \begin{align*}
+              & \EE_\El\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                                                                                                                    \\
+            = & \sum_{\tau,\tau'\in\tree{1}{\kappa-1}}\El(\tau, \tau')\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]
+            \intertext{By the unimodularity of $\Sl$, $\El$ is symmetric, so}
+            = & \sum_{\tau,\tau'\in\tree{1}{\kappa-1}}\El(\tau', \tau)\left[\frac\kappa2\sum_{v\in\NB{\tau}}\log\PU(\tau'_o, \tau(v\BS o)_0)\right]                                                                                     \\
+            = & \sum_{\TB}\Sl(\TB)\frac1\kappa\sum_{v\in\NB{\TB}}\sum_{\tau,\tau'\in\tree{1}{\kappa-1}} \one{\TB(v\BS o)_1=\tau, \TB(o\BS v)_1=\tau'}\left[\frac\kappa2\sum_{u\in\NB{\tau}}\log\PU(\tau'_o, \tau(u\BS o)_0)\right]      \\
+            = & \sum_{\TB}\Sl(\TB)\sum_{v\in\NB{\TB}}\sum_{\tau,\tau'\in\tree{1}{\kappa-1}} \one{\TB(v\BS o)_1=\tau', \TB(o\BS v)_1=\tau}\left[\frac12\sum_{u\in\NB{\TB(o\BS v)_1}}\log\PU(\TB(v\BS o)_o, \TB(o\BS v)(u\BS o)_0)\right] \\
+            = & \sum_{\TB}\Sl(\TB)\sum_{v\in\NB{\TB}}\left[\frac12\sum_{u\in\NB{\TB(o\BS v)_1}}\log\PU(\TB(v\BS o)_o, \TB(o\BS v)(u\BS o)_0)\right]                                                                                     \\
+            = & \sum_{\TB}\Sl(\TB)\left[\frac12\sum_{v\in\NB{\TB}}\sum_{\substack{u\in\NB{\TB}                                                                                                                                          \\u\neq v}}\log\PU(\TB(v\BS o)_o, \TB(u\BS o)_0)\right]
+            \intertext{Notice that the sum is over all pairs $\{v,u\}\in\NB{\TB}$. If we remove the double-counting, the $\frac12$ factor is removed:}
+            = & \sum_{\TB}\Sl(\TB)\left[\sum_{\{v,u\}\in\NB{\TB}}\log\PU(\TB(v\BS o)_o, \TB(u\BS o)_0)\right]                                                                                                                           \\
+            \intertext{Since now the sum is over all first neighbors of $o$}
+            = & \sum_{\TB}\Ss(\TB)\left[\sum_{\{v,u\}\in\NB{\TB}}\log\PU(\TB(v\BS o)_o, \TB(u\BS o)_0)\right]                                                                                                                           \\
+            = & \EE_\Ss\left[\sum_{\{v,u\}\in\NB{\TB}}\log\PU(\TB(v\BS o)_o, \TB(u\BS o)_0)\right]
+        \end{align*}}
+    The original statement can be obtained by the linearity of expected values.
+\end{proof}
+
+\newpage
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-NU-RHO})]
+    For the forward direction, assume $\Ss(\tau) = \sum_{\TB}\Sl(\TB)\one{\TB_1=\tau}$
+    \begin{align*}
+        \sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau, \tau')\one{\tau_0'=x}
+        = & \sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau', \tau)\one{\tau_0'=x}                                                          \\
+        = & \sum_{\TB\in\tree{2}{\kappa}}\rho_2(\TB)\frac1\kappa \sum_{v\in N_o(\TB)}\one{\TB(o\backslash v)_1 = \tau, \TB(v\backslash o)_0=x} \\
+        \intertext{using $\TB(o\backslash v)_1 = \tau$ and $\TB(v\backslash o)_0=x$ if and only if $\one{\TB_1 = \tau\oplus x}
+            $ and $\TB(v\backslash o)_o=x$}
+        = & \sum_{\TB\in\tree{2}{\kappa}}\rho_2(\TB)\one{\TB_1 = \tau\oplus x} \frac1\kappa \sum_{v\in N_o(\TB)}\one{\TB(v\backslash o)_o=x}   \\
+        = & \frac1\kappa \cnt{x}(\tau\oplus x)\rho_1(\tau\oplus x)                                                                             \\
+        = & \Sm(\tau, x)
+    \end{align*}
+    For the backward direction, assume $\sum_{\tau'}\pi_{\rho_2}(\tau, \tau')\one{\tau_0'=x}$,
+    \begin{align*}
+        \rho_1(\tau\oplus x) & = \frac{\kappa}{\cnt{x}(\tau\oplus x)}\Sm(\tau, x)                                                                                                                                                  \\
+                             & = \frac{\kappa}{\cnt{x}(\tau\oplus x)}\sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau, \tau')\one{\tau'_o=x}                                                                                     \\
+                             & = \frac{\kappa}{\cnt{x}(\tau\oplus x)}\sum_{\tau'\in\tree{1}{\kappa-1}}\pi_{\rho_2}(\tau', \tau)\one{\tau'_o=x}                                                                                     \\
+                             & = \frac{\kappa}{\cnt{x}(\tau\oplus x)}\sum_{\TB\in\tree{2}{\kappa-1}}\frac1\kappa\sum_{\tau'\in\tree{1}{\kappa-1}}E_2(\tau', \tau)(\TB)\one{\TB(v\BS o)_1=\tau', \TB(o\BS v)_1=\tau}\one{\tau'_o=x} \\
+                             & = \frac{\kappa}{\cnt{x}(\tau\oplus x)}\sum_{\TB\in\tree{2}{\kappa-1}}\frac1\kappa\sum_{v\in\NB{\TB}}\sum_{\tau'\in\tree{1}{\kappa-1}}\one{\TB(v\BS o)_1=\tau', \TB(o\BS v)_1=\tau}\one{\tau'_o=x}   \\
+                             & = \frac{1}{\cnt{x}(\tau\oplus x)}\sum_{\TB\in\tree{2}{\kappa-1}}\Sl(\TB)\sum_{v\in\NB{\TB}}\sum_{\tau'\in\tree{1}{\kappa-1}}\one{\TB(v\BS o)_1=\tau', \TB(o\BS v)_1=\tau}\one{\TB(v\BS o)_o=x}      \\
+                             & = \frac{1}{\cnt{x}(\tau\oplus x)}\sum_{\TB\in\tree{2}{\kappa-1}}\Sl(\TB)\sum_{v\in\NB{\TB}}\one{\TB(o\BS v)_1=\tau, \TB(v\BS o)_o=x}                                                                \\
+        \intertext{Notice that the inner sum counts the number of ways to assemble $\TB_1=\tau\oplus x$}
+                             & = \frac{1}{\cnt{x}(\tau\oplus x)}\sum_{\TB\in\tree{2}{\kappa-1}}\Sl(\TB)\cnt{x}(\tau\oplus x)\one{\TB_1=\tau\oplus x}                                                                               \\
+                             & = \sum_{\TB\in\tree{2}{\kappa-1}}\Sl(\TB)\one{\TB_1=\tau\oplus x}
+    \end{align*}
+\end{proof}
+
+\newpage
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-PI-RHO-STAR})]
+    \begin{align*}
+          & \Elo(\tau, \tau')                                                                                                                                                                                                                                                                                \\
+        = & \sum_{\TB\in \tree{2}{\kappa}} \Elo(\TB) \frac1\kappa E_2(\tau, \tau')(\TB)                                                                                                                                                                                                                      \\
+        = & \sum_{\TB\in \tree{2}{\kappa}} \Ss(\TB_1) \left[\prod_{v\in N_o(\TB)}\UE(\TB(v\BS o)_0, \TB(o\BS v)_0)(\TB(v\BS o)_1)\right] \frac1\kappa \sum_{v'\in N_o(\TB)}\one{\TB(v\BS o)_1 = \tau, \TB(o\BS v)_1 = \tau'}
+        \intertext{With a change of variables, we can decompose the sum over $\tree{2}{}$ as several sums over $\TB\in \tree{1}{}$. For any $\TB \in \tree{2}{\kappa}$, we represent it as $(\sigma^o, [\sigma^1, \cdots, \sigma^\kappa])$, where $\sigma^o \in \tree{1}{\kappa}$, $\sigma^v\in\tree{1}{\kappa-1}$.}
+        = & \sum_{\sigma^o\in \tree{1}{\kappa}} \Ss(\sigma^o) \sum_{\sigma^1\in \tree{1}{\kappa-1}}\hdots\sum_{\sigma_1^\kappa\in \tree{1}{\kappa-1}}\left[\prod_{v\in N_o(\sigma^0)}\one{\sigma^o(v\BS o)_0 = \sigma^v_0}\right]
+        \left[\prod_{v\in N_o(\sigma^o)}\UE(\sigma^v, \sigma^o)(\sigma^v_1)\right]                                                                                                                                                                                                                           \\
+          & \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^{v'} = \tau_1, \sigma^o(o\BS v')_1 = \tau_1'}                                                                                                                                                                                                 \\
+        = & \sum_{\sigma^o\in \tree{1}{\kappa}} \Ss(\sigma^o)  \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\sum_{\sigma^1\in \tree{1}{\kappa-1}}\hdots\sum_{\sigma^\kappa\in \tree{1}{\kappa-1}}\left[\prod_{v\in N_o(\sigma^0)}\one{\sigma^o(v\BS o)_0 = \sigma^v_0}\UE(\sigma^v_0, \sigma^o_0)(\sigma^v)\right] \\
+          & \one{\sigma^{v'} = \tau, \sigma^o(o\BS v')_1 = \tau'}                                                                                                                                                                                                                                            \\
+        \intertext{Using distributive law}
+        = & \sum_{\sigma^o\in \tree{1}{\kappa}} \Ss(\sigma^o)  \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\left[\prod_{v\in N_o(\sigma^0)}\sum_{\sigma^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\BS o)_0 = \sigma^v_0}\UE(\sigma^v_0, \sigma^o_0)(\sigma^v)\right]                                                 \\
+          & \one{\sigma^{v'} = \tau, \sigma^o(o\BS v')_1 = \tau'}                                                                                                                                                                                                                                            \\
+        \intertext{Extracting the $v=v'$ term from the product, replace $\sigma^{v'}$ with $\tau$ by reducing the sum on the indicator function:}
+        = & \sum_{\sigma^o\in \tree{1}{\kappa}} \Ss(\sigma^o_1)\UE(\tau_0, \sigma^o_0)(\tau) \left[\frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^o(o\BS v')_1 = \tau'}\one{\sigma^o(v'\backslash o)_0 = \tau_0}\right]                                                                                  \\
+          & \left[\prod_{v \neq v'}\sum_{\sigma^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\backslash o)_0 = \sigma^v_0}\UE(\sigma^o(v\backslash o)_0, \sigma^o_0)(\sigma^v)\right]                                                                                                                              \\
+    \end{align*}
+    Now, notice that
+    \begin{equation*}
+        \sum_{\sigma^v\in \tree{1}{\kappa-1}}\one{\sigma^o(v\BS o)_0 = \sigma^v_0}\UE(\sigma^o(v\BS o)_0, \sigma^o_0)(\sigma^v)
+        = \sum_{\sigma^v\in \tree{1}{\kappa-1}}\UE(\sigma^o(v\BS o)_0, \sigma^o_0)(\sigma^v) = 1
+    \end{equation*}
+    This is because by definition $\UE(x, x')(\tau)$ is already zero if $\tau_0 \neq x$, and the distribution is normalized.
+
+    We then have
+    \begin{equation*}
+        \one{\sigma^o(o\BS v')_1 = \tau'}\one{\sigma^o(v'\BS o)_0 = \tau_0} = \one{\sigma^o = \tau' \oplus \tau_0}\one{\sigma^o(v'\BS o)_0 = \tau_0}
+    \end{equation*}
+    Since the indicator function is non-zero if and only if $\sigma^o_1 = \tau' \oplus \tau_0$ and vertex $v'$ has mark $\tau_0$.
+    This means
+    \begin{equation*}
+        \frac1\kappa \sum_{v'\in N_o(\sigma^o)}\one{\sigma^o(o\BS v')_1 = \tau'}\one{\sigma^o(v'\backslash o)_0 = \tau_0} = \one{\sigma^o = \tau' \oplus \tau_0}\frac1\kappa E_1(\tau_0, \tau_0')(\sigma^0)
+    \end{equation*}
+    This gives
+    \begin{align*}
+        \pi_{\rho_2^*}(\tau, \tau') & = \Ss(\tau_1' \oplus \tau_0)\UE(\tau_0, \tau_0')(\tau)\frac1\kappa E_1(\tau_0, \tau_0')(\tau' \oplus \tau_0)                    \\
+                                    & = \Es(\tau_0, \tau_0')\UE(\tau_0', \tau)(\tau')\UE(\tau_0, \tau_0')(\tau)                                                       \\
+                                    & = \frac{\Es(\tau_0, \tau_0')\UE(\tau_0', \tau)(\tau')\cdot\Es(\tau'_0, \tau_0)\UE(\tau_0, \tau_0')(\tau)}{\Es(\tau_0, \tau_0')} \\
+                                    & = \frac{\Sm(\tau,\tau'_0)\Sm(\tau', \tau_0)}{\Es(\tau_0, \tau_0')}
+    \end{align*}
+\end{proof}
+
+\newpage
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-RHO-HAT-CNSTR})]
+
+    \begin{align*}
+          & \EE_\Slh[E_2(\tau, \tau')(\TB)]                                                                                                                                                                                                                                                   \\
+        = & \sum_{\sigma^0\in\tree{1}{\kappa}}\frac1\kappa\sum_{v\in N_o(\sigma^0)}\rho_1(\sigma^0)\sum_{\sigma^1, \cdots, \sigma^\kappa\in \tree{1}{\kappa-1}}\one{\sigma^v=\tau, \sigma^0(o\backslash v)_1=\tau'} \prod_{v'\in N_o(\sigma^0)}\one{\sigma^{v'}_0=\sigma^0(v'\backslash o)_o} \\
+          & \frac{\pi_{\rho_2}(\sigma^{v'}, \sigma^0(o\backslash v')_1)}{\pi_{\rho_1}(\sigma^0(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\sigma^0_0, \sigma^{v'}_0)(\sigma^{v'})},
+        \intertext{Extract the $v'=v$ term in the product and simplifying,}
+          & = \pi_{\rho_2}(\tau, \tau')\frac{E_1(\tau_0, \tau_0')(\tau'\oplus \tau_0)\rho_1(\tau'\oplus\tau_0)}{\kappa\pi_{\rho_1}(\tau_0, \tau_0'
+        )\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)(\tau_0')}                                                                                                                                                                                                                                   \\
+          & \frac1\kappa\sum_{v'\in N_o(\tau'\oplus \tau_0)}
+        \prod_{v\neq v'}\left[\frac{\sum_{\sigma^v}\one{\sigma^v_0=\sigma^0(v\backslash o)_0}\pi_{\rho_2}(\sigma^{v}_0, (\tau'\oplus \tau_0)(o\backslash v)_1)}{\pi_{\rho_1}((\tau'\oplus \tau_0)(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)((\tau'\oplus \tau_0)(v'\backslash o)_1)}\right]
+    \end{align*}
+    Since
+    \begin{equation*}
+        \widehat{P}_{1, \rho_1}(\tau_0', \tau_0)(\tau_0') =
+        \frac{E_1(\tau_0, \tau_0')(\tau'\oplus \tau_0)\rho_1(\tau'\oplus\tau_0)}{\kappa\pi_{\rho_1}(\tau_0, \tau_0')}
+    \end{equation*}
+    and
+    \begin{align*}
+        \sum_{\sigma^v}\one{\sigma^v_0=\sigma^0(v\backslash o)_0}\pi_{\rho_2}(\sigma^{v}, (\tau'\oplus \tau_0)(o\backslash v)_1)
+        = & \frac1\kappa n_{(\tau'\oplus \tau_0)(v\backslash o)_0}(\tau'\oplus \tau_0)\rho_1(\tau'\oplus \tau_0)                                          \\
+        = & \pi_{\rho_1}((\tau'\oplus \tau_0)(v'\backslash o)_0, \tau_0)\widehat{P}_{1, \rho_1}(\tau_0', \tau_0)((\tau'\oplus \tau_0)(v'\backslash o)_1),
+    \end{align*}
+    everything cancels, and
+    \begin{equation*}
+        \EE_\Slh[E_2(\tau, \tau')(\TB)] = \pi_{\rho_2}(\tau, \tau').
+    \end{equation*}
+\end{proof}
+
+\newpage
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-RHO-HAT-OPT})]
+    Since $\Sl$ is absolutely continuous with respect to $\Slh$, consider the following,
+    \begin{align*}
+        0 \leq & H(\Sl\|\Slh)                                                                                                                             \\
+        =      & \sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Sl(\TB)}{\Slh(\TB)}                                                                      \\
+        =      & \sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Sl(\TB)}{\Slo(\TB)}\frac{\Slo(\TB)}{\Slh(\TB)}                                           \\
+        =      & \sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Sl(\TB)}{\Slo(\TB)}-\sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Slh(\TB)}{\Slo(\TB)} \\
+        =      & H(\Sl\|\Slo)-\sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Slh(\TB)}{\Slo(\TB)}
+    \end{align*}
+    Hence, regardless of the choice of $\Sl$,
+    \begin{align*}
+        H(\Sl\|\Slo)\geq & \sum_{\TB\in\tree{1}{\kappa}}\Sl(\TB)\log\frac{\Slh(\TB)}{\Slo(\TB)}                                                                                  \\
+        =                & \sum_{\TB \in \tree{2}{\kappa}}\rho_2(\TB)\sum_{v\in N_o(\TB)}\log \frac{d\pi_{\rho_2}}{d\pi_{\rho_2^*}}(\TB(v\BS o)_1, \TB(o\BS v)_1)
+        \intertext{Congregating all the vertices $v$ such that $\TB(v\BS o)_1$ and $\TB(o\BS v)_1$ are identical, we simply count the number of pairs of trees that match each side of the cut:}
+        =                & \sum_{\TB \in \tree{2}{\kappa}}\rho_2(\TB)\sum_{\tau, \tau'\in\tree{1}{\kappa-1}}E_2(\tau,\tau')(\TB)\log \frac{d\pi_2}{d\pi_{\rho_2^*}}(\tau, \tau') \\
+        =                & \sum_{\tau, \tau'\in\tree{1}{\kappa-1}}\kappa\pi_{\rho_2}(\tau, \tau')\log \frac{d\pi_2}{d\pi_{\rho_2^*}}(\tau, \tau')                                \\
+        =                & \kappa H(\pi_{\rho_2} \| \pi_{\rho_2^*})
+    \end{align*}
+    This bound is attainable at $\Slh$, from the observation that
+    \begin{equation*}
+        H(\wh{\rho_2}\| \rho_2^*) = \sum_{\TB \in \tree{2}{\kappa}}\wh{\rho_2}(\TB)\log \frac{d\wh{\rho_2}}{d\rho_2^*}(\TB) = \kappa H(\pi_{\rho_2} \| \pi_{\rho_2^*}).
+    \end{equation*}
+    We can hence conclude that $H(\rho_2\|\rho_2^*) \leq H(\wh{\rho_2}\| \rho_2^*)$ for all admissible measures $\rho_2$ on $\tree{2}{\kappa}$.
+
+    To show that this is a minimum, notice that $\pi_{\wh{\rho_2}} = \pi_{\rho_2}$, and, thus belongs to the set of measures the infimum is taken over. Its uniqueness can be shown from convexity. The $H(\rho_2\| \rho_2^*)$ is a convex functional with respect to $\Sl$. Its domain is also convex, being the result of several linear constraints on the probability simplex $\PP(\tree{2}{\kappa})$. A minimum of a convex function on a
+    convex domain is unique.
+\end{proof}
+
+\newpage
+
+\begin{proof}[Proof of (\ref{Prp.NNNI-CF})]
+    Assigning each constraint a Lagrange multiplier:
+    \begin{align*}
+        \EE_\Ss\left[\frac1\kappa E_1(x, x')(\tau)\right] & = \Es(x, x') & \alpha(x, x') \\
+        \Es(x, x')                                        & = \Es(x', x) & \beta(x, x')  \\
+        \sum_{x,x'\in\X}\Es(x, x')                        & = 1          & \gamma,
+    \end{align*}
+    we have
+    \begin{multline*}
+        \LM(\Ss, \Es, \alpha, \beta, \gamma) = \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau_v)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right]  \\
+        - \left[H(\Ss\|\SUs) - \frac{\kappa}{2} H(\Es\|\EUs)\right] + \sum_{x, x'\in\X}\alpha(x, x')\left[\sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau)\frac1\kappa E_1(x,x')(\tau) - \Es(x,x')\right] \\
+        + \sum_{x, x'\in\X} \beta(x, x')\left[\Es(x, x')-\Es(x',x)\right] + \gamma\left[\sum_{x, x'\in\X} \Es(x, x') - 1\right].
+    \end{multline*}
+    Taking derivative with respect to each value in $\Ss$ and $\Es$. Obtain, for all $\tau\in\tree{1}{\kappa}$
+    \begin{multline}\label{Eq.NNNI-LM-SS}
+        \frac{\partial \LM(\Ss, \Es, \alpha, \beta, \gamma)}{\partial \Ss(\tau)} = \left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau_v)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right]\\
+        - \left[\log \frac{\Ss(\tau)}{\SUs(\tau)} - 1\right] + \sum_{x, x'\in\X}\alpha(x, x')\frac1\kappa E_1(x, x')(\tau) = 0,
+    \end{multline}
+    and for all $x, x'\in\X$
+    \begin{equation}\label{Eq.NNNI-LM-ES}
+        \frac{\partial \LM(\Ss, \Es, \alpha, \beta, \gamma)}{\partial \Es(x, x')} = \frac\kappa2\left[\log\frac{\Es(x, x')}{\EUs(x, x')}\right] -\alpha(x, x') + \beta(x, x') - \beta(x', x) + \gamma = 0.
+    \end{equation}
+    We first examine (\ref{Eq.NNNI-LM-SS}):
+    \begin{align*}
+        \sum_{x, x'\in\X}\alpha(x, x')\frac1\kappa E_1(x, x')(\tau) & = \sum_{x, x'\in\X}\alpha(x, x')\frac1\kappa \sum_{v\in\NB{\tau}} \one{\tau_v=x, \tau_o=x'}          \\
+                                                                    & = \sum_{v\in\NB{\tau}} \sum_{x, x'\in\X}\alpha(x, x')\frac1\kappa \one{\tau_v=x, \tau_o=x'}          \\
+                                                                    & = \sum_{v\in\NB{\tau}} \sum_{x, x'\in\X}\alpha(\tau_v, \tau_o)\frac1\kappa \one{\tau_v=x, \tau_o=x'} \\
+                                                                    & = \sum_{v\in\NB{\tau}} \frac1\kappa\alpha(\tau_v, \tau_o),                                           \\
+    \end{align*}
+    so
+    \begin{align*}
+        \log \frac{\Ss(\tau)}{\SUs(\tau)} - 1 & = \frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau_v)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u) + \sum_{v\in\NB{\tau}} \frac1\kappa\alpha(\tau_v, \tau_o)          \\
+        \log \frac{\Ss(\tau)}{\SUs(\tau)}     & = \sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u) + \sum_{v\in\NB{\tau}}\left[\frac12\log\PO(\tau_o, \tau_v) + \frac1\kappa\alpha(\tau_v, \tau_o) + \frac1\kappa\right] \\
+        \frac{\Ss(\tau)}{\SUs(\tau)}          & = \prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\PO(\tau_o, \tau_v)^{1/2}\exp\left[ \frac1\kappa\alpha(\tau_v, \tau_o) + \frac1\kappa\right]         \\
+    \end{align*}
+    Define the probability measure $\CF$ on $\X^2$ with the following pmf:
+    \begin{equation}\label{Eq.NNNI-CF-ALPHA}
+        \CF(x, x') = \frac{1}{\overline{z_\CF}}\PO(x', x)^{1/2}\exp\left[\frac1\kappa\alpha(x, x') + \frac1\kappa\right]
+    \end{equation}
+    so
+    \begin{align*}
+        \Ss(\tau) & = \SUs(\tau)\overline{z_\CF}^\kappa\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)
+        \intertext{Notice that since $\SUs(\tau) = {\kappa\choose\CNT(\tau)}/|\X|^{\kappa+1}$\footnote{Probably should have proven this ahead of time}}
+        \Ss(\tau) & = \frac{\overline{z_\CF}^\kappa}{|\X|^{\kappa+1}}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o).
+    \end{align*}
+    And
+    \begin{equation}\label{Eq.NNNI-SS}
+        \Ss(\tau) = \frac{1}{z_\Ss}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o),
+    \end{equation}
+    with
+    \begin{equation}\label{Eq.NNNI-ZSS-ZCF}
+        z_\Ss=\frac{|\X|^{\kappa+1}}{\overline{z_\CF}^\kappa}.
+    \end{equation}
+    Turning our attention to (\ref{Eq.NNNI-LM-ES}):
+    \begin{equation*}
+        \frac\kappa2\left[\log\frac{\Es(x, x')}{\EUs(x, x')}-1\right] = \alpha(x, x') - \beta(x, x') + \beta(x', x) - \gamma
+    \end{equation*}
+    Since both $\Es$ and $\EUs$ are symmetric,
+    \begin{equation*}
+        \frac\kappa2\left[\log\frac{\Es(x, x')}{\EUs(x, x')}-1\right] = \frac\kappa2\left[\log\frac{\Es(x',x)}{\EUs(x', x)}-1\right].
+    \end{equation*}
+    Thus
+    \begin{align*}
+        \alpha(x, x') - \beta(x, x') + \beta(x', x) - \gamma & = \alpha(x', x) - \beta(x', x) + \beta(x, x') - \gamma \\
+        - 2\beta(x, x') + 2\beta(x', x)                      & = \alpha(x', x) - \alpha(x, x')                        \\
+        - \beta(x, x') + \beta(x', x)                        & = \frac12\alpha(x', x) - \frac12\alpha(x, x').
+    \end{align*}
+    And
+    \begin{align*}
+        \frac\kappa2\left[\log\frac{\Es(x, x')}{\EUs(x, x')}-1\right] & = \alpha(x, x') + \frac12\alpha(x', x) - \frac12\alpha(x, x') - \gamma                                                                                                                     \\
+                                                                      & = \frac12\alpha(x, x') + \frac12\alpha(x', x) - \gamma                                                                                                                                     \\
+        \log\frac{\Es(x, x')}{\EUs(x, x')}                            & = \frac1\kappa\alpha(x, x') + \frac1\kappa\alpha(x', x) - \frac{2\gamma}{\kappa} + 1                                                                                                       \\
+        \frac{\Es(x, x')}{\EUs(x, x')}                                & = \exp\left[\frac1\kappa\alpha(x, x') + \frac1\kappa\alpha(x', x) - \frac{2\gamma}{\kappa} + 1\right]
+        \intertext{By $\EUs(x, x')=1/|\X|^2$,}
+        \Es(x, x')                                                    & = \frac1{|\X|^2}\exp\left[\frac1\kappa\alpha(x, x') + \frac1\kappa\alpha(x', x) - \frac{2\gamma}{\kappa} + 1\right]                                                                        \\
+        \intertext{Similar to $\Ss$, we rewrite $\alpha$ in terms of $\CF$}
+                                                                      & = \frac1{|\X|^2}\exp\left[\left(\frac1\kappa\alpha(x, x') + \frac1\kappa\right) + \left(\frac1\kappa\alpha(x', x) + \frac1\kappa\right) - \frac{2\gamma}{\kappa} + 1 - \frac2\kappa\right] \\
+        \intertext{By definition of $\CF$ in (\ref{Eq.NNNI-CF-ALPHA}),}
+                                                                      & = \frac{1}{|\X|^2}\frac{\overline{z_\CF}}{\PU(x', x)^{1/2}}\CF(x, x') \frac{\overline{z_\CF}}{\PU(x, x')^{1/2}}\CF(x', x)\exp\left[ - \frac{2\gamma}{\kappa} + 1 - \frac2\kappa\right]     \\
+                                                                      & = \frac{\overline{z_\CF}^2}{|\X|^2}\exp\left[ - \frac{2\gamma}{\kappa} + 1 - \frac2\kappa\right]\frac{\CF(x, x')\CF(x', x)}{\PU(x, x')}.
+    \end{align*}
+    Combine the constants by defining $z_\Es = |\X|^2/\overline{z_\CF}^2\exp\left[1-\frac{2}{\kappa}(\gamma+1)\right]$\footnote{Probably should have proven this ahead of time}
+    \begin{equation}
+        \Es(x, x') = \frac1{z_\Es}\frac{\CF(x, x')\CF(x', x)}{\PU(x, x')},
+    \end{equation}
+    Observe that $\Es$ is symmetric. However, we still have not satisfied the other constraints. The normalization constraint on $\Es$ is relatively simple to satisfy, we simply set
+    \begin{equation}\label{Eq.NNNI-ZES}
+        z_\Es = \sum_{x, x'\in\X}\frac{\CF(x, x')\CF(x', x)}{\PU(x, x')}.
+    \end{equation}
+    For the remaining constraint,
+    \allowdisplaybreaks{
+        \begin{align*}
+              & \EE_\Ss\left[\frac1\kappa E_1(x, x')(\tau)\right]                                                                                                                                                                       \\
+            = & \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau)\frac1\kappa E_1(x, x')(\tau)                                                                                                                                                    \\
+            = & \sum_{\tau\in\tree{1}{\kappa}}\frac1\kappa E_1(x, x')(\tau)\frac{1}{z_\Ss}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)                              \\
+            = & \frac{1}{z_\Ss}\sum_{\tau\in\tree{1}{\kappa}}\frac1\kappa \sum_{w\in\NB{\tau}}\one{\tau_w=x, \tau_o=x'}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)
+            \intertext{Introduce $\tau'=\tau(v\BS o)_1$}
+            = & \frac{1}{z_\Ss}\sum_{\tau\in\tree{1}{\kappa}}\frac1\kappa \sum_{w\in\NB{\tau}}\sum_{\tau'\in\tree{1}{\kappa-1}}\one{\tau(w\BS o)_1=\tau'}\one{\tau_w=x, \tau_o=x'}                                                      \\
+              & {\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)
+            \intertext{Rewrite everything in terms of $\tau'$}
+            = & \frac{1}{z_\Ss}\sum_{\tau\in\tree{1}{\kappa}}\frac1\kappa \sum_{w\in\NB{\tau}}\sum_{\tau'\in\tree{1}{\kappa-1}}\one{\tau=\tau'\oplus x}\one{\tau_w=x, \tau'_o=x'}                                                       \\
+              & {\kappa\choose\CNT(\tau'\oplus x)}\prod_{v\in\NB{\tau'}}\PU(x, \tau'_v)\prod_{\{v, u\}\in\NB{\tau'}}\PU(\tau'_v, \tau'_u)\ \CF(x, x')\prod_{v\in\NB{\tau'}}\CF(\tau'_v, x')
+            \intertext{Collect all terms still written in terms of $\tau$}
+            = & \frac{1}{z_\Ss}\sum_{\tau'\in\tree{1}{\kappa-1}}\sum_{\tau\in\tree{1}{\kappa}}\one{\tau=\tau'\oplus x, \tau'_o=x'}\frac1\kappa \sum_{w\in\NB{\tau}}\one{\tau_w=x}                                                       \\
+              & {\kappa\choose\CNT(\tau'\oplus x)}\prod_{v\in\NB{\tau'}}\PU(x, \tau'_v)\prod_{\{v, u\}\in\NB{\tau'}}\PU(\tau'_v, \tau'_u)\ \CF(x, x')\prod_{v\in\NB{\tau'}}\CF(\tau'_v, x')
+            \intertext{Notice that $\sum_{w\in\NB{\tau}}\one{\tau_w=x}=\cnt{x}(\tau)$}
+            = & \frac{1}{z_\Ss}\sum_{\tau'\in\tree{1}{\kappa-1}}\sum_{\tau\in\tree{1}{\kappa}}\one{\tau=\tau'\oplus x, \tau'_o=x'}\frac{\cnt{x}(\tau'\oplus x)}\kappa                                                                   \\
+              & {\kappa\choose\CNT(\tau'\oplus x)}\prod_{v\in\NB{\tau'}}\PU(x, \tau'_v)\prod_{\{v, u\}\in\NB{\tau'}}\PU(\tau'_v, \tau'_u)\ \CF(x, x')\prod_{v\in\NB{\tau'}}\CF(\tau'_v, x')
+            \intertext{So now we can remove $\tau$}
+            = & \frac{1}{z_\Ss}\sum_{\tau'\in\tree{1}{\kappa-1}}\one{\tau'_o=x'}\frac{\cnt{x}(\tau'\oplus x)}\kappa                                                                                                                     \\
+              & {\kappa\choose\CNT(\tau'\oplus x)}\prod_{v\in\NB{\tau'}}\PU(x, \tau'_v)\prod_{\{v, u\}\in\NB{\tau'}}\PU(\tau'_v, \tau'_u)\ \CF(x, x')\prod_{v\in\NB{\tau'}}\CF(\tau'_v, x')
+        \end{align*}}
+    Focusing on the multiplicity, we see that\footnote{Probably should have proven this ahead of time}
+    \begin{align*}
+        {\kappa\choose\CNT(\tau'\oplus x)} & = \frac{\kappa!}{\prod{x'\in\X}\cnt{x'}(\tau'\oplus x)!}
+        \intertext{Notice that in the denominator, only $\cnt{x}(\tau'\oplus x)!$ is one more than the others, otherwise the other terms look exactly like that of $\CNT(\tau')$. Extract the term}
+                                           & = \frac{\kappa!}{\prod_{x'\in\X}\left[\cnt{x'}(\tau') + \one{x'=x}\right]!}         \\
+                                           & = \frac{\kappa!}{(\cnt{x}+1)\prod_{\substack{x'\in\X}}\left[\cnt{x}(\tau')\right]!} \\
+                                           & = \frac{\kappa!}{\cnt{x}(\tau'\oplus x)\prod_{x'\in\X}\left[\cnt{x}(\tau')\right]!}
+        \intertext{To keep its property as the multinomial coefficient, a $\kappa$ should also be extracted from the numerator:}
+                                           & = \frac{\kappa}{\cnt{x}(\tau'\oplus x)}{\kappa-1\choose\CNT(\tau')}
+    \end{align*}
+    Thus
+    \begin{align*}
+          & \EE_\Ss\left[\frac1\kappa E_1(x, x')(\tau)\right]                                                                                                                                                                              \\
+        = & \frac{1}{z_\Ss}\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x'}{\kappa\choose\CNT(\tau)}\prod_{v\in\NB{\tau'}}\PU(x, \tau_v)\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\ \CF(x, x')\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o) \\
+        = & \frac{1}{z_\Ss}\CF(x, x')\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x'}{\kappa\choose\CNT(\tau)}\prod_{v\in\NB{\tau}}\PU(x, \tau_v)\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)    \\
+        = & \Es(x, x')                                                                                                                                                                                                                     \\
+        = & \frac1{z_\Es}\frac{\CF(x, x')\CF(x', x)}{\PO(x, x')}.
+    \end{align*}
+    \begin{align*}
+        \frac1{z_\Es}\frac{\CF(x', x)}{\PO(x, x')} & = \frac{1}{z_\Ss}\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x'}{\kappa\choose\CNT(\tau)}\prod_{v\in\NB{\tau}}\PU(x, \tau_v)\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, x')               \\
+        \CF(x', x)                                 & = \frac{z_\Es}{z_\Ss}\PO(x, x')\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x'}{\kappa\choose\CNT(\tau)}\prod_{v\in\NB{\tau}}\PU(x, \tau_v)\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, x') \\
+    \end{align*}
+    Set
+    \begin{equation}\label{Eq.NNNI-ZCF-ZSS-ZES}
+        z_\CF = \frac{z_\Ss}{z_\Es},
+    \end{equation}
+    we obtain the cavity equation
+    \begin{equation}
+        \CF(x, x') = \frac1{z_\CF}\PO(x, x')\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\PU(x', \tau_v)\CF(\tau_v, x).
+    \end{equation}
+    Additionally, since $\CF$ is a probability measure, we know that \footnote{We can technically prove it with (\ref{Eq.NNNI-ZCF-ZSS-ZES}), but I have not found a way to do that yet.}
+    \begin{equation}
+        z_\CF = \sum_{x, x'\in\X}\PO(x, x')\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\PU(x', \tau_v)\CF(\tau_v, x).
+    \end{equation}
+    Define the functional $\BP: \PP(\X^2)\mapsto\PP(\X^2)$ such that
+    \begin{equation}
+        (\BP\CF)(x, x') = \frac1{z_\CF}\PO(x, x')\sum_{\tau\in\tree{1}{\kappa-1}}\one{\tau_o=x}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\PU(x', \tau_v)\CF(\tau_v, x),
+    \end{equation}
+    and $\CF=\BP\CF$.
+
+    To summarize, we found that the stationary points of $\LM(\Ss, \Es, \alpha, \beta, \gamma)$ to be
+    \begin{align*}
+        \Ss(\tau)  & = \frac{1}{z_\Ss}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o) \\
+        \Es(x, x') & = \frac1{z_\Es}\frac{\CF(x, x')\CF(x', x)}{\PU(x, x')},
+    \end{align*}
+    where $\CF=\BP\CF$. These should also be the stationary points of $V_{\PO, \PU}$ on the specified domain
+
+    The function value at these points can also be calculated:
+    \begin{align*}
+        H(\Ss\|\SUs) & = \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau)\log\frac{\Ss(\tau)}{\SUs(\tau)}                                                                                                                                                               \\
+                     & = \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau)\log\frac{\frac{1}{z_\Ss}{\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}\CF(\tau_v, \tau_o)}{\frac{1}{|\X|^{\kappa+1}}{\kappa\choose\CNT(\tau)}} \\
+                     & = -\log z_\Ss + (\kappa+1)\log|\X| + \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right] + \EE_\Ss\left[\sum_{v\in\NB{\tau}}\log\CF(\tau_v, \tau_o)\right]                                                           \\
+    \end{align*}
+    Note that $\EE_\Ss\left[\sum_v \log\CF(\tau_v, \tau_o)\right] = \kappa\EE_\Es\log\CF(x, x')$\footnote{Probably should have proven this ahead 
+    of time with all of the other expected value proofs. This is what I mean by the expected value statements can be and should be more general}:
+    \allowdisplaybreaks{
+        \begin{align*}
+              & \kappa\EE_\Es\log\CF(x, x')                                                                                                   \\
+            = & \kappa\sum_{x, x'\in\X} \Es(x, x')\log\CF(x, x')                                                                              \\
+            = & \kappa\sum_{x, x'\in\X} \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau)\frac1\kappa E_1(x, x')(\tau)\log\CF(x, x')                    \\
+            = & \sum_{x, x'\in\X} \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau) E_1(x, x')(\tau)\log\CF(x, x')                                      \\
+            = & \sum_{x, x'\in\X}\sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau) \sum_{v\in\NB{\tau}}\one{\tau_v=x, \tau_o=x'}\log\CF(x, x')          \\
+            = & \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau) \sum_{v\in\NB{\tau}}\sum_{x, x'\in\X}\one{\tau_v=x, \tau_o=x'}\log\CF(\tau_v, \tau_o) \\
+            = & \sum_{\tau\in\tree{1}{\kappa}}\Ss(\tau) \sum_{v\in\NB{\tau}}\log\CF(\tau_v, \tau_o)                                           \\
+            = & \EE_\Ss\left[\sum_{v\in\NB{\tau}}\log\CF(\tau_v, \tau_o)\right],
+        \end{align*}}
+    so,
+    \begin{equation*}
+        H(\Ss\|\SUs) = -\log z_\Ss + (\kappa+1)\log|\X| + \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right] + \kappa\EE_\Es\log\CF(x, x')
+    \end{equation*}
+    On the other hand,
+    \begin{align*}
+        H(\Es\|\EUs) & = \sum_{x, x'\in\X}\Es(\tau)\log\frac{\Es(\tau)}{\EUs(\tau)}                                         \\
+                     & = \sum_{x, x'\in\X}\Es(\tau)\log\frac{\frac1{z_\Es}\CF(x, x')\CF(x',x)/\PO(x, x')}{1/|\X|^2}         \\
+                     & = -\log z_\Es + 2\log |\X| + \EE_\Es[\log\CF(x, x')] + \EE_\Es\log\CF(x', x) - \EE_\Es\log\PO(x, x') \\
+        \intertext{By $\Es$ symmetric,}
+                     & = -\log z_\Es + 2\log |\X| + 2\EE_\Es[\log\CF(x, x')] - \EE_\Es\log\PO(x, x').
+    \end{align*}
+    Plugging into $V_{\PO,\PU}(\Ss, \Es)$,
+    \allowdisplaybreaks{
+        \begin{align*}
+              & V_{\PO,\PU}(\Ss, \Es)                                                                                                                             \\
+            = & \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right] \\
+              & - \left[H(\Ss\|\SUs) - \frac{\kappa}{2} H(\Es\|\EUs)\right]                                                                                       \\
+            = & \EE_\Ss\left[\frac12\sum_{v\in\NB{\tau}}\log\PO(\tau_o, \tau(v\BS o)_0)+\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right] \\
+              & +\log z_\Ss - (\kappa+1)\log|\X| - \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right] - \kappa\EE_\Es\log\CF(x, x')           \\
+              & - \frac{\kappa}{2} \log z_\Es + \kappa\log |\X| + \kappa\EE_\Es[\log\CF(x, x')] - \frac{\kappa}{2}\EE_\Es\log\PO(x, x')                           \\
+            = & \EE_\Es\left[\frac\kappa2\log\PO(x, x')\right]+\EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau(v\BS o)_0, \tau(u\BS o)_0)\right]             \\
+              & +\log z_\Ss - (\kappa+1)\log|\X| - \EE_\Ss\left[\sum_{\{v, u\}\in\NB{\tau}}\log\PU(\tau_v, \tau_u)\right] - \kappa\EE_\Es\log\CF(x, x')           \\
+              & - \frac{\kappa}{2} \log z_\Es + \kappa\log |\X| + \kappa\EE_\Es[\log\CF(x, x')] - \frac{\kappa}{2}\EE_\Es\log\PO(x, x')                           \\
+            \intertext{everything cancels, and\footnote{Notice that we used another expected value property above. No proof was offered.}}
+            = & \log z_\Ss - \frac{\kappa}{2} \log z_\Es -\log |\X|
+        \end{align*}}
+    This is the value of $V_{\PO,\PU}$ for each stationary point. Since for positive $\PO$ and $\PU$, the maxima cannot be on a boundary (where some values of the pmf is zero\footnote{I know this is not the case, but I don't really know how to prove this}), we can state the annealed pressure as the following\footnote{I don't really know how to state this. Should I use the KKT conditions?}:
+    \begin{multline}
+        \AP(\PO, \PU) = \sup_{\substack{h\in\PP(\X^2)\\ \CF=\BP\CF}}\left[ \sum_{\tau\in\tree{1}{\kappa}} {\kappa\choose\CNT(\tau)}\prod_{\{v, u\}\in\NB{\tau}}\PU(\tau_v, \tau_u)\prod_{v\in\NB{\tau}}h(\tau_v, \tau_o)\right. \\
+            \left.+\sum_{x, x'\in\X}\frac{h(x, x')h(x', x)}{\PO(x, x')}\right]
+    \end{multline}
+\end{proof}
 
 \end{document}
