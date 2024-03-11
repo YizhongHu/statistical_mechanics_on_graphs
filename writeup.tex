@@ -3558,7 +3558,7 @@ with $z$ normalizing factor guaranteeing that $\sum_{\UBX}\mu(\UBX) = 1$.
 Cavity measures can be defined by removing an edge or a vertex:
 \begin{align}
     \mu^{(ij)}(\UBX)         & \equiv \frac{1}{z_{ij}}\prod_{(k,\ell)\in E\BS (i,j)} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G \\d_G(k\sim \ell)=2\\(i,j)\notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell) \label{Eq.NNNI-BP-CE}\\
-    \mu^{(i)}(\UBX_{V\BS i}) & \equiv \frac{1}{z_{i}}\prod_{\substack{(k,\ell)\in E\BS (i,j)                                                     \\i\notin (k, l)}} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G\\d_G(k\sim \ell)=2\\i \notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell), \label{Eq.NNNI-BP-CV}
+    \mu^{(i)}(\UBX_{V\BS i}) & \equiv \frac{1}{z_{i}}\prod_{ \textcolor{red}{\substack{(k,\ell)\in E\BS (i,j)                                                     \\i\notin (k, l)}}} \psi^1_{k\ell}(x_k, x_\ell)\prod_{\substack{k\sim \ell\in G\\d_G(k\sim \ell)=2\\i \notin k\sim \ell}} \psi^2_{k\ell}(x_k, x_\ell), \label{Eq.NNNI-BP-CV}
 \end{align}
 with $z_{ij}$ and $z_i$ guaranteeing $\sum_{\UBX}\mu^{(ij)}(\UBX) = 1$ and $\sum_{\UBX_{V\BS i}}\mu^{(i)}(\UBX_{V\BS i}) = 1$ respectively.
 
@@ -3579,7 +3579,7 @@ Some subsets that are important to us. For some $i, j\in V$, $\partial i = \{j\ 
         \intertext{Factor out interactions on $\BI$, the remaining interactions is equivalent to that with $i$ removed}
                                        & \simeq \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j                                    \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{V\BS\BIJ}} \mu^{(i)}(\UBX_{V\BS i})\prod_{\ell\in\PIN\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
         \intertext{Collapse the marginals, and get}
-                                       & = \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j                                         \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{\PIN\BS \PJ}}\mu^{(i)}_{\PI\cup\PIN}(\UBX_{\pi\cup\PIN})\prod_{\ell\in\partial^2 i\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
+                                       & = \prod_{k\in\PI\BS j} \psi^1_{ik}(x_i, x_k) \prod_{\substack{k, \ell\in\PI\BS j                                         \\ k\neq \ell}} \psi^2_{k\ell}(x_k, x_\ell)\sum_{\UBX_{\PIN\BS \PJ}}\mu^{(i)}_{\PI\cup\PIN}(\UBX_{\PI\cup\PIN})\prod_{\ell\in\partial^2 i\BS \PJ} \psi^2_{i\ell}(x_i, x_\ell)
     \end{align*}
 \end{proof}
 
