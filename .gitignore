@@ -7,3 +7,11 @@ source/files
 *.bbl
 *.run.xml
 *.npz
+*.aux
+*.bcf
+*.blg
+*.fdb_latexmk
+*.log
+*.out
+*.xdv
+*.fls
